@@ -1,4 +1,4 @@
-package com.dmens.pokeno.Logging;
+//package com.dmens.pokeno.Logging;
 
 /**
  * Created by devin on 2017-05-12.
