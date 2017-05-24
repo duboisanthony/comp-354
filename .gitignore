@@ -37,3 +37,9 @@ hs_err_pid*
 .idea/
 comp-354.iml
 logfile.txt
+/bin/
+
+# Eclipse ignores
+.classpath
+.project
+.settings/
