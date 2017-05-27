@@ -1,11 +1,16 @@
 package com.dmens.pokeno.Utils;
+import com.dmens.pokeno.Ability.Ability;
 import com.dmens.pokeno.Card.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Parser {
+
+    private static final Logger LOG = LogManager.getLogger(Parser.class);
 
 	private static Parser instance = null;
 	private static final String ENCODING = "UTF-8";
@@ -112,14 +117,16 @@ public class Parser {
 		if(cardContents.matches("(.*):pokemon:(.*)"))
 		{
 			System.out.println("Created PokemonCard");
-			c = new PokemonCard("card");
+			c = new Pokemon("card");
 
 		}
 		else if(cardContents.matches("(.*)trainer(.*)"))
 		{
 			String[] results = cardContents.split(":");
 			System.out.println("Created TrainerCard");
-			c = new TrainerCard(results[0], results[3], this.mAbilitiesList.get(Integer.parseInt(results[4]) - 1));
+			ArrayList<Ability> abilities = new ArrayList<>();
+			abilities.add(new Ability(this.mAbilitiesList.get(Integer.parseInt(results[4]) - 1)));
+			c = new TrainerCard(results[0], results[3], abilities);
 
 		}
 		else if(cardContents.matches("(.*)energy(.*)"))

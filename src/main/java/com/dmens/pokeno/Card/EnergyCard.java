@@ -1,6 +1,11 @@
 package com.dmens.pokeno.Card;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class EnergyCard extends Card {
+
+    private static final Logger LOG = LogManager.getLogger(EnergyCard.class);
 	
 	private String mCategory;
 
@@ -9,6 +14,8 @@ public class EnergyCard extends Card {
 		super(name);
 		this.mCategory = category;
 	}
+
+	public EnergyCard(String description){}
 
 	public String toString()
 	{
