@@ -11,10 +11,10 @@ public class Driver {
 		System.out.println("Pokeno Parse Testing...");
 		
 		String directory = System.getProperty("user.dir"); 
-		String location1 = directory + "\\data\\deck1.txt";
-		String location2 = directory + "\\data\\deck2.txt";
-		String locationCards = directory + "\\data\\cards.txt";
-		String locationAbilities = directory + "\\data\\abilities.txt";
+		String location1 = directory + "/data/deck1.txt";
+		String location2 = directory + "/data/deck2.txt";
+		String locationCards = directory + "/data/cards.txt";
+		String locationAbilities = directory + "/data/abilities.txt";
 
 		Parser.Instance().LoadCards(locationCards);
 		Parser.Instance().LoadAbilities(locationAbilities);
