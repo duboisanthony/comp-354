@@ -72,6 +72,38 @@ public class GameBoard extends javax.swing.JFrame {
         newCard.setEditable(false);
         newCard.addMouseListener(viewCard);
         PlayerHandPanel.add(newCard);
+        newCard = new JTextField("MoreEx");
+        /*PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);
+                newCard = new JTextField("MoreExasdf");
+        PlayerHandPanel.add(newCard);*/
     }
     
     private void cardHoverOverEvent(java.awt.event.ActionEvent evt) {                                                             
@@ -607,13 +639,13 @@ public class GameBoard extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    //public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
+        /*try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -632,12 +664,12 @@ public class GameBoard extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new GameBoard().setVisible(true);
             }
         });
-    }
+    }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea CardViewArea;

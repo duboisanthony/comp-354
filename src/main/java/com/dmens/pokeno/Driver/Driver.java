@@ -1,5 +1,6 @@
 package com.dmens.pokeno.Driver;
 
+import com.dmens.pokeno.Board.GameBoard;
 import com.dmens.pokeno.Card.*;
 import com.dmens.pokeno.Utils.*;
 import java.util.*;
@@ -22,7 +23,8 @@ public class Driver {
 		ArrayList<Card> deck1 = Parser.Instance().DeckCreation(location1);
 		ArrayList<Card> deck2 = Parser.Instance().DeckCreation(location2);
 
-		
+                GameBoard board = new GameBoard();
+                board.setVisible(true);
 	}
 
 }
