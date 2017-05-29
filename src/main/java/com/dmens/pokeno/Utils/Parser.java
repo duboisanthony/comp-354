@@ -79,22 +79,26 @@ public class Parser {
 	/*
 	 * Point to the location of the file and load it.
 	 */
-	public void LoadCards(String cardLocation)
+	public boolean LoadCards(String cardLocation)
 	{
 		try
 		{
 			this.mCardList = Parser.GetFileContentsAsArrayList(cardLocation);
+			
 		}
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
+		
+		return true;
 	}
 	
 	/*
 	 * Point to the location of the file and load it.
 	 */
-	public void LoadAbilities(String abilitiesLocation)
+	public boolean LoadAbilities(String abilitiesLocation)
 	{
 		try
 		{
@@ -103,7 +107,10 @@ public class Parser {
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
+		
+		return true;
 	}
 	
 	/*
@@ -117,7 +124,20 @@ public class Parser {
 		if(cardContents.matches("(.*):pokemon:(.*)"))
 		{
 			System.out.println("Created PokemonCard");
-			c = new Pokemon("card");
+			String[] results = cardContents.split(":");
+			String pokemonName = results[0];
+			int hpIndex = 0;
+			int hp = 0;
+			for(int i = 1; i < results.length - 1; ++i) {
+				try {
+					hp = Integer.parseInt(results[i]);
+					hpIndex = i;
+					break;
+				} catch (NumberFormatException e) {
+					
+				}
+			}
+			//c = new Pokemon("pokemon");
 
 		}
 		else if(cardContents.matches("(.*)trainer(.*)"))
@@ -133,8 +153,7 @@ public class Parser {
 		{
 			String[] results = cardContents.split(":");
 			System.out.println("Created EnergyCard");
-			c = new EnergyCard(results[0], results[3]);
-			
+			c = new EnergyCard(results[0], results[3]);	
 		}
 
 		System.out.print(c.toString());
@@ -143,7 +162,7 @@ public class Parser {
 	
 	public ArrayList<Card> DeckCreation(String deckLocation)
 	{
-		// should assert that mCardList is not null
+		assert mCardList != null;
 		
 		ArrayList<Card> deck = new ArrayList<Card>();
 		
@@ -165,6 +184,5 @@ public class Parser {
 		System.out.println("--------\nDsize: " + deck.size() + "\n--------");
 		
 		return deck;
-				
 	}
 }
