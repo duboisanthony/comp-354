@@ -22,7 +22,9 @@ public class Pokemon extends Card {
     private boolean sleep;
 
     private Pokemon(){}
-	public Pokemon(String description){}
+	public Pokemon(String name, ArrayList<String> categories, int initialHP, int retreatCost, ArrayList<String> abilities){
+		super(name);
+	}
 	
 	public void AddCategory(String category)
 	{
@@ -38,7 +40,7 @@ public class Pokemon extends Card {
 	{
 		return String.format("|POKEMON CARD|\n|%s|\n", this.getName());
 	}
-
+	
 	public void addDamage(int damage){}
 
 	public void removeDamage(int damage){}
