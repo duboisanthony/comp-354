@@ -149,8 +149,8 @@ public class Parser {
 		
 		try
 		{
-			Set<String> deckNumbers = Parser.GetFileContentsAsSet(deckLocation);
-			
+			ArrayList<String> deckNumbers = Parser.GetFileContentsAsArrayList(deckLocation);
+		
 			for (String line : deckNumbers)
 			{
 			    Card e = CreateCard(this.mCardList.get(Integer.parseInt(line) - 1));
