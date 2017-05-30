@@ -39,6 +39,7 @@ public class Parser {
 	 */
 	private static ArrayList<String> GetFileContentsAsArrayList(String location) throws FileNotFoundException
 	{
+
 		File file = new File(location);
 		Scanner scanner = new Scanner(file, ENCODING);
 		

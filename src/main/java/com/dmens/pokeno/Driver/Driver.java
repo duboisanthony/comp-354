@@ -8,11 +8,10 @@ import java.util.*;
 
 public class Driver {
 
-	private static final String BASE_DIRECTORY = System.getProperty("user.dir");
-	private static final String LOCATION_FIRST_DECK = BASE_DIRECTORY + "/data/deck1.txt";
-	private static final String LOCATION_SECOND_DECK = BASE_DIRECTORY + "/data/deck2.txt";
-	private static final String LOCATION_CARDS = BASE_DIRECTORY + "/data/cards.txt";
-	private static final String LOCATION_ABILITIES = BASE_DIRECTORY + "/data/abilities.txt";
+	private static final String LOCATION_FIRST_DECK = "data/deck1.txt";
+	private static final String LOCATION_SECOND_DECK = "data/deck2.txt";
+	private static final String LOCATION_CARDS = "data/cards.txt";
+	private static final String LOCATION_ABILITIES = "data/abilities.txt";
 
 	private static ArrayList<Card> mFirstDeck = null;
 	private static ArrayList<Card> mSecondDeck = null;
