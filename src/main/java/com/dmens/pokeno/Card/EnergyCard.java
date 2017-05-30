@@ -17,6 +17,10 @@ public class EnergyCard extends Card {
 
 	public EnergyCard(String description){}
 
+	public String getCategory() {
+		return this.mCategory;
+	}
+	
 	public String toString()
 	{
 		return String.format("|ENERGY CARD|\n|%s|\n||%s||\n", this.getName(), this.mCategory);
