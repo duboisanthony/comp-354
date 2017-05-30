@@ -10,7 +10,7 @@ public abstract class Card {
 		this.mName = name;
 	}
 	
-	protected String getName()
+	public String getName()
 	{
 		return this.mName;
 	}

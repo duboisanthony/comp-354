@@ -1,5 +1,7 @@
 package com.dmens.pokeno.Driver;
 
+import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.Board.GameBoard;
 import com.dmens.pokeno.Card.*;
 import com.dmens.pokeno.Utils.*;
 import com.dmens.pokeno.Player.*;
@@ -58,6 +60,30 @@ public class Driver {
 			currentPlayer.setUpRewards();
 		}
 		
+                //Uncomment to see example board
+                /*GameBoard board = new GameBoard();
+                board.setVisible(true);
+                
+                EnergyCard electric = new EnergyCard("ElecEnergy", "Electric");
+                
+                ArrayList<String> categories = new ArrayList<String>();
+                categories.add("Normal");
+                categories.add("Electric");
+                
+                ArrayList<Ability> abilities = new ArrayList<Ability>();
+                Ability tackle = new Ability("Tackle\nDeals 10 damage");
+                abilities.add(tackle);
+                
+                Pokemon pikachu = new Pokemon("Pikachu", categories, 50, 2, abilities);
+                
+                board.updateBoard(pikachu, pikachu, 6, 4, 5, "Player play cards");
+                
+                board.addCardToHand(electric, true);
+                board.addCardToHand(pikachu, true);
+                
+                board.addCardToBench(pikachu, false);
+                board.update();*/
+                
 		// Main game loop
 		/*
  		while(!mGameOver) {
