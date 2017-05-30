@@ -17,13 +17,35 @@ import javax.swing.JTextField;
  * @author Jarrett
  */
 public class GameBoard extends javax.swing.JFrame {
+    /**
+     * Creates new form GameBoard
+     */
+    public GameBoard() {
+        initComponents();
 
-    MouseListener viewCard = new java.awt.event.MouseListener()
+        PlayerHandPanel.setLayout(new FlowLayout());
+        PlayerBenchPanel.setLayout(new FlowLayout());
+        OpponentBenchPanel.setLayout(new FlowLayout());
+        
+        PlayerParalyzedLabel.setText("");
+        PlayerAsleepLabel.setText("");
+        PlayerStuckLabel.setText("");
+        PlayerPoisonedLabel.setText("");
+        OpponentParalyzedLabel.setText("");
+        OpponentAsleepLabel.setText("");
+        OpponentStuckLabel.setText("");
+        OpponentPoisonedLabel.setText("");
+    }
+    
+    //can be changed to take a Card object?
+    public void addCardToHand(String cardName, boolean player)
+    {
+        JTextField newCard = new JTextField();
+        newCard.setText(cardName);
+        newCard.setEditable(false);
+        
+        MouseListener viewCard = new java.awt.event.MouseListener()
         {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cardHoverOverEvent(evt);
-            }
-
             @Override
             public void mouseClicked(MouseEvent me) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -31,6 +53,7 @@ public class GameBoard extends javax.swing.JFrame {
 
             @Override
             public void mousePressed(MouseEvent me) {
+                //play card
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
@@ -42,8 +65,7 @@ public class GameBoard extends javax.swing.JFrame {
             @Override
             public void mouseEntered(MouseEvent me)
             {
-                CardViewArea.setText("Mouse hover thingy");
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                CardViewArea.setText(cardName);
             }
 
             @Override
@@ -52,96 +74,126 @@ public class GameBoard extends javax.swing.JFrame {
                 CardViewArea.setText("");
             }
         };
-    
-    /**
-     * Creates new form GameBoard
-     */
-    public GameBoard() {
-        initComponents();
-
-        PlayerHandPanel.setLayout(new FlowLayout());
         
-        //Remove this stuff
-        JTextField newCard = new JTextField();
-        newCard.setText("Example");
-        newCard.setEditable(false);
-        newCard.addMouseListener(viewCard);
-        PlayerHandPanel.add(newCard);
-        newCard = new JTextField();
-        newCard.setText("Example2");
-        newCard.setEditable(false);
-        newCard.addMouseListener(viewCard);
-        PlayerHandPanel.add(newCard);
-        newCard = new JTextField("MoreEx");
-        /*PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);
-                newCard = new JTextField("MoreExasdf");
-        PlayerHandPanel.add(newCard);*/
-    }
-    
-    private void cardHoverOverEvent(java.awt.event.ActionEvent evt) {                                                             
-        // TODO add your handling code here:
-        System.out.println("A thing!");
-    }
-    
-    //can be changed to take a Card object?
-    public void addCardToHand(String cardName, boolean player)
-    {
-        JTextField newCard = new JTextField();
-        newCard.setText(cardName);
-        newCard.setEditable(false);
         if (player)
+        {
             PlayerHandPanel.add(newCard);
+            newCard.addMouseListener(viewCard);
+        }
         else
             OpponentHandPanel.add(newCard);
+        //System.out.println("Drawing " + cardName);
+    }
+    
+    //TODO - how do i get it to remove the right card?
+    public void removeCardFromHand(int index, boolean player)
+    {
+        if (player)
+        {
+            //PlayerHandPanel.remove(this);
+        }
+    }
+    
+    public void addStatus(int type, boolean player)
+    {
+        if (player)
+            switch(type)
+            {
+                case 0: PlayerParalyzedLabel.setText("Paralyzed"); break;
+                case 1: PlayerAsleepLabel.setText("Asleep"); break;
+                case 2: PlayerStuckLabel.setText("Stuck"); break;
+                case 3: PlayerPoisonedLabel.setText("Poisoned"); break;
+            }
+        else
+            switch(type)
+            {
+                case 0: OpponentParalyzedLabel.setText("Paralyzed"); break;
+                case 1: OpponentAsleepLabel.setText("Asleep"); break;
+                case 2: OpponentStuckLabel.setText("Stuck"); break;
+                case 3: OpponentPoisonedLabel.setText("Poisoned"); break;
+            }
+    }
+    
+    public void removeStatus(int type, boolean player)
+    {
+        if (player)
+            switch(type)
+            {
+                case 0: PlayerParalyzedLabel.setText(""); break;
+                case 1: PlayerAsleepLabel.setText(""); break;
+                case 2: PlayerStuckLabel.setText(""); break;
+                case 3: PlayerPoisonedLabel.setText(""); break;
+            }
+        else
+            switch(type)
+            {
+                case 0: OpponentParalyzedLabel.setText(""); break;
+                case 1: OpponentAsleepLabel.setText(""); break;
+                case 2: OpponentStuckLabel.setText(""); break;
+                case 3: OpponentPoisonedLabel.setText(""); break;
+            }
     }
     
     public void addCardToBench(String cardName, boolean player)
     {
         JTextField newCard = new JTextField();
         newCard.setText(cardName);
+        newCard.setEditable(false);
+        
+        MouseListener viewCard = new java.awt.event.MouseListener()
+        {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mousePressed(MouseEvent me) {
+                //play card
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent me)
+            {
+                CardViewArea.setText(cardName);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me)
+            {
+                CardViewArea.setText("");
+            }
+        };
+        
         if (player)
             PlayerBenchPanel.add(newCard);
         else
             OpponentBenchPanel.add(newCard);
+        
+        newCard.addMouseListener(viewCard);
     }
     
-    public void setActivePokemon(String type, String name, String attack1, String attack2, boolean player)
+    public void setActivePokemon(String type, String name, String attack1, String attack2, int damageTaken, boolean player)
     {
         JTextArea activePokemonField;
         if (player)
+        {
             activePokemonField = PlayersActivePokemonArea;
+            PlayerDamageField.setText(Integer.toString(damageTaken));
+        }
         else
+        {
             activePokemonField = OpponentsActivePokemonArea;
+            OpponentDamageField.setText(Integer.toString(damageTaken));
+        }
         
-        activePokemonField.setText(type + "\n" + name + "\n\n\n" + attack1 + "\n" + attack2);
+        activePokemonField.setText(type + "\n" + name + "\n\n" + attack1 + "\n\n" + attack2);
         if(player && (attack2 == null || attack2.equals("")))
         {
             PlayerAttack2Btn.setEnabled(false);
@@ -214,7 +266,16 @@ public class GameBoard extends javax.swing.JFrame {
         OpponentBenchPanel = new javax.swing.JPanel();
         PlayerAttack1Btn = new javax.swing.JButton();
         PlayerAttack2Btn = new javax.swing.JButton();
-        PlayerWithdrawBtn = new javax.swing.JButton();
+        PlayerRetreatBtn = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        PlayerParalyzedLabel = new javax.swing.JLabel();
+        PlayerAsleepLabel = new javax.swing.JLabel();
+        PlayerStuckLabel = new javax.swing.JLabel();
+        PlayerPoisonedLabel = new javax.swing.JLabel();
+        OpponentParalyzedLabel = new javax.swing.JLabel();
+        OpponentAsleepLabel = new javax.swing.JLabel();
+        OpponentStuckLabel = new javax.swing.JLabel();
+        OpponentPoisonedLabel = new javax.swing.JLabel();
 
         jLabel4.setText("Lightning");
 
@@ -354,6 +415,7 @@ public class GameBoard extends javax.swing.JFrame {
 
         OpponentRewardCardLabel3.setText("DamageTaken");
 
+        ViewDamageField.setEditable(false);
         ViewDamageField.setText("0");
 
         jLabel5.setText("Bench");
@@ -386,7 +448,23 @@ public class GameBoard extends javax.swing.JFrame {
 
         PlayerAttack2Btn.setText("Attack2");
 
-        PlayerWithdrawBtn.setText("Withdraw");
+        PlayerRetreatBtn.setText("Retreat");
+
+        PlayerParalyzedLabel.setText("Paralyzed");
+
+        PlayerAsleepLabel.setText("Asleep");
+
+        PlayerStuckLabel.setText("Stuck");
+
+        PlayerPoisonedLabel.setText("Poisoned");
+
+        OpponentParalyzedLabel.setText("Paralyzed");
+
+        OpponentAsleepLabel.setText("Asleep");
+
+        OpponentStuckLabel.setText("Stuck");
+
+        OpponentPoisonedLabel.setText("Poisoned");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -414,7 +492,16 @@ public class GameBoard extends javax.swing.JFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addComponent(OpponentRewardCardLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(PlayerDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(PlayerDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(PlayerParalyzedLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(PlayerAsleepLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(PlayerStuckLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(PlayerPoisonedLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(OpponentParalyzedLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(OpponentAsleepLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(OpponentStuckLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(OpponentPoisonedLabel, javax.swing.GroupLayout.Alignment.TRAILING))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -440,7 +527,7 @@ public class GameBoard extends javax.swing.JFrame {
                                             .addComponent(PlayerWaterEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addComponent(PlayerAttack1Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(PlayerAttack2Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(PlayerWithdrawBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(PlayerRetreatBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(124, 124, 124))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -517,11 +604,11 @@ public class GameBoard extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(OpponentHandPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(OpponentBenchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(OpponentRewardCardLabel)
@@ -532,7 +619,17 @@ public class GameBoard extends javax.swing.JFrame {
                         .addGap(44, 44, 44)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(PlayerDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(OpponentRewardCardLabel2)))
+                            .addComponent(OpponentRewardCardLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(PlayerParalyzedLabel)
+                        .addGap(13, 13, 13)
+                        .addComponent(PlayerAsleepLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel11)
+                        .addGap(9, 9, 9)
+                        .addComponent(PlayerStuckLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(PlayerPoisonedLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -541,7 +638,15 @@ public class GameBoard extends javax.swing.JFrame {
                                         .addGap(58, 58, 58)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(OpponentDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(OpponentRewardCardLabel1)))
+                                            .addComponent(OpponentRewardCardLabel1))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(OpponentParalyzedLabel)
+                                        .addGap(13, 13, 13)
+                                        .addComponent(OpponentAsleepLabel)
+                                        .addGap(15, 15, 15)
+                                        .addComponent(OpponentStuckLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(OpponentPoisonedLabel))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(OpponentFightingEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -588,7 +693,7 @@ public class GameBoard extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(PlayerAttack2Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(PlayerWithdrawBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(PlayerRetreatBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(144, 144, 144)
@@ -673,18 +778,23 @@ public class GameBoard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea CardViewArea;
+    private javax.swing.JLabel OpponentAsleepLabel;
     private javax.swing.JPanel OpponentBenchPanel;
     private javax.swing.JTextField OpponentDamageField;
     private javax.swing.JTextField OpponentFightingEnergyField;
     private javax.swing.JPanel OpponentHandPanel;
     private javax.swing.JTextField OpponentLightningEnergyField;
+    private javax.swing.JLabel OpponentParalyzedLabel;
+    private javax.swing.JLabel OpponentPoisonedLabel;
     private javax.swing.JTextField OpponentPsychicEnergyField;
     private javax.swing.JLabel OpponentRewardCardLabel;
     private javax.swing.JLabel OpponentRewardCardLabel1;
     private javax.swing.JLabel OpponentRewardCardLabel2;
     private javax.swing.JLabel OpponentRewardCardLabel3;
+    private javax.swing.JLabel OpponentStuckLabel;
     private javax.swing.JTextField OpponentWaterEnergyField;
     private javax.swing.JTextArea OpponentsActivePokemonArea;
+    private javax.swing.JLabel PlayerAsleepLabel;
     private javax.swing.JButton PlayerAttack1Btn;
     private javax.swing.JButton PlayerAttack2Btn;
     private javax.swing.JPanel PlayerBenchPanel;
@@ -692,10 +802,13 @@ public class GameBoard extends javax.swing.JFrame {
     private javax.swing.JTextField PlayerFightingEnergyField;
     private javax.swing.JPanel PlayerHandPanel;
     private javax.swing.JTextField PlayerLightningEnergyField;
+    private javax.swing.JLabel PlayerParalyzedLabel;
+    private javax.swing.JLabel PlayerPoisonedLabel;
     private javax.swing.JTextField PlayerPsychicEnergyField;
+    private javax.swing.JButton PlayerRetreatBtn;
     private javax.swing.JLabel PlayerRewardCardLabel;
+    private javax.swing.JLabel PlayerStuckLabel;
     private javax.swing.JTextField PlayerWaterEnergyField;
-    private javax.swing.JButton PlayerWithdrawBtn;
     private javax.swing.JTextArea PlayersActivePokemonArea;
     private javax.swing.JTextField ViewDamageField;
     private javax.swing.JTextField ViewFightingEnergyField;
@@ -704,6 +817,7 @@ public class GameBoard extends javax.swing.JFrame {
     private javax.swing.JTextField ViewWaterEnergyField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;

@@ -59,6 +59,15 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="PlayerDamageField" min="-2" pref="25" max="-2" attributes="0"/>
                                   </Group>
+                                  <Component id="jLabel11" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="PlayerParalyzedLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="PlayerAsleepLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="PlayerStuckLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="PlayerPoisonedLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="OpponentParalyzedLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="OpponentAsleepLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="OpponentStuckLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="OpponentPoisonedLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -92,7 +101,7 @@
                                   </Group>
                                   <Component id="PlayerAttack1Btn" min="-2" pref="111" max="-2" attributes="0"/>
                                   <Component id="PlayerAttack2Btn" min="-2" pref="111" max="-2" attributes="0"/>
-                                  <Component id="PlayerWithdrawBtn" min="-2" pref="111" max="-2" attributes="0"/>
+                                  <Component id="PlayerRetreatBtn" min="-2" pref="111" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="124" max="-2" attributes="0"/>
                           </Group>
@@ -197,12 +206,12 @@
                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                   <Component id="OpponentHandPanel" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="39" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                   <Component id="OpponentBenchPanel" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+              <EmptySpace pref="40" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="OpponentRewardCardLabel" min="-2" max="-2" attributes="0"/>
@@ -216,6 +225,16 @@
                           <Component id="PlayerDamageField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="OpponentRewardCardLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="PlayerParalyzedLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                      <Component id="PlayerAsleepLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                      <Component id="PlayerStuckLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="PlayerPoisonedLabel" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -227,6 +246,14 @@
                                           <Component id="OpponentDamageField" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="OpponentRewardCardLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="OpponentParalyzedLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                                      <Component id="OpponentAsleepLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
+                                      <Component id="OpponentStuckLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="OpponentPoisonedLabel" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="3" attributes="0">
@@ -288,7 +315,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="PlayerAttack2Btn" min="-2" pref="50" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="PlayerWithdrawBtn" min="-2" pref="50" max="-2" attributes="0"/>
+                              <Component id="PlayerRetreatBtn" min="-2" pref="50" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jScrollPane4" min="-2" pref="275" max="-2" attributes="0"/>
                       </Group>
@@ -609,6 +636,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="ViewDamageField">
       <Properties>
+        <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
     </Component>
@@ -662,9 +690,51 @@
         <Property name="text" type="java.lang.String" value="Attack2"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="PlayerWithdrawBtn">
+    <Component class="javax.swing.JButton" name="PlayerRetreatBtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Withdraw"/>
+        <Property name="text" type="java.lang.String" value="Retreat"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel11">
+    </Component>
+    <Component class="javax.swing.JLabel" name="PlayerParalyzedLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Paralyzed"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="PlayerAsleepLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Asleep"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="PlayerStuckLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Stuck"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="PlayerPoisonedLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Poisoned"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="OpponentParalyzedLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Paralyzed"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="OpponentAsleepLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Asleep"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="OpponentStuckLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Stuck"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="OpponentPoisonedLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Poisoned"/>
       </Properties>
     </Component>
   </SubComponents>
