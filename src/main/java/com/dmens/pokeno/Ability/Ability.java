@@ -10,10 +10,20 @@ import java.util.ArrayList;
  * Created by Devin on 2017-05-26.
  */
 public class Ability {
-
+	
     private static final Logger LOG = LogManager.getLogger(Ability.class);
-
-    private ArrayList<Effect> effects;
-
-    public Ability(String description){}
+    private String mName = "";
+    
+    private ArrayList<Effect> mEffects;
+    
+    public Ability(String name)
+    {
+    	this.mName = name;
+    	this.mEffects = new ArrayList<Effect>();
+    }
+    
+    public void AddEffect(Effect e)
+	{
+		this.mEffects.add(e);
+	}  
 }

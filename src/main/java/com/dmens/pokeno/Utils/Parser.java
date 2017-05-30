@@ -18,8 +18,7 @@ public class Parser {
 	private ArrayList<String> mCardList = null;
 	private ArrayList<String> mAbilitiesList = null;
 	
-	private Parser()
-	{ }
+	private Parser() { }
 	
 	/*
 	 * lazy instantiation
@@ -48,27 +47,6 @@ public class Parser {
 		// Processing the file line by line
 		while(scanner.hasNext())
 		{
-		    String nextLine = scanner.nextLine();
-		    contents.add(nextLine);
-		}
-
-		scanner.close();
-		return contents;
-	}
-	
-	/*
-	 * Get the file contents as a Set, thus ensuring that there are no duplicate cards.
-	 */
-	private static Set<String> GetFileContentsAsSet(String location) throws FileNotFoundException
-	{
-		File file = new File(location);
-		Scanner scanner = new Scanner(file, ENCODING);
-		
-		Set<String> contents = new HashSet<String>();
-
-		// Processing the file line by line
-		while(scanner.hasNext())
-		{    
 		    String nextLine = scanner.nextLine();
 		    contents.add(nextLine);
 		}
@@ -112,6 +90,44 @@ public class Parser {
 		}
 		
 		return true;
+	}
+	
+	private Ability CreateAbility(String abilityInformation)
+	{
+		
+		
+		// Parse the ability here...
+    	
+    	int i = abilityInformation.indexOf(":");
+    	int c = abilityInformation.indexOf(",");
+    	    	
+    	String name = abilityInformation.substring(0,i);
+    	
+    	Ability ability = new Ability(name);
+    	
+    	/*
+    	String restStr = abilityLine.substring(i + 1, abilityLine.length());
+    	
+    	i = restStr.indexOf(":");
+    	c = restStr.indexOf(",");
+    	
+    	System.out.println(": @->" + i);
+    	System.out.println(", @->" + c);
+    	
+    	// comma or not?
+    	if(c == -1)
+    	{
+    		if(restStr.substring(0, i) == "dam")
+        	{
+        		//
+        	}
+    	}
+    	else
+    	{
+    		
+    	}*/
+    	
+    	return ability;
 	}
 	
 	/*
@@ -192,7 +208,7 @@ public class Parser {
 				for(int i = abilitiesIndex + 1; i < results.length; i += 4) {
 					try {
 						int abilityIndex = Integer.parseInt(results[i]);
-						abilities.add(new Ability(this.mAbilitiesList.get(abilityIndex - 1)));
+						abilities.add(CreateAbility(this.mAbilitiesList.get(abilityIndex - 1)));
 					} catch (NumberFormatException e) {}
 				} 
 			}
@@ -205,7 +221,7 @@ public class Parser {
 			String[] results = cardContents.split(":");
 			System.out.println("Created TrainerCard");
 			ArrayList<Ability> abilities = new ArrayList<>();
-			abilities.add(new Ability(this.mAbilitiesList.get(Integer.parseInt(results[4]) - 1)));
+			abilities.add(CreateAbility(this.mAbilitiesList.get(Integer.parseInt(results[4]) - 1)));
 			c = new TrainerCard(results[0], results[3], abilities);
 
 		}
