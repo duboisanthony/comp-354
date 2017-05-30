@@ -155,8 +155,8 @@ public class Parser {
 			System.out.println("Created EnergyCard");
 			c = new EnergyCard(results[0], results[3]);	
 		}
-
-		System.out.print(c.toString());
+                if (c != null)
+                    System.out.print(c.toString());
 		return c;
 	}
 	
