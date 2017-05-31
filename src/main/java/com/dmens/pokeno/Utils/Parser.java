@@ -4,8 +4,8 @@ import com.dmens.pokeno.Card.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.*;
 
 public class Parser {
@@ -40,8 +40,8 @@ public class Parser {
 	private static ArrayList<String> GetFileContentsAsArrayList(String location) throws FileNotFoundException
 	{
 
-		File file = new File(location);
-		Scanner scanner = new Scanner(file, ENCODING);
+		InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
+		Scanner scanner = new Scanner(in, ENCODING);
 		
 		ArrayList<String> contents = new ArrayList<String>();
 
@@ -61,8 +61,8 @@ public class Parser {
 	 */
 	private static Set<String> GetFileContentsAsSet(String location) throws FileNotFoundException
 	{
-		File file = new File(location);
-		Scanner scanner = new Scanner(file, ENCODING);
+		InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
+		Scanner scanner = new Scanner(in, ENCODING);
 		
 		Set<String> contents = new HashSet<String>();
 
