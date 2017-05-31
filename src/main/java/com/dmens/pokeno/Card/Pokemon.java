@@ -14,7 +14,8 @@ public class Pokemon extends Card {
     private int damage;
     private ArrayList<EnergyCard> attachedEnergy;
 	private ArrayList<String> mCategories;
-	private ArrayList<Tuple<Ability, ArrayList<Integer>>> mAbilities;
+	private ArrayList<Ability> mAbilities;
+    private ArrayList<Tuple<Ability, ArrayList<Integer>>> mAbilitiesAndCost;
 	private int retreatCost;
 	private String mBasePokemonName;
     private boolean poisoned;
@@ -24,16 +25,21 @@ public class Pokemon extends Card {
 
     private Pokemon(){}
     
-	public Pokemon(String name, ArrayList<String> categories, int initialHP, int retreatCost, ArrayList<Tuple<Ability, ArrayList<Integer>>> abilities){
+	public Pokemon(String name, ArrayList<String> categories, int initialHP, int retreatCost, ArrayList<Ability> abilities){
 		super(name);
 	}
+
+	//This constructor is just here as a place holder until the parser is written to handle the new ability format
+    private Pokemon(String name, ArrayList<String> categories, int initialHP, Integer retreatCost, ArrayList<Tuple<Ability, ArrayList<Integer>>> abilities){
+        super(name);
+    }
 	
 	public void AddCategory(String category)
 	{
 		this.mCategories.add(category);
 	}
 	
-	public void AddAbility(Tuple<Ability, ArrayList<Integer>> ability)
+	public void AddAbility(Ability ability)
 	{
 		this.mAbilities.add(ability);
 	}
@@ -88,7 +94,7 @@ public class Pokemon extends Card {
         return mCategories;
     }
 
-    public ArrayList<Tuple<Ability, ArrayList<Integer>>> getmAbilities() {
+    public ArrayList<Ability> getmAbilities() {
         return mAbilities;
     }
 
