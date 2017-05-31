@@ -101,10 +101,16 @@ public class Player {
     }
     
     public void Mulligan(){}
-
-    public void setActivePokemon(Pokemon activePokemon){}
-
-    public void benchPokemon(Pokemon benchPokemon){}
+   
+    public void setActivePokemon(Pokemon activePokemon){
+    	mActivePokemon = activePokemon; 
+    }
+    
+    // Method sends Pokemon to player's bench (max num = 5) 
+    public void benchPokemon(Pokemon benchPokemon){
+    	if(mBenchedPokemon.size() < 5)
+    		mBenchedPokemon.add(benchPokemon);
+    }
 
     public void pickCard(){}
 
