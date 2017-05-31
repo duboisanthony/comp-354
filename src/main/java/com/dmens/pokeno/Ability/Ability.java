@@ -14,6 +14,9 @@ public class Ability {
     private static final Logger LOG = LogManager.getLogger(Ability.class);
 
     private ArrayList<Effect> effects;
+    public String mdescription;
 
-    public Ability(String description){}
+    public Ability(String description){
+        mdescription = description;
+    }
 }

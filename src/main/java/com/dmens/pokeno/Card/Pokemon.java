@@ -2,6 +2,7 @@ package com.dmens.pokeno.Card;
 
 import java.util.ArrayList;
 import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.Utils.Tuple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +14,7 @@ public class Pokemon extends Card {
     private int damage;
     private ArrayList<EnergyCard> attachedEnergy;
 	private ArrayList<String> mCategories;
-	private ArrayList<Ability> mAbilities;
+	private ArrayList<Tuple<Ability, ArrayList<Integer>>> mAbilities;
 	private int retreatCost;
 	private String mBasePokemonName;
     private boolean poisoned;
@@ -23,7 +24,7 @@ public class Pokemon extends Card {
 
     private Pokemon(){}
     
-	public Pokemon(String name, ArrayList<String> categories, int initialHP, int retreatCost, ArrayList<Ability> abilities){
+	public Pokemon(String name, ArrayList<String> categories, int initialHP, int retreatCost, ArrayList<Tuple<Ability, ArrayList<Integer>>> abilities){
 		super(name);
 	}
 	
@@ -32,7 +33,7 @@ public class Pokemon extends Card {
 		this.mCategories.add(category);
 	}
 	
-	public void AddAbility(Ability ability)
+	public void AddAbility(Tuple<Ability, ArrayList<Integer>> ability)
 	{
 		this.mAbilities.add(ability);
 	}
@@ -87,7 +88,7 @@ public class Pokemon extends Card {
         return mCategories;
     }
 
-    public ArrayList<Ability> getmAbilities() {
+    public ArrayList<Tuple<Ability, ArrayList<Integer>>> getmAbilities() {
         return mAbilities;
     }
 
