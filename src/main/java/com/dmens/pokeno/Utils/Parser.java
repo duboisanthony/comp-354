@@ -1,6 +1,8 @@
 package com.dmens.pokeno.Utils;
 import com.dmens.pokeno.Ability.Ability;
 import com.dmens.pokeno.Card.*;
+import com.dmens.pokeno.Effect.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -92,7 +94,7 @@ public class Parser {
 		return true;
 	}
 	
-	private Ability CreateAbility(String abilityInformation)
+	public Ability CreateAbility(String abilityInformation)
 	{
 		
 		
@@ -103,31 +105,52 @@ public class Parser {
     	    	
     	String name = abilityInformation.substring(0,i);
     	
+    	// 1) Create the ability, you got its name
     	Ability ability = new Ability(name);
     	
-    	/*
-    	String restStr = abilityLine.substring(i + 1, abilityLine.length());
+    	// 2) Look at the rest of the string and figure it out!
+    	String restStr = abilityInformation.substring(i + 1, abilityInformation.length());
     	
-    	i = restStr.indexOf(":");
     	c = restStr.indexOf(",");
     	
-    	System.out.println(": @->" + i);
-    	System.out.println(", @->" + c);
-    	
-    	// comma or not?
-    	if(c == -1)
+    	if(c > -1)
     	{
-    		if(restStr.substring(0, i) == "dam")
-        	{
-        		//
-        	}
+    		// Split on Comma
+    		String[] bigResults = restStr.split(":");
+    		
+    		for(int k = 0; k < bigResults.length; ++k)
+    		{
+    			ability.AddEffect(ParseEfect(restStr));
+			}
+    		
     	}
     	else
     	{
-    		
-    	}*/
+    		ability.AddEffect(ParseEfect(restStr));
+    	}
     	
     	return ability;
+	}
+	
+	private Effect ParseEfect(String restStr)
+	{
+		String[] results = restStr.split(":");
+		
+		System.out.println(results[0]);
+		
+		if(results[0].equals("dam"))
+    	{  			
+			System.out.println("DAMAGE effect added");
+			return new Damage(results[2], Integer.parseInt(results[3]));
+    	}
+		else if(results[0].equals("heal"))
+		{
+			System.out.println("HEAL effect added");
+			return new Heal(results[2], Integer.parseInt(results[3]));
+		}
+		
+		// fix because it wasnt implemented
+		return null;
 	}
 	
 	/*

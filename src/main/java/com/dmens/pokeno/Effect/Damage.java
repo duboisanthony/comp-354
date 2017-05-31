@@ -23,7 +23,5 @@ public class Damage implements Effect {
 	{
 		// TODO Auto-generated method stub
 		
-	}
-
-	
+	}	
 }
