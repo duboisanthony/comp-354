@@ -94,15 +94,10 @@ public class Parser {
 		return true;
 	}
 	
+	// public for testing
 	public Ability CreateAbility(String abilityInformation)
-	{
-		
-		
-		// Parse the ability here...
-    	
-    	int i = abilityInformation.indexOf(":");
-    	int c = abilityInformation.indexOf(",");
-    	    	
+	{	
+    	int i = abilityInformation.indexOf(":");	
     	String name = abilityInformation.substring(0,i);
     	
     	// 1) Create the ability, you got its name
@@ -111,7 +106,7 @@ public class Parser {
     	// 2) Look at the rest of the string and figure it out!
     	String restStr = abilityInformation.substring(i + 1, abilityInformation.length());
     	
-    	c = restStr.indexOf(",");
+    	int c = restStr.indexOf(",");
     	
     	if(c > -1)
     	{
@@ -120,6 +115,8 @@ public class Parser {
     		
     		for(int k = 0; k < bigResults.length; ++k)
     		{
+    			// it should either be an effect or condition
+    			
     			ability.AddEffect(ParseEfect(restStr));
 			}
     		
