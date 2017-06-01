@@ -280,6 +280,8 @@ public class Parser {
 			c = new Pokemon(pokemonName, categories, hp, retreatCost, abilities);
 			if(basePokemonName != null) 
 				((Pokemon)c).setBasePokemonName(basePokemonName);
+			else
+				((Pokemon)c).setBasePokemonName(pokemonName);
 		}
 		else if(cardContents.matches("(.*)trainer(.*)"))
 		{
