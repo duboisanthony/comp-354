@@ -1,6 +1,7 @@
 package com.dmens.pokeno.Ability;
 
 import com.dmens.pokeno.Condition.Condition;
+import com.dmens.pokeno.Effect.Damage;
 import com.dmens.pokeno.Effect.Effect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,5 +39,23 @@ public class Ability {
     public String GetName()
     {
     	return this.mName;
+    }
+    
+    public ArrayList<Effect> GetEffects()
+    {
+    	return this.mEffects;
+    }
+    
+    // Assumption is that there is only one damage right now
+    public Damage GetDamage()
+    {
+    	for (Effect effect: mEffects)
+    	{
+    	   if(effect.getClass() == Damage.class)
+    	   {
+    		   return (Damage) effect;
+    	   }
+    	}
+    	 return null;
     }
 }
