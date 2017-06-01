@@ -51,13 +51,53 @@ public class Driver {
 		mPlayers.add(new Player(mFirstDeck));
 		mPlayers.add(new AIPlayer(mSecondDeck));
 
-		// Set up player's hand and rewards
-		for(int i = 0; i < mPlayers.size(); ++i) {
-			Player currentPlayer = mPlayers.get(i);
-			currentPlayer.drawCardsFromDeck(6);
-			//TODO: validate cards in hand for Mulligans here
+                boolean playersReady = false;
+                ArrayList<Player> playersDeclaringMulligan = new ArrayList<Player>();
+                
+                // Set up player's hand and rewards
+                while(!playersReady)
+                {
+                    for(int i = 0; i < mPlayers.size(); ++i) {
+                            Player currentPlayer = mPlayers.get(i);
+                            if(!currentPlayer.getIsReadyToStart())
+                            {
+                                currentPlayer.drawCardsFromDeck(6);
+                                if(!currentPlayer.hasBasicPokemon())
+                                {
+                                    System.out.println("Player " + i + " has declared a Mulligan");
+                                    playersDeclaringMulligan.add(currentPlayer);
+                                }
+                            }
+                    }
+                    if(playersDeclaringMulligan.size() > 0)
+                    {
+                        boolean offerDrawCard = playersDeclaringMulligan.size() != mPlayers.size();
+                        
+                        for(Player currentPlayer : mPlayers)
+                        {
+                            if(playersDeclaringMulligan.contains(currentPlayer))
+                            {
+                                currentPlayer.putHandBackToDeck();
+                                currentPlayer.shuffleDeck();
+                            }
+                            else if(offerDrawCard)
+                            {
+                                // CG - should we actually ask, or just assume they will always take...?
+                                // CG - we would have to add a prompt in the UI then...
+                                currentPlayer.drawCardsFromDeck(1);
+                            }
+                        }
+                        // reset to check again
+                        playersDeclaringMulligan.clear();
+                    }
+                    else
+                    {
+                        playersReady = true;
+                    
 			//TODO: do we draw cards first or set up the rewards deck first?
-			currentPlayer.setUpRewards();
+			for(Player currentPlayer : mPlayers)
+				currentPlayer.setUpRewards();
+                    }
 		}
 		
                 //Uncomment to see example board
