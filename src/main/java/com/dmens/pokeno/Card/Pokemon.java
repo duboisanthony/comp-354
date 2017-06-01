@@ -2,6 +2,7 @@ package com.dmens.pokeno.Card;
 
 import java.util.ArrayList;
 import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.Utils.Tuple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,6 +15,7 @@ public class Pokemon extends Card {
     private ArrayList<EnergyCard> attachedEnergy;
 	private ArrayList<String> mCategories;
 	private ArrayList<Ability> mAbilities;
+    private ArrayList<Tuple<Ability, ArrayList<Integer>>> mAbilitiesAndCost;
 	private int retreatCost;
 	private String mBasePokemonName;
     private boolean poisoned;
@@ -26,6 +28,11 @@ public class Pokemon extends Card {
 	public Pokemon(String name, ArrayList<String> categories, int initialHP, int retreatCost, ArrayList<Ability> abilities){
 		super(name);
 	}
+
+	//This constructor is just here as a place holder until the parser is written to handle the new ability format
+    private Pokemon(String name, ArrayList<String> categories, int initialHP, Integer retreatCost, ArrayList<Tuple<Ability, ArrayList<Integer>>> abilities){
+        super(name);
+    }
 	
 	public void AddCategory(String category)
 	{
