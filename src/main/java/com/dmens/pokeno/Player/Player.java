@@ -102,11 +102,23 @@ public class Player {
     
     public void Mulligan(){}
    
+    /**
+     * Sets a selected Pokemon to be the
+     * player's active Pokemon. 
+     * 
+     * @param activePokemon
+     */
     public void setActivePokemon(Pokemon activePokemon){
     	mActivePokemon = activePokemon; 
     }
     
-    // Method sends Pokemon to player's bench (max num = 5) 
+    /**
+     * Sends a Pokemon to player's bench. Condition
+     * verifies if player's bench has already reached
+     * max capacity or not. 
+     * 
+     * @param benchPokemon
+     */
     public void benchPokemon(Pokemon benchPokemon){
     	if(mBenchedPokemon.size() < 5)
     		mBenchedPokemon.add(benchPokemon);
@@ -126,7 +138,11 @@ public class Player {
 
     public void attachEnergy(EnergyCard energy, Pokemon pokemon){}
 
-    public void collectPrize(int prizeCardPosition){}
+    public void collectPrize(int prizeCardPosition){
+    	Card prizeCard = mRewards.get(prizeCardPosition);
+    	mHand.add(prizeCard);
+    	mRewards.remove(prizeCard);
+    }
 
     public void lookatDeck(){}
 
