@@ -13,6 +13,12 @@ import java.util.*;
 public class Parser {
 
     private static final Logger LOG = LogManager.getLogger(Parser.class);
+    
+    private static boolean mSupportedPokemonOnly = true;
+    private static String[] mSupportedPokemon = {"Froakie", "Electrike"};
+    
+    private static boolean mSupportedTrainersOnly = true;
+    private static String[] mSupportedTrainers = {"Potion"};
 
 	private static Parser instance = null;
 	private static final String ENCODING = "UTF-8";
@@ -177,6 +183,25 @@ public class Parser {
 			// parse pokemon name
 			pokemonName = results[0];
 			
+			if(mSupportedPokemonOnly)
+			{
+				boolean supported = false;
+				
+				//check if its supported
+				for(int i = 0; i < mSupportedPokemon.length; ++i)
+				{
+					if(mSupportedPokemon[i].equals(pokemonName))
+						supported = true;
+				}
+				
+				if(!supported)
+				{
+					System.out.println("Pokemon was not supported");
+					return (Card) this.ReplaceCardWithRandomEnergy();
+				}
+					
+			}
+			
 			// parse initial hp, we are assuming the first integer will be the HP value
 			for(int i = 1; i < results.length - 1; ++i) {
 				try {
@@ -240,11 +265,29 @@ public class Parser {
 		else if(cardContents.matches("(.*)trainer(.*)"))
 		{
 			String[] results = cardContents.split(":");
+			if(mSupportedTrainersOnly)
+			{
+				boolean supported = false;
+				
+				//check if its supported
+				for(int i = 0; i < mSupportedTrainers.length; ++i)
+				{
+					if(mSupportedTrainers[i].equals(results[0]))
+						supported = true;
+				}
+				
+				if(!supported)
+				{
+					System.out.println("Trainer was not supported");
+					return (Card) this.ReplaceCardWithRandomEnergy();
+				}	
+			}
+
 			System.out.println("Created TrainerCard");
 			ArrayList<Ability> abilities = new ArrayList<>();
 			abilities.add(CreateAbility(this.mAbilitiesList.get(Integer.parseInt(results[4]) - 1)));
 			c = new TrainerCard(results[0], results[3], abilities);
-
+			
 		}
 		else if(cardContents.matches("(.*)energy(.*)"))
 		{
@@ -255,6 +298,30 @@ public class Parser {
 
 		System.out.print(c.toString());
 		return c;
+	}
+	
+	private EnergyCard ReplaceCardWithRandomEnergy()
+	{
+		Random rand = new Random();
+		int MIN = 1;
+		int MAX = 5;
+		
+		int num = MIN + rand.nextInt((MAX - MIN) + 1);
+		
+		System.out.println("Rand #: " + num);
+		switch(num)
+		{
+			case(1):
+				return new EnergyCard("Water", "water");
+			case(2):
+				return new EnergyCard("Lightning", "lightning");
+			case(3):
+				return new EnergyCard("Fight", "fight");
+			case(4):
+				return new EnergyCard("Psychic", "psychic");
+			default:
+				return new EnergyCard("Colorless", "colorless");
+		}
 	}
 	
 	public ArrayList<Card> DeckCreation(String deckLocation)
