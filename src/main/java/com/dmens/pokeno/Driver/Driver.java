@@ -61,7 +61,7 @@ public class Driver {
 		}
 		
                 //Uncomment to see example board
-                /*GameBoard board = new GameBoard();
+                GameBoard board = new GameBoard();
                 board.setVisible(true);
                 
                 EnergyCard electric = new EnergyCard("ElecEnergy", "Electric");
@@ -82,7 +82,7 @@ public class Driver {
                 board.addCardToHand(pikachu, true);
                 
                 board.addCardToBench(pikachu, false);
-                board.update();*/
+                board.update();
                 
 		// Main game loop
 		/*
