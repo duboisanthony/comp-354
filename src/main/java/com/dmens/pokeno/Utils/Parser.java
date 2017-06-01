@@ -132,6 +132,7 @@ public class Parser {
 	private Effect ParseEfect(String restStr)
 	{
 		String[] results = restStr.split(":");
+		int c = restStr.indexOf(",");
 		
 		System.out.println(results[0]);
 		
@@ -140,7 +141,7 @@ public class Parser {
 			System.out.println("DAMAGE effect added");
 			return new Damage(results[2], Integer.parseInt(results[3]));
     	}
-		else if(results[0].equals("heal"))
+		else if(results[0].equals("heal") && c == -1)
 		{
 			System.out.println("HEAL effect added");
 			return new Heal(results[2], Integer.parseInt(results[3]));
