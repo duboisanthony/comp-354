@@ -5,8 +5,6 @@ package com.dmens.pokeno.UtilsTest;
  */
 
 
-import com.dmens.pokeno.Card.Card;
-import com.dmens.pokeno.Card.EnergyCard;
 import com.dmens.pokeno.Utils.Tuple;
 import org.junit.Test;
 import com.dmens.pokeno.Ability.Ability;
@@ -15,16 +13,16 @@ import org.junit.Assert;
 
 public class TupleTest {
 
-    EnergyCard testAbility = new EnergyCard("Colourless", "Colourless");
+    Ability testAbility = new Ability("Test Ability");
     ArrayList<Integer> energyCost = new ArrayList<Integer>();
 
     @Test
     public void energyCostTest(){
         energyCost.add(0,2);
-        Tuple<EnergyCard, ArrayList<Integer>> testTuple = new Tuple<>(testAbility, energyCost);
+        Tuple<Ability, ArrayList<Integer>> testTuple = new Tuple<>(testAbility, energyCost);
 
 
-        Assert.assertEquals("Colourless", testTuple.x.getCategory());
+        Assert.assertEquals("Test Ability", testTuple.x.mdescription);
         Assert.assertEquals(2, testTuple.y.get(0).intValue());
     }
 
