@@ -1,6 +1,8 @@
 package com.dmens.pokeno.Utils;
 import com.dmens.pokeno.Ability.Ability;
 import com.dmens.pokeno.Card.*;
+import com.dmens.pokeno.Effect.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,8 +20,7 @@ public class Parser {
 	private ArrayList<String> mCardList = null;
 	private ArrayList<String> mAbilitiesList = null;
 	
-	private Parser()
-	{ }
+	private Parser() { }
 	
 	/*
 	 * lazy instantiation
@@ -48,27 +49,6 @@ public class Parser {
 		// Processing the file line by line
 		while(scanner.hasNext())
 		{
-		    String nextLine = scanner.nextLine();
-		    contents.add(nextLine);
-		}
-
-		scanner.close();
-		return contents;
-	}
-	
-	/*
-	 * Get the file contents as a Set, thus ensuring that there are no duplicate cards.
-	 */
-	private static Set<String> GetFileContentsAsSet(String location) throws FileNotFoundException
-	{
-		InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
-		Scanner scanner = new Scanner(in, ENCODING);
-		
-		Set<String> contents = new HashSet<String>();
-
-		// Processing the file line by line
-		while(scanner.hasNext())
-		{    
 		    String nextLine = scanner.nextLine();
 		    contents.add(nextLine);
 		}
@@ -112,6 +92,62 @@ public class Parser {
 		}
 		
 		return true;
+	}
+	
+	// public for testing
+	public Ability CreateAbility(String abilityInformation)
+	{	
+    	int i = abilityInformation.indexOf(":");	
+    	String name = abilityInformation.substring(0,i);
+    	
+    	// 1) Create the ability, you got its name
+    	Ability ability = new Ability(name);
+    	
+    	// 2) Look at the rest of the string and figure it out!
+    	String restStr = abilityInformation.substring(i + 1, abilityInformation.length());
+    	
+    	int c = restStr.indexOf(",");
+    	
+    	if(c > -1)
+    	{
+    		// Split on Comma
+    		String[] bigResults = restStr.split(":");
+    		
+    		for(int k = 0; k < bigResults.length; ++k)
+    		{
+    			// it should either be an effect or condition
+    			
+    			ability.AddEffect(ParseEfect(restStr));
+			}
+    		
+    	}
+    	else
+    	{
+    		ability.AddEffect(ParseEfect(restStr));
+    	}
+    	
+    	return ability;
+	}
+	
+	private Effect ParseEfect(String restStr)
+	{
+		String[] results = restStr.split(":");
+		
+		System.out.println(results[0]);
+		
+		if(results[0].equals("dam"))
+    	{  			
+			System.out.println("DAMAGE effect added");
+			return new Damage(results[2], Integer.parseInt(results[3]));
+    	}
+		else if(results[0].equals("heal"))
+		{
+			System.out.println("HEAL effect added");
+			return new Heal(results[2], Integer.parseInt(results[3]));
+		}
+		
+		// fix because it wasnt implemented
+		return null;
 	}
 	
 	/*
@@ -192,7 +228,7 @@ public class Parser {
 				for(int i = abilitiesIndex + 1; i < results.length; i += 4) {
 					try {
 						int abilityIndex = Integer.parseInt(results[i]);
-						abilities.add(new Ability(this.mAbilitiesList.get(abilityIndex - 1)));
+						abilities.add(CreateAbility(this.mAbilitiesList.get(abilityIndex - 1)));
 					} catch (NumberFormatException e) {}
 				} 
 			}
@@ -205,7 +241,7 @@ public class Parser {
 			String[] results = cardContents.split(":");
 			System.out.println("Created TrainerCard");
 			ArrayList<Ability> abilities = new ArrayList<>();
-			abilities.add(new Ability(this.mAbilitiesList.get(Integer.parseInt(results[4]) - 1)));
+			abilities.add(CreateAbility(this.mAbilitiesList.get(Integer.parseInt(results[4]) - 1)));
 			c = new TrainerCard(results[0], results[3], abilities);
 
 		}

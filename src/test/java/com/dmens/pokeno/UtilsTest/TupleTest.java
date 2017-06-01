@@ -22,7 +22,7 @@ public class TupleTest {
         Tuple<Ability, ArrayList<Integer>> testTuple = new Tuple<>(testAbility, energyCost);
 
 
-        Assert.assertEquals("Test Ability", testTuple.x.mdescription);
+        Assert.assertEquals("Test Ability", testTuple.x.GetName());
         Assert.assertEquals(2, testTuple.y.get(0).intValue());
     }
 
