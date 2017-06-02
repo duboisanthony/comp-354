@@ -2,6 +2,7 @@ package com.dmens.pokeno.Card;
 
 import java.util.ArrayList;
 import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.Driver.Driver;
 import com.dmens.pokeno.Effect.Effect;
 import com.dmens.pokeno.Utils.Tuple;
 import org.apache.logging.log4j.LogManager;
@@ -72,7 +73,12 @@ public class Pokemon extends Card {
 		return String.format("%s:\t\tNAME: %s\n%s", Pokemon.class, this.getName(), abilitiesAsList.toString());
 	}
 	
-	public void addDamage(int damage){}
+	public void addDamage(int damage)
+        {
+            mDamage += damage;
+            
+            //if damage > hp -> "faint"
+        }
 
 	public void removeDamage(int damage){}
 
@@ -89,6 +95,14 @@ public class Pokemon extends Card {
 		mBasePokemonName = basePokemonName;
 	}
 	
+        public boolean useAbility(int ability, Pokemon target)
+        {
+            //TODO - if we have enough energy
+            Ability a = mAbilities.get(ability);
+            target.addDamage(a.getDamageEffect().getValue());
+            return true;
+        }
+        
     public void setPoisoned(boolean poisoned) {
         this.mPoisoned = poisoned;
     }
