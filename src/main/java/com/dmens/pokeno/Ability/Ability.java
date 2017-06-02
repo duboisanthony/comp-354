@@ -26,28 +26,28 @@ public class Ability {
     	this.mConditions = new ArrayList<Condition>();
     }
     
-    public void AddEffect(Effect e)
+    public void addEffect(Effect e)
 	{
 		this.mEffects.add(e);
 	} 
     
-    public void AddCondition(Condition c)
+    public void addCondition(Condition c)
 	{
 		this.mConditions.add(c);
 	}
     
-    public String GetName()
+    public String getName()
     {
     	return this.mName;
     }
     
-    public ArrayList<Effect> GetEffects()
+    public ArrayList<Effect> getEffects()
     {
     	return this.mEffects;
     }
     
     // Assumption is that there is only one damage right now
-    public Damage GetDamage()
+    public Damage getDamage()
     {
     	for (Effect effect: mEffects)
     	{

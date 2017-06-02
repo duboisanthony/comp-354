@@ -123,13 +123,13 @@ public class Parser {
     		{
     			// it should either be an effect or condition
     			
-    			ability.AddEffect(ParseEfect(restStr));
+    			ability.addEffect(ParseEfect(restStr));
 			}
     		
     	}
     	else
     	{
-    		ability.AddEffect(ParseEfect(restStr));
+    		ability.addEffect(ParseEfect(restStr));
     	}
     	
     	return ability;
