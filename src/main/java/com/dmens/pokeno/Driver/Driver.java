@@ -51,7 +51,7 @@ public class Driver {
 		mPlayers = new ArrayList<Player>();
 		mPlayers.add(new Player(mFirstDeck));
 		mPlayers.add(new AIPlayer(mSecondDeck));
-
+		
                 boolean playersReady = false;
                 ArrayList<Player> playersDeclaringMulligan = new ArrayList<Player>();
                 
@@ -96,7 +96,7 @@ public class Driver {
                     else
                     {
                         playersReady = true;
-                    
+
 			//TODO: do we draw cards first or set up the rewards deck first?
 			for(Player currentPlayer : mPlayers)
 				currentPlayer.setUpRewards();
@@ -104,28 +104,30 @@ public class Driver {
 		}
 		
                 //Uncomment to see example board
-                /*GameBoard board = new GameBoard();
+                GameBoard board = new GameBoard();
                 board.setVisible(true);
                 
-                EnergyCard electric = new EnergyCard("ElecEnergy", "Electric");
+//                EnergyCard electric = new EnergyCard("ElecEnergy", "Electric");
+//                
+//                ArrayList<String> categories = new ArrayList<String>();
+//                categories.add("Normal");
+//                categories.add("Electric");
+//                
+//                ArrayList<Ability> abilities = new ArrayList<Ability>();
+//                Ability tackle = new Ability("Tackle\nDeals 10 damage");
+//                abilities.add(tackle);
+//                
+//                Pokemon pikachu = new Pokemon("Pikachu", categories, 50, 2, abilities);
+//                
+//                board.updateBoard(pikachu, pikachu, 6, 4, 5, "Player play cards");
+//                
+//                board.addCardToHand(electric, true);
+//                board.addCardToHand(pikachu, true);
+//                
+//                board.addCardToBench(pikachu, false);
+//                board.update();
                 
-                ArrayList<String> categories = new ArrayList<String>();
-                categories.add("Normal");
-                categories.add("Electric");
                 
-                ArrayList<Ability> abilities = new ArrayList<Ability>();
-                Ability tackle = new Ability("Tackle\nDeals 10 damage");
-                abilities.add(tackle);
-                
-                Pokemon pikachu = new Pokemon("Pikachu", categories, 50, 2, abilities);
-                
-                board.updateBoard(pikachu, pikachu, 6, 4, 5, "Player play cards");
-                
-                board.addCardToHand(electric, true);
-                board.addCardToHand(pikachu, true);
-                
-                board.addCardToBench(pikachu, false);
-                board.update();*/
                 
 		// Main game loop
 		/*
@@ -134,6 +136,14 @@ public class Driver {
 			// TODO: decide whether there is a winner
 		}
 		*/
+		
+		System.out.println("\nTest Run: PokemonNoGo");
+		System.out.println("Print out the Hand of the First Player...");
+		for(int i = 0; i < mPlayers.get(0).getHand().size(); ++i){
+			System.out.println(mPlayers.get(0).getHand().get(i));
+		}
+			
+		
 		
 		//Clean up	
 	}
