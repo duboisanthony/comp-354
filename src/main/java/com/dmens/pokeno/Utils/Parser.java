@@ -10,6 +10,12 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
 
+/*
+ * Parser object
+ *
+ * @author Jing
+ * @author James
+ */
 public class Parser {
 
     private static final Logger LOG = LogManager.getLogger(Parser.class);
@@ -29,7 +35,9 @@ public class Parser {
 	private Parser() { }
 	
 	/*
-	 * lazy instantiation
+	 * Get the instance (lazy instantiation).
+	 * 
+	 * @param		The instance of this object.
 	 */
 	public static Parser Instance( ) {
 		if(instance == null)
@@ -109,8 +117,10 @@ public class Parser {
 		return true;
 	}
 	
-	// public for testing
-	public Ability CreateAbility(String abilityInformation)
+	/*
+	 * Takes a line in abilities file and creates the ability.
+	 */
+	private Ability CreateAbility(String abilityInformation)
 	{			
     	int i = abilityInformation.indexOf(":");	
     	String name = abilityInformation.substring(0,i);
@@ -144,6 +154,9 @@ public class Parser {
     	return ability;
 	}
 	
+	/*
+	 * Parse and Effect - > returns what was created.
+	 */
 	private Effect ParseEfect(String restStr)
 	{
 		String[] results = restStr.split(":");
@@ -329,6 +342,12 @@ public class Parser {
 		return c;
 	}
 	
+	/*
+	 * For the cards that are not supported, this method will be called to create a
+	 * replacement card.
+	 * 
+	 * @return		A random energy card.
+	 */
 	private EnergyCard ReplaceCardWithRandomEnergy()
 	{
 		Random rand = new Random();

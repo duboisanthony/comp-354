@@ -7,8 +7,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-/**
- * Created by Devin on 2017-05-26.
+/*
+ * An Ability has a Name and a list of effects (Damage, Heal, ApplyStatus, etc...) 
+ *
+ * @author James
  */
 public class Ability {
 	
@@ -18,6 +20,11 @@ public class Ability {
     private ArrayList<Effect> mEffects;
     private ArrayList<Condition> mConditions;
     
+    /*
+     * Constructor
+     * 
+     * @param		name	Name of the ability.
+     */
     public Ability(String name)
     {
     	this.mName = name;
@@ -25,30 +32,55 @@ public class Ability {
     	this.mConditions = new ArrayList<Condition>();
     }
     
+    /*
+     * Add an effect to this Ability.
+     * 
+     * @param		e		Effect to add.	
+     */
     public void addEffect(Effect e)
 	{
 		this.mEffects.add(e);
 	} 
     
+    /*
+     * TODO: Reevalute this part of design.
+     * Add a condition to this Ability.
+     * 
+     * @param		c		Condition to add.	
+     */
     public void addCondition(Condition c)
 	{
 		this.mConditions.add(c);
 	}
     
+    /*
+     * Get the name of this Ability.
+     * 
+     * @return		The name as a string.
+     */
     public String getName()
     {
     	return this.mName;
     }
     
+    /*
+     * Get a reference to all the effects of this Ability.
+     * 
+     * @return		As a ArrayList<Effect>.
+     */
     public ArrayList<Effect> getEffects()
     {
     	return this.mEffects;
     }
     
-    // should be generic and return the class type that you ask for as a parameter
-    //getSpecificEffect(which one)
+    // TODO: make these three generic
     
-    // Assumption is that there is only one damage right now
+    /*
+     * Get the single Damage effect.
+     * Assumption is that there is only one.
+     * 
+     * @return		Effect cast as Damage.
+     */
     public Damage getDamageEffect()
     {
     	for (Effect effect: mEffects)
@@ -61,7 +93,12 @@ public class Ability {
     	 return null;
     }
     
-    // Assumption is that there is only one damage right now
+    /*
+     * Get the single Heal effect.
+     * Assumption is that there is only one.
+     * 
+     * @return		Effect cast as Heal.
+     */
     public Heal getHealEffect()
     {
     	for (Effect effect: mEffects)
@@ -74,7 +111,12 @@ public class Ability {
     	 return null;
     }
     
-    // Assumption is that there is only one damage right now
+    /*
+     * Get the single ApplyStatus effect.
+     * Assumption is that there is only one.
+     * 
+     * @return		ApplyStatus cast as Damage.
+     */
     public ApplyStatus getApplyStatusEffect()
     {
     	for (Effect effect: mEffects)
@@ -87,6 +129,10 @@ public class Ability {
     	 return null;
     }
     
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     public String toString()
 	{
     	StringBuilder effectsAsList = new StringBuilder();
