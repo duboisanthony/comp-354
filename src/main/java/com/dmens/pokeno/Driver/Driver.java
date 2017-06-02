@@ -110,12 +110,14 @@ public class Driver {
 		
                 mPlayers.get(0).setOpponent(mPlayers.get(1));
                 mPlayers.get(1).setOpponent(mPlayers.get(0));
+                AIPlayer opp = (AIPlayer)mPlayers.get(1);
+                opp.startPhase();
                 
                 //mPlayers.get(0);
                 
                 //Uncomment to see example board
-                GameBoard board = new GameBoard();
-                board.setVisible(true);
+                //GameBoard board = new GameBoard();
+                //board.setVisible(true);
                 
 //                EnergyCard electric = new EnergyCard("ElecEnergy", "Electric");
 //                

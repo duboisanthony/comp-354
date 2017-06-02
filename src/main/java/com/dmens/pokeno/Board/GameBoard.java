@@ -8,6 +8,8 @@ package com.dmens.pokeno.Board;
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.Pokemon;
 import com.dmens.pokeno.Driver.Driver;
+import com.dmens.pokeno.Player.AIPlayer;
+import com.dmens.pokeno.Player.Player;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -61,6 +63,7 @@ public class GameBoard extends javax.swing.JFrame {
             {
                 //player.useCard(card);
                 //if (the card is valid)
+                Driver.mPlayers.get(0).useCard(card);
                 PlayerHandPanel.remove(newCard);
                 CardViewArea.setText("");
                 ViewDamageField.setText("");
@@ -275,6 +278,19 @@ public class GameBoard extends javax.swing.JFrame {
         
         activePokemonField.setText(card.toString());
         update();
+    }
+    
+    public void updateActivePokemon(Player p)
+    {
+        if (p instanceof AIPlayer)
+        {
+            OpponentDamageField.setText(Integer.toString(p.getActivePokemon().getDamage()));
+        }
+        else
+        {
+            PlayerDamageField.setText(Integer.toString(p.getActivePokemon().getDamage()));
+        }
+        //do it with energy too
     }
     
     public void setOpponentHand(int cardCount)

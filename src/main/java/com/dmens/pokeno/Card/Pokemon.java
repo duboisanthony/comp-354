@@ -2,6 +2,7 @@ package com.dmens.pokeno.Card;
 
 import java.util.ArrayList;
 import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.Driver.Driver;
 import com.dmens.pokeno.Effect.Effect;
 import com.dmens.pokeno.Utils.Tuple;
 import org.apache.logging.log4j.LogManager;
@@ -63,6 +64,7 @@ public class Pokemon extends Card {
 	public void addDamage(int damage)
         {
             mDamage += damage;
+            
             //if damage > hp -> "faint"
         }
 

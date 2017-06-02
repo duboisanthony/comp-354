@@ -125,7 +125,9 @@ public class Player {
      * @param activePokemon
      */
     public void setActivePokemon(Pokemon activePokemon){
-    	mActivePokemon = activePokemon; 
+    	mActivePokemon = activePokemon;
+        //if (humanPlayer)
+        Driver.board.setActivePokemon(activePokemon, humanPlayer);
     }
    
 
@@ -139,6 +141,8 @@ public class Player {
     public void benchPokemon(Pokemon benchPokemon){
     	assert(mBenchedPokemon.size() < 5);
     	mBenchedPokemon.add(benchPokemon);
+        if (humanPlayer)
+            Driver.board.addCardToBench(benchPokemon, humanPlayer);
     }
     
     /**
@@ -159,6 +163,7 @@ public class Player {
     public void useActivePokemon(int ability)
     {
         mActivePokemon.useAbility(ability, opponent.getActivePokemon());
+        Driver.board.updateActivePokemon(opponent);
     }
     
     public void Mulligan(){}
@@ -182,7 +187,23 @@ public class Player {
 
     public void pickCard(){}
 
-    public void useCard(Card card){}
+    public void useCard(Card card)
+    {
+        if (card instanceof Pokemon)
+        {
+            if(mActivePokemon == null)
+            {
+                setActivePokemon((Pokemon)card);
+            }
+            else
+                benchPokemon((Pokemon)card);
+        }
+        if (card instanceof EnergyCard)
+        {
+            //mActivePokemon.addEnergy((EnergyCard) card);
+        }
+        mHand.remove(card);
+    }
 
     /**
      * Allows player to retreat active Pokemon
