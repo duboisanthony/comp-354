@@ -112,7 +112,8 @@ public class Player {
     public void setActivePokemon(Pokemon activePokemon){
     	mActivePokemon = activePokemon; 
     }
-    
+   
+
     /**
      * Sends a Pokemon to player's bench. Condition
      * verifies if player's bench has already reached
@@ -212,7 +213,7 @@ public class Player {
     	mHand.add(prizeCard);
     	mRewards.remove(prizeCard);
     }
-    
+
     //TODO
     public void lookatDeck(){}
 

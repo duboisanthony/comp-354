@@ -52,6 +52,7 @@ public class Driver {
 		mPlayers.add(new Player(mFirstDeck));
 		mPlayers.add(new AIPlayer(mSecondDeck));
 
+<<<<<<< HEAD
 		
                 boolean playersReady = false;
                 ArrayList<Player> playersDeclaringMulligan = new ArrayList<Player>();
@@ -98,6 +99,13 @@ public class Driver {
                     {
                         playersReady = true;
                     
+=======
+		// Set up player's hand and rewards
+		for(int i = 0; i < mPlayers.size(); ++i) {
+			Player currentPlayer = mPlayers.get(i);
+			currentPlayer.drawCardsFromDeck(7);
+			//TODO: validate cards in hand for Mulligans here
+>>>>>>> 091cdce4876b55ba09469342f799a50c794ce933
 			//TODO: do we draw cards first or set up the rewards deck first?
 			for(Player currentPlayer : mPlayers)
 				currentPlayer.setUpRewards();
@@ -140,6 +148,10 @@ public class Driver {
 		
 		
 		//Uncomment to see test-run in console. 
+<<<<<<< HEAD
+=======
+		
+>>>>>>> 091cdce4876b55ba09469342f799a50c794ce933
 		System.out.println("\nTest Run: PokemonNoGo");
 		System.out.println("Print out the Hand of the First Player...");
 		for(int i = 0; i < mPlayers.get(0).getHand().size(); ++i){
