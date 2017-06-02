@@ -44,7 +44,13 @@ public class PlayerTest{
 		Player player1 = new Player(testDeck1);
 		Player player2 = new Player(testDeck2);
 		
-		Assert.assertFalse(player1.getDeck().equals(player2.getDeck()));
+		//! Set up rewards cards for players
+		player1.setUpRewards();
+		player2.setUpRewards();
+		
+		//! Run assertions to test number of rewards cards attributed to each player. 
+		Assert.assertTrue(player1.getRewards().size() <= 6 && player1.getRewards().size() > 0);
+		Assert.assertTrue(player2.getRewards().size() <= 6 && player2.getRewards().size() > 0);
 	}
 	
 }
