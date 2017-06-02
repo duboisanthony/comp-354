@@ -58,4 +58,16 @@ public class Ability {
     	}
     	 return null;
     }
+    
+    public String toString()
+	{
+    	StringBuilder effectsAsList = new StringBuilder();
+    	
+    	for (Effect effect: mEffects)
+    	{
+    		effectsAsList.append("--" + effect.toString() + "\n");
+    	}
+    	
+		return String.format("%s:\n%s", Ability.class, effectsAsList.toString());
+	}
 }
