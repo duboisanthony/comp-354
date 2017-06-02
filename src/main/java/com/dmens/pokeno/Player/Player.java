@@ -132,6 +132,7 @@ public class Player {
      * to do anything with it). 
      * 
      * @param pickedCardPosition
+     * @return Card that the player has chosen. 
      */
     public Card pickCard(int pickedCardPosition){
     	assert(mHand !=null && mHand.size() > 0);
@@ -141,13 +142,41 @@ public class Player {
 
     public void useCard(Card card){}
 
-    public void swapPokemon(Pokemon benchedPokemon){}
-
-    public void swapPokemon(Pokemon benchedPokemon, int retreatCost){}
-
+    /**
+     * Allows player to retreat active Pokemon
+     * and to swap it with a benched Pokemon. 
+     * @param benchedPokemon
+     */
+    public void swapPokemon(Pokemon benchedPokemon){
+    	int numEnergyCards = mActivePokemon.getAttachedEnergy().size();
+    	if(numEnergyCards >= mActivePokemon.getRetreatCost()){
+    		
+    		// Pokemon cannot retreat if affected by sleep or paralysis. 
+    		if(!mActivePokemon.isSleep() || !mActivePokemon.isParalyzed()){
+    			mBenchedPokemon.add(mActivePokemon);
+    			this.setActivePokemon(benchedPokemon);
+    		}
+    	}
+    	
+    	//TODO: Handle event where number of energy cards isn't sufficient. 
+    	// e.g. Pop-up on GUI. 
+    		
+    }
+    
+    //TODO
     public void evolvePokemon(Pokemon basePokemon, Pokemon evolvedPokemon){}
-
-    public void attachEnergy(EnergyCard energy, Pokemon pokemon){}
+    
+    /**
+     * Allows player to attach an Energy card onto
+     * a Pokemon. (Can only be done once per turn, per 
+     * Pokemon). 
+     * 
+     * @param energy
+     * @param pokemon
+     */
+    public void attachEnergy(EnergyCard energy, Pokemon pokemon){
+    	pokemon.addEnergy(energy);
+    }
     
     /**
      * Allows player to select a prize card from deck. 
@@ -162,7 +191,8 @@ public class Player {
     	mHand.add(prizeCard);
     	mRewards.remove(prizeCard);
     }
-
+    
+    //TODO
     public void lookatDeck(){}
 
 }
