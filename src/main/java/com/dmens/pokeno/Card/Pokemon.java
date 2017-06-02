@@ -32,11 +32,15 @@ public class Pokemon extends Card {
 		mHP = initialHP;
 		mRetreatCost = retreatCost;
 		mAbilities = abilities;
+		
+		mAttachedEnergy = new ArrayList<EnergyCard>();
 	}
 
 	//This constructor is just here as a place holder until the parser is written to handle the new ability format
     private Pokemon(String name, ArrayList<String> categories, int initialHP, Integer retreatCost, ArrayList<Tuple<Ability, ArrayList<Integer>>> abilities){
         super(name);
+
+        mAttachedEnergy = new ArrayList<EnergyCard>();
     }
 	
 	public void AddCategory(String category)
