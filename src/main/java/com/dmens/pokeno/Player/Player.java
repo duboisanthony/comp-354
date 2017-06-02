@@ -21,6 +21,8 @@ public class Player {
     private ArrayList<Card> mDeck = null;
     private ArrayList<Card> mRewards = null;
     private ArrayList<Card> mDiscards = null;
+    
+    private Player opponent;
 
     public Player() {
     }
@@ -98,6 +100,16 @@ public class Player {
         	mDeck.remove(card);
         	mRewards.add(card);
     	}
+    }
+    
+    public void setOpponent(Player enemy)
+    {
+        opponent = enemy;
+    }
+    
+    public void useActivePokemon(int ability)
+    {
+        mActivePokemon.useAbility(ability, opponent.getActivePokemon());
     }
     
     public void Mulligan(){}

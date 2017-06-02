@@ -60,6 +60,11 @@ public class Driver {
 			currentPlayer.setUpRewards();
 		}
 		
+                mPlayers.get(0).setOpponent(mPlayers.get(1));
+                mPlayers.get(1).setOpponent(mPlayers.get(0));
+                
+                //mPlayers.get(0);
+                
                 //Uncomment to see example board
                 /*GameBoard board = new GameBoard();
                 board.setVisible(true);
