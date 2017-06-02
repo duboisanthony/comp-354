@@ -37,8 +37,7 @@ public class CardTest {
 	static String mAbilityPoundName = "Pound";
 	static String mAbilityPoundTarget = "opponent-active";
 	static int mAbilityPoundValue = 10;
-
-	@Ignore
+    
 	@Test
     public void cardTest(){
 
@@ -82,7 +81,7 @@ public class CardTest {
         Assert.assertEquals(true, froakie.isConfused());
         froakie.setParalyzed(true);
         Assert.assertEquals(true, froakie.isParalyzed());
-        froakie.setParalyzed(true);
+        froakie.setPoisoned(true);
         Assert.assertEquals(true, froakie.isPoisoned());
         froakie.setParalyzed(true);
         Assert.assertEquals(true, froakie.isParalyzed());
