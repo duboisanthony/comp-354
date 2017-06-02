@@ -1,6 +1,7 @@
 package com.dmens.pokeno.Player;
 
 import com.dmens.pokeno.Card.*;
+import com.dmens.pokeno.Driver.Driver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,8 +25,11 @@ public class Player {
     
     private Player opponent;
     private boolean mIsReadyToStart = false;
+    
+    protected boolean humanPlayer;
 
     public Player() {
+        humanPlayer = true;
     }
     
     public Player(ArrayList<Card> deckList) {
@@ -34,6 +38,7 @@ public class Player {
     	mHand = new ArrayList<Card>();
     	mRewards = new ArrayList<Card>();
     	mDiscards = new ArrayList<Card>();
+        humanPlayer = true;
     }
 
     public Pokemon getActivePokemon() {
@@ -73,6 +78,9 @@ public class Player {
     		Card card = mDeck.get(mDeck.size() - 1);
         	mDeck.remove(card);
         	mHand.add(card);
+                
+                if (humanPlayer)
+                    Driver.board.addCardToHand(card, humanPlayer);
     	}
     }
     

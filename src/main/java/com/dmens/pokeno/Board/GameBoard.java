@@ -7,6 +7,7 @@ package com.dmens.pokeno.Board;
 
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.Driver.Driver;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -897,11 +898,11 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_ViewLightningEnergyFieldActionPerformed
 
     private void PlayerAttack1BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack1BtnActionPerformed
-        
+        Driver.mPlayers.get(0).useActivePokemon(0);
     }//GEN-LAST:event_PlayerAttack1BtnActionPerformed
 
     private void PlayerAttack2BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack2BtnActionPerformed
-        
+        Driver.mPlayers.get(0).useActivePokemon(1);
     }//GEN-LAST:event_PlayerAttack2BtnActionPerformed
 
     private void PlayerRetreatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerRetreatBtnActionPerformed

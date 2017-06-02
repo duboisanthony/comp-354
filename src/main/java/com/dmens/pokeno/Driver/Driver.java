@@ -19,10 +19,12 @@ public class Driver {
 	private static ArrayList<Card> mFirstDeck = null;
 	private static ArrayList<Card> mSecondDeck = null;
 	
-	private static ArrayList<Player> mPlayers = null;
+	public static ArrayList<Player> mPlayers = null;
 	
 	private static boolean mGameOver = false;
-		
+        
+        public static GameBoard board;
+        
 	public static void main(String[] args) {
 		
 		// Parse Cards
@@ -54,6 +56,9 @@ public class Driver {
 
                 boolean playersReady = false;
                 ArrayList<Player> playersDeclaringMulligan = new ArrayList<Player>();
+                
+                board = new GameBoard();
+                board.setVisible(true);
                 
                 // Set up player's hand and rewards
                 while(!playersReady)

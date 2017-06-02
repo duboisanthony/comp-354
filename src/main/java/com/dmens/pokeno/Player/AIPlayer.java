@@ -13,6 +13,7 @@ public class AIPlayer extends Player {
 
 	public AIPlayer(ArrayList<Card> deckList) {
 		super(deckList);
+                humanPlayer = false;
 	}
 
 	//TODO: implement AI specific functions
