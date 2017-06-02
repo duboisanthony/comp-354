@@ -15,7 +15,7 @@ public class Parser {
     private static final Logger LOG = LogManager.getLogger(Parser.class);
     
     private static boolean mSupportedPokemonOnly = true;
-    private static String[] mSupportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Espurr"};
+    private static String[] mSupportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Espurr", "Machop"};
     
     private static boolean mSupportedTrainersOnly = true;
     private static String[] mSupportedTrainers = {"Potion"};
