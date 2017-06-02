@@ -96,6 +96,6 @@ public class Ability {
     		effectsAsList.append("---" + effect.toString() + "\n");
     	}
     	
-		return String.format("%s:\n%s", Ability.class, effectsAsList.toString());
+		return String.format("%s:->%s\n%s", Ability.class, this.mName, effectsAsList.toString());
 	}
 }

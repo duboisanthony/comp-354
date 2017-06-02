@@ -15,7 +15,7 @@ public class Parser {
     private static final Logger LOG = LogManager.getLogger(Parser.class);
     
     private static boolean mSupportedPokemonOnly = true;
-    private static String[] mSupportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Espurr", "Machop"};
+    private static String[] mSupportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Espurr", "Machop", "Zubat"};
     
     private static boolean mSupportedTrainersOnly = true;
     private static String[] mSupportedTrainers = {"Potion"};
@@ -282,6 +282,11 @@ public class Parser {
 				((Pokemon)c).setBasePokemonName(basePokemonName);
 			else
 				((Pokemon)c).setBasePokemonName(pokemonName);
+			
+			System.out.println("=====================");
+			//System.out.println(c.getName());
+			System.out.println(c.toString());
+			System.out.println("=====================");
 		}
 		else if(cardContents.matches("(.*)trainer(.*)"))
 		{
