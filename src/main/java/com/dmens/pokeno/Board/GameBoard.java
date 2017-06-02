@@ -193,10 +193,10 @@ public class GameBoard extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent me) {
                 if (player)
                 {
-                    PlayerBenchPanel.remove(newCard); //not necessarily
-                    CardViewArea.setText("");
-                    ViewDamageField.setText("");
-                    update();
+                    //PlayerBenchPanel.remove(newCard); //not necessarily
+                    //CardViewArea.setText("");
+                    //ViewDamageField.setText("");
+                    //update();
                 }
             }
 
@@ -267,7 +267,10 @@ public class GameBoard extends javax.swing.JFrame {
         else
         {
             activePokemonField = OpponentsActivePokemonArea;
-            OpponentDamageField.setText(Integer.toString(card.getDamage()));
+            if (card == null)
+                OpponentDamageField.setText("");
+            else
+                OpponentDamageField.setText(Integer.toString(card.getDamage()));
             
             clearEnergy(false);
             clearStatus(false);
@@ -275,8 +278,10 @@ public class GameBoard extends javax.swing.JFrame {
             //if(card.poisoned) {addStatus(3, false)}
             //...
         }
-        
-        activePokemonField.setText(card.toString());
+        if (card != null)
+            activePokemonField.setText(card.toString());
+        else
+            activePokemonField.setText("");
         update();
     }
     
@@ -299,10 +304,12 @@ public class GameBoard extends javax.swing.JFrame {
         update();
     }
     
-    public void setRewardCount(int playerRewards, int opponentRewards)
+    public void setRewardCount(int rewardCount, boolean player)
     {
-        PlayerRewardCardLabel.setText("RemainingRewardCards: " + playerRewards);
-        OpponentRewardCardLabel.setText("RemainingRewardCards: " + opponentRewards);
+        if (player)
+            PlayerRewardCardLabel.setText("RemainingRewardCards: " + rewardCount);
+        else
+            OpponentRewardCardLabel.setText("RemainingRewardCards: " + rewardCount);
         update();
     }
     
@@ -323,7 +330,7 @@ public class GameBoard extends javax.swing.JFrame {
         setActivePokemon(playerActive, true);
         setActivePokemon(opponentActive, false);
         setOpponentHand(opponentHandCount);
-        setRewardCount(playerRewardCount, opponentRewardCount);
+        //setRewardCount(playerRewardCount, opponentRewardCount);
         showTurnPhase(phase);
         update();
     }
@@ -403,7 +410,6 @@ public class GameBoard extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         CoinResultField = new javax.swing.JTextField();
         PassBtn = new javax.swing.JButton();
-        EndTurnBtn = new javax.swing.JButton();
 
         jLabel4.setText("Lightning");
 
@@ -604,17 +610,10 @@ public class GameBoard extends javax.swing.JFrame {
 
         CoinResultField.setEditable(false);
 
-        PassBtn.setText("Pass");
+        PassBtn.setText("End Turn");
         PassBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PassBtnActionPerformed(evt);
-            }
-        });
-
-        EndTurnBtn.setText("End Turn");
-        EndTurnBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EndTurnBtnActionPerformed(evt);
             }
         });
 
@@ -734,9 +733,7 @@ public class GameBoard extends javax.swing.JFrame {
                                     .addComponent(PlayerAttack2Btn, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
                                     .addComponent(PlayerAttack1Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(PlayerRetreatBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(PassBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(EndTurnBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(PassBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -863,9 +860,7 @@ public class GameBoard extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(PlayerRetreatBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(PassBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(EndTurnBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(PassBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(144, 144, 144)
@@ -915,10 +910,12 @@ public class GameBoard extends javax.swing.JFrame {
 
     private void PlayerAttack1BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack1BtnActionPerformed
         Driver.mPlayers.get(0).useActivePokemon(0);
+        Driver.mPlayers.get(1).startTurn();
     }//GEN-LAST:event_PlayerAttack1BtnActionPerformed
 
     private void PlayerAttack2BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack2BtnActionPerformed
         Driver.mPlayers.get(0).useActivePokemon(1);
+        Driver.mPlayers.get(1).startTurn();
     }//GEN-LAST:event_PlayerAttack2BtnActionPerformed
 
     private void PlayerRetreatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerRetreatBtnActionPerformed
@@ -926,12 +923,8 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_PlayerRetreatBtnActionPerformed
 
     private void PassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassBtnActionPerformed
-       
+        Driver.mPlayers.get(1).startTurn();
     }//GEN-LAST:event_PassBtnActionPerformed
-
-    private void EndTurnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndTurnBtnActionPerformed
-        
-    }//GEN-LAST:event_EndTurnBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -969,12 +962,11 @@ public class GameBoard extends javax.swing.JFrame {
     }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField AnnouncementBox;
+    public javax.swing.JTextField AnnouncementBox;
     private javax.swing.JTextArea CardViewArea;
     private javax.swing.JTextField CoinResultField;
-    private javax.swing.JButton EndTurnBtn;
     private javax.swing.JLabel OpponentAsleepLabel;
-    private javax.swing.JPanel OpponentBenchPanel;
+    public javax.swing.JPanel OpponentBenchPanel;
     private javax.swing.JLabel OpponentCardHand;
     private javax.swing.JTextField OpponentDamageField;
     private javax.swing.JTextField OpponentFightingEnergyField;

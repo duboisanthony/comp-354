@@ -82,7 +82,21 @@ public class Player {
                 
                 if (humanPlayer && mIsReadyToStart)
                     Driver.board.addCardToHand(card, humanPlayer);
+                
+                if (card instanceof Pokemon && !humanPlayer)
+                    System.out.println("DrewPokemon");
     	}
+    }
+    
+    public void startTurn()
+    {
+        drawCardsFromDeck(1);
+        if (this instanceof AIPlayer)
+        {
+            AIPlayer ai = (AIPlayer)this;
+            ai.startPhase();
+            opponent.startTurn();
+        }
     }
     
     // allows player to pick a specific card from hand and put it back to the deck
@@ -141,8 +155,8 @@ public class Player {
     public void benchPokemon(Pokemon benchPokemon){
     	assert(mBenchedPokemon.size() < 5);
     	mBenchedPokemon.add(benchPokemon);
-        if (humanPlayer)
-            Driver.board.addCardToBench(benchPokemon, humanPlayer);
+        //if (humanPlayer)
+        Driver.board.addCardToBench(benchPokemon, humanPlayer);
     }
     
     /**
@@ -164,6 +178,18 @@ public class Player {
     {
         mActivePokemon.useAbility(ability, opponent.getActivePokemon());
         Driver.board.updateActivePokemon(opponent);
+        
+        if (opponent.getActivePokemon().getDamage() >= opponent.getActivePokemon().getHP())
+        {
+            opponent.setActivePokemon(null);
+            if (humanPlayer)
+            {   
+                AIPlayer ai = (AIPlayer)opponent;
+                ai.activeFainted();
+                Driver.board.OpponentBenchPanel.remove(Driver.board.OpponentBenchPanel.getComponent(0));
+            }
+            collectPrize(mRewards.size()-1);
+        }
     }
     
     public void Mulligan(){}
@@ -260,6 +286,13 @@ public class Player {
     	Card prizeCard = mRewards.get(prizeCardPosition);
     	mHand.add(prizeCard);
     	mRewards.remove(prizeCard);
+        if (humanPlayer && mIsReadyToStart)
+            Driver.board.addCardToHand(prizeCard, humanPlayer);
+        Driver.board.setRewardCount(mRewards.size(), humanPlayer);
+        if (mRewards.size() <= 0)
+        {
+            Driver.board.AnnouncementBox.setText("No more reward cards! The player wins!");
+        }
     }
 
     //TODO
