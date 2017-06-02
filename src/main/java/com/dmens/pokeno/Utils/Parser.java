@@ -148,9 +148,7 @@ public class Parser {
 	{
 		String[] results = restStr.split(":");
 		int c = restStr.indexOf(",");
-		
-		System.out.println(results[0]);
-		
+				
 		if(results[0].equals("dam"))
     	{  			
 			System.out.println("DAMAGE effect added");
@@ -158,7 +156,7 @@ public class Parser {
     	}
 		else if(results[0].equals("heal") && c == -1)
 		{
-			System.out.println("HEAL effect added");
+			//System.out.println("HEAL effect added");
 			return new Heal(results[2], Integer.parseInt(results[3]));
 		}
 		
@@ -176,7 +174,7 @@ public class Parser {
 		
 		if(cardContents.matches("(.*):pokemon:(.*)"))
 		{
-			System.out.println("Created PokemonCard");
+			//System.out.println("Created PokemonCard");
 			// split the line with 2 delimiters : and ,
 			String[] results = cardContents.split(":|\\,");
 			String pokemonName = null;
@@ -205,8 +203,10 @@ public class Parser {
 				
 				if(!supported)
 				{
-					System.out.println("Pokemon was not supported");
-					return (Card) this.ReplaceCardWithRandomEnergy();
+					System.out.println("Pokemon was not supported... creating a random energy card.");
+					c = (Card) this.ReplaceCardWithRandomEnergy();
+					System.out.print(c.toString());
+					return c;
 				}
 					
 			}
@@ -264,9 +264,10 @@ public class Parser {
 					try {
 						int abilityIndex = Integer.parseInt(results[i]);
 						
+						
 												
 						abilities.add(CreateAbility(this.mAbilitiesList.get(abilityIndex - 1)));
-					} catch (NumberFormatException e) {}
+					} catch (NumberFormatException e) {System.out.print("EXXXXXXXXCEPTION");}
 				} 
 			}
 
@@ -295,7 +296,7 @@ public class Parser {
 				}	
 			}
 
-			System.out.println("Created TrainerCard");
+			//System.out.println("Created TrainerCard");
 			ArrayList<Ability> abilities = new ArrayList<>();
 			abilities.add(CreateAbility(this.mAbilitiesList.get(Integer.parseInt(results[4]) - 1)));
 			c = new TrainerCard(results[0], results[3], abilities);
@@ -304,7 +305,7 @@ public class Parser {
 		else if(cardContents.matches("(.*)energy(.*)"))
 		{
 			String[] results = cardContents.split(":");
-			System.out.println("Created EnergyCard");
+			//System.out.println("Created EnergyCard");
 			c = new EnergyCard(results[0], results[3]);	
 		}
 
@@ -320,7 +321,6 @@ public class Parser {
 		
 		int num = MIN + rand.nextInt((MAX - MIN) + 1);
 		
-		System.out.println("Rand #: " + num);
 		switch(num)
 		{
 			case(1):
