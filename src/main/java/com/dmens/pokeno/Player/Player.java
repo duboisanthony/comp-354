@@ -124,9 +124,6 @@ public class Player {
     	assert(mBenchedPokemon.size() < 5);
     	mBenchedPokemon.add(benchPokemon);
     }
-;
-    //TODO
-    public void pickCard(){}
     
     /**
      * Allows player to pick a card from his/her 
@@ -136,8 +133,10 @@ public class Player {
      * 
      * @param pickedCardPosition
      */
-    public void pickCard(int pickedCardPosition){
-    	assert(mHand !=null && mHand.size() > 0); 
+    public Card pickCard(int pickedCardPosition){
+    	assert(mHand !=null && mHand.size() > 0);
+    	Card pickedCard = mHand.get(pickedCardPosition);
+    	return pickedCard;
     }
 
     public void useCard(Card card){}
