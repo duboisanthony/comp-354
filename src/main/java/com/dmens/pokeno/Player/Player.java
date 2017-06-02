@@ -80,7 +80,7 @@ public class Player {
         	mDeck.remove(card);
         	mHand.add(card);
                 
-                if (humanPlayer)
+                if (humanPlayer && mIsReadyToStart)
                     Driver.board.addCardToHand(card, humanPlayer);
     	}
     }
@@ -176,6 +176,11 @@ public class Player {
             if(card.getClass() == Pokemon.class && ((Pokemon)card).getBasePokemonName().equals(card.getName()))
             {
                 mIsReadyToStart = true;
+                for(int i = mHand.size() - 1; i >= 0; --i)
+                {
+                    Card cardToShow = mHand.get(i);
+                    Driver.board.addCardToHand(cardToShow, humanPlayer);
+                }
                 return true;
             }
         }
