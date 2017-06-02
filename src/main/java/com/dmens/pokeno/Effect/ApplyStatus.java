@@ -12,19 +12,32 @@ public class ApplyStatus implements Effect {
 		this.mStatus = stat;
 		this.mValue = val;	
 	}
+	
+	public String getTarget()
+	{
+		return this.mTarget;
+	}
+	
+	public String getStatus()
+	{
+		return this.mStatus;
+	}
+	
+	public int getValue()
+	{
+		return this.mValue;
+	}
 
 	@Override
-	public void Execute()
+	public void execute()
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void GetInformation()
+	public String toString()
 	{
-		// TODO Auto-generated method stub
-		
+		return String.format("%s:\t\tTAR: %s\t\tSTA: %s\t\tVAL:%d", ApplyStatus.class, this.mTarget, this.mStatus, this.mValue);
 	}
-
 }

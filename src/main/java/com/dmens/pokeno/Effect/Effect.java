@@ -5,6 +5,7 @@ package com.dmens.pokeno.Effect;
  */
 public interface Effect 
 {
-	public abstract void Execute();
-	public abstract void GetInformation();	
+	public abstract void execute();
+	
+	public abstract String toString();
 }
