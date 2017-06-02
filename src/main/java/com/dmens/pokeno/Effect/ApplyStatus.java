@@ -2,15 +2,13 @@ package com.dmens.pokeno.Effect;
 
 public class ApplyStatus implements Effect {
 
-	private int mValue;
 	private String mTarget;
 	private String mStatus;
 	
-	public ApplyStatus(String tar,String stat, int val)
+	public ApplyStatus(String tar,String stat)
 	{
 		this.mTarget = tar;
 		this.mStatus = stat;
-		this.mValue = val;	
 	}
 	
 	public String getTarget()
@@ -23,10 +21,6 @@ public class ApplyStatus implements Effect {
 		return this.mStatus;
 	}
 	
-	public int getValue()
-	{
-		return this.mValue;
-	}
 
 	@Override
 	public void execute()
@@ -38,6 +32,6 @@ public class ApplyStatus implements Effect {
 	@Override
 	public String toString()
 	{
-		return String.format("%s:\t\tTAR: %s\t\tSTA: %s\t\tVAL:%d", ApplyStatus.class, this.mTarget, this.mStatus, this.mValue);
+		return String.format("%s:\t\tTAR: %s\t\tSTA: %s", ApplyStatus.class, this.mTarget, this.mStatus);
 	}
 }
