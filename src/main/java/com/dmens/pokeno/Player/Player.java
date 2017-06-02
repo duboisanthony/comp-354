@@ -60,7 +60,8 @@ public class Player {
     public void shuffleDeck(){
         Collections.shuffle(this.mDeck);
     }
-
+    
+    //NOTE: Size of mHand should be at most 7. 
     public void drawCardsFromDeck(int numOfCards) {
     	assert numOfCards >= 0;
     	assert mDeck.size() >= numOfCards;
@@ -120,13 +121,24 @@ public class Player {
      * @param benchPokemon
      */
     public void benchPokemon(Pokemon benchPokemon){
-    	if(mBenchedPokemon.size() < 5)
-    		mBenchedPokemon.add(benchPokemon);
+    	assert(mBenchedPokemon.size() < 5);
+    	mBenchedPokemon.add(benchPokemon);
     }
-
+;
+    //TODO
     public void pickCard(){}
-
-    public void pickCard(int pickedCardPosition){}
+    
+    /**
+     * Allows player to pick a card from his/her 
+     * hand. (Will allow us to display the card,
+     * thus allowing the player to decide whether 
+     * to do anything with it). 
+     * 
+     * @param pickedCardPosition
+     */
+    public void pickCard(int pickedCardPosition){
+    	assert(mHand !=null && mHand.size() > 0); 
+    }
 
     public void useCard(Card card){}
 
@@ -137,8 +149,16 @@ public class Player {
     public void evolvePokemon(Pokemon basePokemon, Pokemon evolvedPokemon){}
 
     public void attachEnergy(EnergyCard energy, Pokemon pokemon){}
-
+    
+    /**
+     * Allows player to select a prize card from deck. 
+     * TODO: Function should perhaps signal end of match
+     * if size of mRewards is 0 (i.e. player wins match). 
+     * 
+     * @param prizeCardPosition
+     */
     public void collectPrize(int prizeCardPosition){
+    	assert(mRewards !=null);
     	Card prizeCard = mRewards.get(prizeCardPosition);
     	mHand.add(prizeCard);
     	mRewards.remove(prizeCard);
