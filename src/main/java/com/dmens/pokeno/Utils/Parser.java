@@ -10,12 +10,18 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
 
+/*
+ * Parser object
+ *
+ * @author Jing
+ * @author James
+ */
 public class Parser {
 
     private static final Logger LOG = LogManager.getLogger(Parser.class);
     
     private static boolean mSupportedPokemonOnly = true;
-    private static String[] mSupportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Espurr"};
+    private static String[] mSupportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Espurr", "Machop", "Zubat"};
     
     private static boolean mSupportedTrainersOnly = true;
     private static String[] mSupportedTrainers = {"Potion"};
@@ -29,7 +35,9 @@ public class Parser {
 	private Parser() { }
 	
 	/*
-	 * lazy instantiation
+	 * Get the instance (lazy instantiation).
+	 * 
+	 * @param		The instance of this object.
 	 */
 	public static Parser Instance( ) {
 		if(instance == null)
@@ -109,8 +117,10 @@ public class Parser {
 		return true;
 	}
 	
-	// public for testing
-	public Ability CreateAbility(String abilityInformation)
+	/*
+	 * Takes a line in abilities file and creates the ability.
+	 */
+	private Ability CreateAbility(String abilityInformation)
 	{			
     	int i = abilityInformation.indexOf(":");	
     	String name = abilityInformation.substring(0,i);
@@ -144,6 +154,9 @@ public class Parser {
     	return ability;
 	}
 	
+	/*
+	 * Parse and Effect - > returns what was created.
+	 */
 	private Effect ParseEfect(String restStr)
 	{
 		String[] results = restStr.split(":");
@@ -151,7 +164,7 @@ public class Parser {
 				
 		if(results[0].equals("dam"))
     	{  			
-			System.out.println("DAMAGE effect added");
+			//System.out.println("DAMAGE effect added");
 			return new Damage(results[2], Integer.parseInt(results[3]));
     	}
 		else if(results[0].equals("heal") && c == -1)
@@ -208,9 +221,9 @@ public class Parser {
 				
 				if(!supported)
 				{
-					System.out.println("Pokemon was not supported... creating a random energy card.");
+					//System.out.println("Pokemon was not supported... creating a random energy card.");
 					c = (Card) this.ReplaceCardWithRandomEnergy();
-					System.out.print(c.toString());
+					//System.out.print(c.toString());
 					return c;
 				}
 					
@@ -280,6 +293,13 @@ public class Parser {
 			c = new Pokemon(pokemonName, categories, hp, retreatCost, abilities);
 			if(basePokemonName != null) 
 				((Pokemon)c).setBasePokemonName(basePokemonName);
+			else
+				((Pokemon)c).setBasePokemonName(pokemonName);
+			
+			System.out.println("=====================");
+			//System.out.println(c.getName());
+			System.out.println(c.toString());
+			System.out.println("=====================");
 		}
 		else if(cardContents.matches("(.*)trainer(.*)"))
 		{
@@ -297,8 +317,11 @@ public class Parser {
 				
 				if(!supported)
 				{
-					System.out.println("Trainer was not supported");
-					return (Card) this.ReplaceCardWithRandomEnergy();
+					//System.out.println("Trainer was not supported... creating a random energy card.");
+					c = (Card) this.ReplaceCardWithRandomEnergy();
+					//System.out.print(c.toString());
+					return c;
+					
 				}	
 			}
 
@@ -315,10 +338,16 @@ public class Parser {
 			c = new EnergyCard(results[0], results[3]);	
 		}
 
-		System.out.print(c.toString());
+		//System.out.print(c.toString());
 		return c;
 	}
 	
+	/*
+	 * For the cards that are not supported, this method will be called to create a
+	 * replacement card.
+	 * 
+	 * @return		A random energy card.
+	 */
 	private EnergyCard ReplaceCardWithRandomEnergy()
 	{
 		Random rand = new Random();

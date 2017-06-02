@@ -1,7 +1,11 @@
 package com.dmens.pokeno.Condition;
 
-
+/*
+ * Condition interface
+ *
+ * @author James
+ */
 public interface Condition
 {
-	// TODO
+	// TODO:V2
 }

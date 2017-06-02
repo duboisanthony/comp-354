@@ -21,6 +21,8 @@ public class Player {
     private ArrayList<Card> mDeck = null;
     private ArrayList<Card> mRewards = null;
     private ArrayList<Card> mDiscards = null;
+    
+    private boolean mIsReadyToStart = false;
 
     public Player() {
     }
@@ -137,6 +139,25 @@ public class Player {
     	Card pickedCard = mHand.get(pickedCardPosition);
     	return pickedCard;
     }
+    
+    // for checking if player should declare a mulligan on their starting hand
+    public boolean hasBasicPokemon(){
+        for(Card card : mHand)
+        {
+            // if is a Pokemon card and is the base Pokemon of the evolution line
+            if(card.getClass() == Pokemon.class && ((Pokemon)card).getBasePokemonName().equals(card.getName()))
+            {
+                mIsReadyToStart = true;
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public boolean getIsReadyToStart(){return mIsReadyToStart;}
+
+    public void pickCard(){}
 
     public void useCard(Card card){}
 
