@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.Driver.Driver;
 
 public class AIPlayer extends Player {
 
@@ -26,11 +27,23 @@ public class AIPlayer extends Player {
                 if (card instanceof Pokemon)
                 {
                     useCard(card);
-                    System.out.println("Played it!");
+                    //System.out.println("Played it!");
                     break;
                 }
-                System.out.println("Didn't play it");
+                //System.out.println("Didn't play it");
             }
+        }
+        
+        public void activeFainted()
+        {
+            ArrayList<Pokemon> mBench = getBenchedPokemon();
+            if (mBench.size() <= 0)
+            {
+                Driver.board.AnnouncementBox.setText("Opponenthas no available Pokemon! The player wins!");
+                return;
+            }
+            setActivePokemon(mBench.get(0));
+            mBench.remove(mBench.get(0));
         }
         
 	//TODO: implement AI specific functions

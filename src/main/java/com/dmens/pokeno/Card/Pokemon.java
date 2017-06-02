@@ -73,11 +73,15 @@ public class Pokemon extends Card {
 		return String.format("%s:\t\tNAME: %s\n%s", Pokemon.class, this.getName(), abilitiesAsList.toString());
 	}
 	
-	public void addDamage(int damage)
+	public boolean addDamage(int damage)
         {
             mDamage += damage;
-            
+            /*if (mDamage >= mHP)
+            {
+                return true;
+            }*/
             //if damage > hp -> "faint"
+            return false;
         }
 
 	public void removeDamage(int damage){}

@@ -174,8 +174,6 @@
                                   <Component id="PlayerRetreatBtn" alignment="0" max="32767" attributes="0"/>
                                   <Component id="PassBtn" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="EndTurnBtn" min="-2" pref="86" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
@@ -337,10 +335,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="PlayerRetreatBtn" min="-2" pref="38" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="PassBtn" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
-                                  <Component id="EndTurnBtn" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="PassBtn" min="-2" pref="31" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jScrollPane4" min="-2" pref="275" max="-2" attributes="0"/>
                       </Group>
@@ -671,6 +666,9 @@
       </Properties>
     </Component>
     <Container class="javax.swing.JPanel" name="OpponentBenchPanel">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+      </AuxValues>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -756,6 +754,9 @@
         <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" value="Play initial Pokemon"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel12">
       <Properties>
@@ -779,18 +780,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="PassBtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Pass"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PassBtnActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="EndTurnBtn">
-      <Properties>
         <Property name="text" type="java.lang.String" value="End Turn"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EndTurnBtnActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PassBtnActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
