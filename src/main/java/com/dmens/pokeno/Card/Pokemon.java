@@ -60,7 +60,7 @@ public class Pokemon extends Card {
 	{
 		this.mAbilitiesAndCost.add(ability);
 	}
-	
+
 	public String toString()
 	{
 		StringBuilder abilitiesAsList = new StringBuilder();
