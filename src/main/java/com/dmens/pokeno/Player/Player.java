@@ -68,7 +68,8 @@ public class Player {
     public void shuffleDeck(){
         Collections.shuffle(this.mDeck);
     }
-
+    
+    //NOTE: Size of mHand should be at most 7. 
     public void drawCardsFromDeck(int numOfCards) {
     	assert numOfCards >= 0;
     	assert mDeck.size() >= numOfCards;
@@ -115,6 +116,45 @@ public class Player {
     {
         opponent = enemy;
     }
+
+   
+    /**
+     * Sets a selected Pokemon to be the
+     * player's active Pokemon. 
+     * 
+     * @param activePokemon
+     */
+    public void setActivePokemon(Pokemon activePokemon){
+    	mActivePokemon = activePokemon; 
+    }
+   
+
+    /**
+     * Sends a Pokemon to player's bench. Condition
+     * verifies if player's bench has already reached
+     * max capacity or not. 
+     * 
+     * @param benchPokemon
+     */
+    public void benchPokemon(Pokemon benchPokemon){
+    	assert(mBenchedPokemon.size() < 5);
+    	mBenchedPokemon.add(benchPokemon);
+    }
+    
+    /**
+     * Allows player to pick a card from his/her 
+     * hand. (Will allow us to display the card,
+     * thus allowing the player to decide whether 
+     * to do anything with it). 
+     * 
+     * @param pickedCardPosition
+     * @return Card that the player has chosen. 
+     */
+    public Card pickCard(int pickedCardPosition){
+    	assert(mHand !=null && mHand.size() > 0);
+    	Card pickedCard = mHand.get(pickedCardPosition);
+    	return pickedCard;
+    }
     
     public void useActivePokemon(int ability)
     {
@@ -140,26 +180,63 @@ public class Player {
     
     public boolean getIsReadyToStart(){return mIsReadyToStart;}
 
-    public void setActivePokemon(Pokemon activePokemon){}
-
-    public void benchPokemon(Pokemon benchPokemon){}
-
     public void pickCard(){}
-
-    public void pickCard(int pickedCardPosition){}
 
     public void useCard(Card card){}
 
-    public void swapPokemon(Pokemon benchedPokemon){}
+    /**
+     * Allows player to retreat active Pokemon
+     * and to swap it with a benched Pokemon. 
+     * @param benchedPokemon
+     */
+    public void swapPokemon(Pokemon benchedPokemon){
+    	int numEnergyCards = mActivePokemon.getAttachedEnergy().size();
+    	if(numEnergyCards >= mActivePokemon.getRetreatCost()){
+    		
+    		// Pokemon cannot retreat if affected by sleep or paralysis. 
+    		if(!mActivePokemon.isSleep() || !mActivePokemon.isParalyzed()){
+    			mBenchedPokemon.add(mActivePokemon);
+    			this.setActivePokemon(benchedPokemon);
+    		}
+    	}
+    	
+    	//TODO: Handle event where number of energy cards isn't sufficient. 
+    	// e.g. Pop-up on GUI. 
+    		
+    }
+    
+    //TODO
+    public void evolvePokemon(Pokemon basePokemon, Pokemon evolvedPokemon){
+    	
+    }
+    
+    /**
+     * Allows player to attach an Energy card onto
+     * a Pokemon. (Can only be done once per turn, per 
+     * Pokemon). 
+     * 
+     * @param energy
+     * @param pokemon
+     */
+    public void attachEnergy(EnergyCard energy, Pokemon pokemon){
+    	pokemon.addEnergy(energy);
+    }
+    
+    /**
+     * Allows player to select a prize card from deck. 
+     * TODO: Function should perhaps signal end of match
+     * if size of mRewards is 0 (i.e. player wins match). 
+     * 
+     * @param prizeCardPosition
+     */
+    public void collectPrize(int prizeCardPosition){
+    	assert(mRewards !=null);
+    	Card prizeCard = mRewards.get(prizeCardPosition);
+    	mHand.add(prizeCard);
+    	mRewards.remove(prizeCard);
+    }
 
-    public void swapPokemon(Pokemon benchedPokemon, int retreatCost){}
-
-    public void evolvePokemon(Pokemon basePokemon, Pokemon evolvedPokemon){}
-
-    public void attachEnergy(EnergyCard energy, Pokemon pokemon){}
-
-    public void collectPrize(int prizeCardPosition){}
-
+    //TODO
     public void lookatDeck(){}
 
 }

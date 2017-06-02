@@ -23,6 +23,17 @@ public class Heal implements Effect {
 	}
 	
 	/*
+	 * Copy Constructor
+	 * 
+	 * @param		h		Heal Effect.
+	 */
+	public Heal(Heal h)
+	{
+		this.mTarget = h.mTarget;
+		this.mValue = h.mValue;		
+	}
+	
+	/*
      * Get the target of this Effect.
      * 
      * @return		The target as a string.
@@ -53,5 +64,15 @@ public class Heal implements Effect {
 	public String toString()
 	{
 		return String.format("%s:\t\tTAR: %s\t\tVAL:%d", Heal.class, this.mTarget, this.mValue);
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		Heal h = (Heal) obj;
+		if(h.mTarget.equals(this.mTarget) && h.mValue == this.mValue)
+			return true;
+		
+		return false;
 	}
 }

@@ -34,12 +34,24 @@ public class Ability {
     
     /*
      * Add an effect to this Ability.
+     * Check what the class it is, then cast the Effect to create a copy of it.
      * 
      * @param		e		Effect to add.	
      */
     public void addEffect(Effect e)
 	{
-		this.mEffects.add(e);
+    	if(e.getClass().getName().equals("com.dmens.pokeno.Effect.Heal"))
+    	{
+    		this.mEffects.add(new Heal((Heal) e));
+    	}
+    	else if(e.getClass().getName().equals("com.dmens.pokeno.Effect.Damage"))
+    	{
+    		this.mEffects.add(new Damage((Damage) e));
+    	}
+    	else if(e.getClass().getName().equals("com.dmens.pokeno.Effect.ApplyStatus"))
+    	{
+    		this.mEffects.add(new ApplyStatus((ApplyStatus) e));
+    	}	
 	} 
     
     /*

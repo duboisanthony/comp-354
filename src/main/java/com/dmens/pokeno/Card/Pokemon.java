@@ -68,9 +68,13 @@ public class Pokemon extends Card {
 
 	public void removeDamage(int damage){}
 
-	public void addEnergy(EnergyCard energy){}
+	public void addEnergy(EnergyCard energy){
+		mAttachedEnergy.add(energy);
+	}
 
-	public void removeEnergy(ArrayList<EnergyCard> energy){}
+	public void removeEnergy(ArrayList<EnergyCard> energy){
+		
+	}
 
 	public void setBasePokemonName(String basePokemonName) {
 		assert basePokemonName != null;
