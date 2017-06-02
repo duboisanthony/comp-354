@@ -15,7 +15,7 @@ public class Parser {
     private static final Logger LOG = LogManager.getLogger(Parser.class);
     
     private static boolean mSupportedPokemonOnly = true;
-    private static String[] mSupportedPokemon = {"Froakie", "Electrike"};
+    private static String[] mSupportedPokemon = {"Froakie", "Electrike", "Doduo"};
     
     private static boolean mSupportedTrainersOnly = true;
     private static String[] mSupportedTrainers = {"Potion"};
@@ -102,7 +102,7 @@ public class Parser {
 	
 	// public for testing
 	public Ability CreateAbility(String abilityInformation)
-	{	
+	{			
     	int i = abilityInformation.indexOf(":");	
     	String name = abilityInformation.substring(0,i);
     	
@@ -254,10 +254,13 @@ public class Parser {
 				for(int i = abilitiesIndex + 1; i < results.length; i += 4) {
 					try {
 						int abilityIndex = Integer.parseInt(results[i]);
+						
+												
 						abilities.add(CreateAbility(this.mAbilitiesList.get(abilityIndex - 1)));
 					} catch (NumberFormatException e) {}
 				} 
 			}
+
 			c = new Pokemon(pokemonName, categories, hp, retreatCost, abilities);
 			if(basePokemonName != null) 
 				((Pokemon)c).setBasePokemonName(basePokemonName);

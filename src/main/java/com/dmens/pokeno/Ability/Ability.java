@@ -47,7 +47,7 @@ public class Ability {
     }
     
     // Assumption is that there is only one damage right now
-    public Damage getDamage()
+    public Damage getDamageEffect()
     {
     	for (Effect effect: mEffects)
     	{
@@ -65,7 +65,7 @@ public class Ability {
     	
     	for (Effect effect: mEffects)
     	{
-    		effectsAsList.append("--" + effect.toString() + "\n");
+    		effectsAsList.append("---" + effect.toString() + "\n");
     	}
     	
 		return String.format("%s:\n%s", Ability.class, effectsAsList.toString());

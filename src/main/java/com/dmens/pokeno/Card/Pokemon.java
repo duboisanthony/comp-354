@@ -2,6 +2,7 @@ package com.dmens.pokeno.Card;
 
 import java.util.ArrayList;
 import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.Effect.Effect;
 import com.dmens.pokeno.Utils.Tuple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,7 +47,13 @@ public class Pokemon extends Card {
 	
 	public String toString()
 	{
-		return String.format("|POKEMON CARD|\n|%s|\n", this.getName());
+		StringBuilder abilitiesAsList = new StringBuilder();
+		for (Ability ability: mAbilities)
+		{
+			abilitiesAsList.append("--" + ability.toString() + "\n");
+		}
+		
+		return String.format("%s:\t\tNAME: %s\n%s", Pokemon.class, this.getName(), abilitiesAsList.toString());
 	}
 	
 	public void addDamage(int damage){}
