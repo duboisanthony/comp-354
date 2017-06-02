@@ -21,10 +21,10 @@ public class Parser {
     private static final Logger LOG = LogManager.getLogger(Parser.class);
     
     private static boolean mSupportedPokemonOnly = true;
-    private static String[] mSupportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Espurr", "Machop", "Zubat"};
+    private static String[] mSupportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Machop", "Zubat"};
     
     private static boolean mSupportedTrainersOnly = true;
-    private static String[] mSupportedTrainers = {"Potion"};
+    private static String[] mSupportedTrainers = {""};
 
 	private static Parser instance = null;
 	private static final String ENCODING = "UTF-8";
