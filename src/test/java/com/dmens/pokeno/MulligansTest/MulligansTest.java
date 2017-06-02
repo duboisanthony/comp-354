@@ -5,6 +5,7 @@
  */
 package com.dmens.pokeno.MulligansTest;
 
+import com.dmens.pokeno.Board.GameBoard;
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.EnergyCard;
 import com.dmens.pokeno.Card.Pokemon;
@@ -27,10 +28,11 @@ import org.junit.Ignore;
  */
 public class MulligansTest {
 
-    @Ignore
+    //@Ignore
     @Test
     public void TestBasicPokemonValidation()
     {
+        Driver.board = new GameBoard();
         ArrayList<Card> deck1 = new ArrayList<Card>();
         ArrayList<Card> deck2 = new ArrayList<Card>();
         
