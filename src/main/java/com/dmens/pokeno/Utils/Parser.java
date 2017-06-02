@@ -151,7 +151,7 @@ public class Parser {
 				
 		if(results[0].equals("dam"))
     	{  			
-			System.out.println("DAMAGE effect added");
+			//System.out.println("DAMAGE effect added");
 			return new Damage(results[2], Integer.parseInt(results[3]));
     	}
 		else if(results[0].equals("heal") && c == -1)
@@ -208,9 +208,9 @@ public class Parser {
 				
 				if(!supported)
 				{
-					System.out.println("Pokemon was not supported... creating a random energy card.");
+					//System.out.println("Pokemon was not supported... creating a random energy card.");
 					c = (Card) this.ReplaceCardWithRandomEnergy();
-					System.out.print(c.toString());
+					//System.out.print(c.toString());
 					return c;
 				}
 					
@@ -299,8 +299,11 @@ public class Parser {
 				
 				if(!supported)
 				{
-					System.out.println("Trainer was not supported");
-					return (Card) this.ReplaceCardWithRandomEnergy();
+					//System.out.println("Trainer was not supported... creating a random energy card.");
+					c = (Card) this.ReplaceCardWithRandomEnergy();
+					//System.out.print(c.toString());
+					return c;
+					
 				}	
 			}
 
@@ -317,7 +320,7 @@ public class Parser {
 			c = new EnergyCard(results[0], results[3]);	
 		}
 
-		System.out.print(c.toString());
+		//System.out.print(c.toString());
 		return c;
 	}
 	
