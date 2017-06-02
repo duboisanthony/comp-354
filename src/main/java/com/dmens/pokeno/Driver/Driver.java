@@ -23,7 +23,7 @@ public class Driver {
 	
 	private static boolean mGameOver = false;
         
-        public static GameBoard board;
+    public static GameBoard board;
         
 	public static void main(String[] args) {
 		

@@ -247,7 +247,7 @@ public class Player {
     	pokemon.addEnergy(energy);
     }
     
-    /**
+    /**.
      * Allows player to select a prize card from deck. 
      * TODO: Function should perhaps signal end of match
      * if size of mRewards is 0 (i.e. player wins match). 

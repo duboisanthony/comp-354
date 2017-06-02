@@ -15,17 +15,36 @@ import org.junit.Assert;
  * @author tarikabou-saddik
  */
 
-public class PlayerTest {
+public class PlayerTest{
 	
 	private static final String LOCATION_FIRST_DECK = "data/deck1.txt";
-	testDeck = Parser.Instance().DeckCreation(LOCATION_FIRST_DECK);
+	private static final String LOCATION_SECOND_DECK = "data/deck2.txt";
+	private static final String LOCATION_CARDS = "data/cards.txt";
+	private static final String LOCATION_ABILITIES = "data/abilities.txt";
+	private static ArrayList<Card> testDeck1 = new ArrayList<Card>();
+	private static ArrayList<Card> testDeck2 = new ArrayList<Card>();	
+	
 	
 	@Test
-	public void testCardShuffle() {
+	public void testSetupRewards()
+	{
 		
-		Player testPlayer = new Player();
+		//! Load cards from text files. 
+		boolean result = Parser.Instance().LoadCards(LOCATION_CARDS);
+		assert result;
+		result = Parser.Instance().LoadAbilities(LOCATION_ABILITIES);
+		assert result;
 		
+		//! Initialize test decks. 
+		testDeck1 = Parser.Instance().DeckCreation(LOCATION_FIRST_DECK);
+		testDeck2 = Parser.Instance().DeckCreation(LOCATION_SECOND_DECK);
+		
+		
+		//! Set up players with their respective decks. 
+		Player player1 = new Player(testDeck1);
+		Player player2 = new Player(testDeck2);
+		
+		Assert.assertFalse(player1.getDeck().equals(player2.getDeck()));
 	}
 	
-
 }
