@@ -69,6 +69,7 @@ public class Pokemon extends Card {
 	}
 
 	public void removeEnergy(ArrayList<EnergyCard> energy){
+		
 	}
 
 	public void setBasePokemonName(String basePokemonName) {

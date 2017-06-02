@@ -164,7 +164,9 @@ public class Player {
     }
     
     //TODO
-    public void evolvePokemon(Pokemon basePokemon, Pokemon evolvedPokemon){}
+    public void evolvePokemon(Pokemon basePokemon, Pokemon evolvedPokemon){
+    	
+    }
     
     /**
      * Allows player to attach an Energy card onto

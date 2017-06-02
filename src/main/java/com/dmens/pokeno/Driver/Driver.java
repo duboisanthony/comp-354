@@ -64,25 +64,27 @@ public class Driver {
                 GameBoard board = new GameBoard();
                 board.setVisible(true);
                 
-                EnergyCard electric = new EnergyCard("ElecEnergy", "Electric");
+//                EnergyCard electric = new EnergyCard("ElecEnergy", "Electric");
+//                
+//                ArrayList<String> categories = new ArrayList<String>();
+//                categories.add("Normal");
+//                categories.add("Electric");
+//                
+//                ArrayList<Ability> abilities = new ArrayList<Ability>();
+//                Ability tackle = new Ability("Tackle\nDeals 10 damage");
+//                abilities.add(tackle);
+//                
+//                Pokemon pikachu = new Pokemon("Pikachu", categories, 50, 2, abilities);
+//                
+//                board.updateBoard(pikachu, pikachu, 6, 4, 5, "Player play cards");
+//                
+//                board.addCardToHand(electric, true);
+//                board.addCardToHand(pikachu, true);
+//                
+//                board.addCardToBench(pikachu, false);
+//                board.update();
                 
-                ArrayList<String> categories = new ArrayList<String>();
-                categories.add("Normal");
-                categories.add("Electric");
                 
-                ArrayList<Ability> abilities = new ArrayList<Ability>();
-                Ability tackle = new Ability("Tackle\nDeals 10 damage");
-                abilities.add(tackle);
-                
-                Pokemon pikachu = new Pokemon("Pikachu", categories, 50, 2, abilities);
-                
-                board.updateBoard(pikachu, pikachu, 6, 4, 5, "Player play cards");
-                
-                board.addCardToHand(electric, true);
-                board.addCardToHand(pikachu, true);
-                
-                board.addCardToBench(pikachu, false);
-                board.update();
                 
 		// Main game loop
 		/*
@@ -94,12 +96,12 @@ public class Driver {
 		
 		
 		//Uncomment to see test-run in console. 
-		/*System.out.println("\nTest Run: PokemonNoGo");
+		System.out.println("\nTest Run: PokemonNoGo");
 		System.out.println("Print out the Hand of the First Player...");
 		for(int i = 0; i < mPlayers.get(0).getHand().size(); ++i){
 			System.out.println(mPlayers.get(0).getHand().get(i));
 			
-		}*/
+		}
 		
 		
 		//Clean up	
