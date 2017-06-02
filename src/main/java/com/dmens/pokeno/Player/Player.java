@@ -1,6 +1,7 @@
 package com.dmens.pokeno.Player;
 
 import com.dmens.pokeno.Card.*;
+import com.dmens.pokeno.Driver.Driver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,9 +23,13 @@ public class Player {
     private ArrayList<Card> mRewards = null;
     private ArrayList<Card> mDiscards = null;
     
+    private Player opponent;
     private boolean mIsReadyToStart = false;
+    
+    protected boolean humanPlayer;
 
     public Player() {
+        humanPlayer = true;
     }
     
     public Player(ArrayList<Card> deckList) {
@@ -33,6 +38,7 @@ public class Player {
     	mHand = new ArrayList<Card>();
     	mRewards = new ArrayList<Card>();
     	mDiscards = new ArrayList<Card>();
+        humanPlayer = true;
     }
 
     public Pokemon getActivePokemon() {
@@ -73,6 +79,9 @@ public class Player {
     		Card card = mDeck.get(mDeck.size() - 1);
         	mDeck.remove(card);
         	mHand.add(card);
+                
+                if (humanPlayer && mIsReadyToStart)
+                    Driver.board.addCardToHand(card, humanPlayer);
     	}
     }
     
@@ -102,6 +111,12 @@ public class Player {
         	mRewards.add(card);
     	}
     }
+
+    public void setOpponent(Player enemy)
+    {
+        opponent = enemy;
+    }
+
    
     /**
      * Sets a selected Pokemon to be the
@@ -110,7 +125,9 @@ public class Player {
      * @param activePokemon
      */
     public void setActivePokemon(Pokemon activePokemon){
-    	mActivePokemon = activePokemon; 
+    	mActivePokemon = activePokemon;
+        //if (humanPlayer)
+        Driver.board.setActivePokemon(activePokemon, humanPlayer);
     }
    
 
@@ -124,6 +141,8 @@ public class Player {
     public void benchPokemon(Pokemon benchPokemon){
     	assert(mBenchedPokemon.size() < 5);
     	mBenchedPokemon.add(benchPokemon);
+        if (humanPlayer)
+            Driver.board.addCardToBench(benchPokemon, humanPlayer);
     }
     
     /**
@@ -141,6 +160,14 @@ public class Player {
     	return pickedCard;
     }
     
+    public void useActivePokemon(int ability)
+    {
+        mActivePokemon.useAbility(ability, opponent.getActivePokemon());
+        Driver.board.updateActivePokemon(opponent);
+    }
+    
+    public void Mulligan(){}
+
     // for checking if player should declare a mulligan on their starting hand
     public boolean hasBasicPokemon(){
         for(Card card : mHand)
@@ -149,6 +176,11 @@ public class Player {
             if(card.getClass() == Pokemon.class && ((Pokemon)card).getBasePokemonName().equals(card.getName()))
             {
                 mIsReadyToStart = true;
+                for(int i = mHand.size() - 1; i >= 0; --i)
+                {
+                    Card cardToShow = mHand.get(i);
+                    Driver.board.addCardToHand(cardToShow, humanPlayer);
+                }
                 return true;
             }
         }
@@ -160,7 +192,23 @@ public class Player {
 
     public void pickCard(){}
 
-    public void useCard(Card card){}
+    public void useCard(Card card)
+    {
+        if (card instanceof Pokemon)
+        {
+            if(mActivePokemon == null)
+            {
+                setActivePokemon((Pokemon)card);
+            }
+            else
+                benchPokemon((Pokemon)card);
+        }
+        if (card instanceof EnergyCard)
+        {
+            //mActivePokemon.addEnergy((EnergyCard) card);
+        }
+        mHand.remove(card);
+    }
 
     /**
      * Allows player to retreat active Pokemon
