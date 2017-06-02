@@ -1,8 +1,7 @@
 package com.dmens.pokeno.Ability;
 
 import com.dmens.pokeno.Condition.Condition;
-import com.dmens.pokeno.Effect.Damage;
-import com.dmens.pokeno.Effect.Effect;
+import com.dmens.pokeno.Effect.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,6 +45,9 @@ public class Ability {
     	return this.mEffects;
     }
     
+    // should be generic and return the class type that you ask for as a parameter
+    //getSpecificEffect(which one)
+    
     // Assumption is that there is only one damage right now
     public Damage getDamageEffect()
     {
@@ -54,6 +56,32 @@ public class Ability {
     	   if(effect.getClass() == Damage.class)
     	   {
     		   return (Damage) effect;
+    	   }
+    	}
+    	 return null;
+    }
+    
+    // Assumption is that there is only one damage right now
+    public Heal getHealEffect()
+    {
+    	for (Effect effect: mEffects)
+    	{
+    	   if(effect.getClass() == Heal.class)
+    	   {
+    		   return (Heal) effect;
+    	   }
+    	}
+    	 return null;
+    }
+    
+    // Assumption is that there is only one damage right now
+    public ApplyStatus getApplyStatusEffect()
+    {
+    	for (Effect effect: mEffects)
+    	{
+    	   if(effect.getClass() == ApplyStatus.class)
+    	   {
+    		   return (ApplyStatus) effect;
     	   }
     	}
     	 return null;
