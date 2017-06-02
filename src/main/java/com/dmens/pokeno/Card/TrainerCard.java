@@ -22,6 +22,14 @@ public class TrainerCard extends Card {
 		this.mAbilities = abilities;
 	}
 	
+	public String getCategory() {
+		return this.mCategory;
+	}
+	
+	public ArrayList<Ability> getAbilities() {
+		return this.mAbilities;
+	}
+	
 	public String toString()
 	{
 		StringBuilder abilitiesAsList = new StringBuilder();
