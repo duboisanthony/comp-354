@@ -54,14 +54,14 @@ public class Driver {
 		// Set up player's hand and rewards
 		for(int i = 0; i < mPlayers.size(); ++i) {
 			Player currentPlayer = mPlayers.get(i);
-			currentPlayer.drawCardsFromDeck(6);
+			currentPlayer.drawCardsFromDeck(7);
 			//TODO: validate cards in hand for Mulligans here
 			//TODO: do we draw cards first or set up the rewards deck first?
 			currentPlayer.setUpRewards();
 		}
 		
                 //Uncomment to see example board
-                GameBoard board = new GameBoard();
+                /*GameBoard board = new GameBoard();
                 board.setVisible(true);
                 
                 EnergyCard electric = new EnergyCard("ElecEnergy", "Electric");
@@ -82,7 +82,7 @@ public class Driver {
                 board.addCardToHand(pikachu, true);
                 
                 board.addCardToBench(pikachu, false);
-                board.update();
+                board.update();*/
                 
 		// Main game loop
 		/*
@@ -91,6 +91,17 @@ public class Driver {
 			// TODO: decide whether there is a winner
 		}
 		*/
+		
+		
+		//Uncomment to see test-run in console. 
+		
+		System.out.println("\nTest Run: PokemonNoGo");
+		System.out.println("Print out the Hand of the First Player...");
+		for(int i = 0; i < mPlayers.get(0).getHand().size(); ++i){
+			System.out.println(mPlayers.get(0).getHand().get(i));
+			
+		}
+		
 		
 		//Clean up	
 	}
