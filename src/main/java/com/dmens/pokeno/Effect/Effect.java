@@ -1,7 +1,9 @@
 package com.dmens.pokeno.Effect;
 
-/**
- * Created by Devin on 2017-05-26.
+/*
+ * Effect interface
+ *
+ * @author James
  */
 public interface Effect 
 {
