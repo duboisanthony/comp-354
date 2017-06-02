@@ -7,6 +7,7 @@ import com.dmens.pokeno.Utils.*;
 import com.dmens.pokeno.Player.*;
 
 import java.util.*;
+import javax.swing.JOptionPane;
 
 public class Driver {
 
@@ -64,7 +65,7 @@ public class Driver {
                                 currentPlayer.drawCardsFromDeck(6);
                                 if(!currentPlayer.hasBasicPokemon())
                                 {
-                                    System.out.println("Player " + i + " has declared a Mulligan");
+                                    JOptionPane.showMessageDialog(null, "Player " + i + " has declared a Mulligan");
                                     playersDeclaringMulligan.add(currentPlayer);
                                 }
                             }
@@ -73,8 +74,9 @@ public class Driver {
                     {
                         boolean offerDrawCard = playersDeclaringMulligan.size() != mPlayers.size();
                         
-                        for(Player currentPlayer : mPlayers)
+                        for(int i = 0; i < mPlayers.size(); i++)
                         {
+                            Player currentPlayer = mPlayers.get(i);
                             if(playersDeclaringMulligan.contains(currentPlayer))
                             {
                                 currentPlayer.putHandBackToDeck();
@@ -84,6 +86,7 @@ public class Driver {
                             {
                                 // CG - should we actually ask, or just assume they will always take...?
                                 // CG - we would have to add a prompt in the UI then...
+                                JOptionPane.showMessageDialog(null, "Player " + i + " receives an extra card.");
                                 currentPlayer.drawCardsFromDeck(1);
                             }
                         }
