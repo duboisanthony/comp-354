@@ -100,8 +100,6 @@ public class Player {
         	mRewards.add(card);
     	}
     }
-    
-    public void Mulligan(){}
    
     /**
      * Sets a selected Pokemon to be the
