@@ -3,6 +3,7 @@ package com.dmens.pokeno.CardTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class CardTest {
 	static String mAbilityPoundTarget = "opponent-active";
 	static int mAbilityPoundValue = 10;
 
+	@Ignore
 	@Test
     public void cardTest(){
 
@@ -75,6 +77,16 @@ public class CardTest {
         Assert.assertEquals(froakie.getCategories(), mPokemonFroakieCategories);
         Assert.assertEquals(froakie.getHP(), mPokemonFroakieHP);
         Assert.assertEquals(froakie.getRetreatCost(), mPokemonFroakieRetreatCost);
+
+        froakie.setConfused(true);
+        Assert.assertEquals(true, froakie.isConfused());
+        froakie.setParalyzed(true);
+        Assert.assertEquals(true, froakie.isParalyzed());
+        froakie.setParalyzed(true);
+        Assert.assertEquals(true, froakie.isPoisoned());
+        froakie.setParalyzed(true);
+        Assert.assertEquals(true, froakie.isParalyzed());
+
 
     }
 

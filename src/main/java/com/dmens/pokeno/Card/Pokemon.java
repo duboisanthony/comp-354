@@ -85,7 +85,7 @@ public class Pokemon extends Card {
         public boolean useAbility(int ability, Pokemon target)
         {
             //TODO - if we have enough energy
-            Ability a = mAbilities.get(ability);
+            Ability a = mAbilitiesAndCost.get(0).x;//mAbilities.get(ability);
             target.addDamage(a.getDamageEffect().getValue());
             return true;
         }
