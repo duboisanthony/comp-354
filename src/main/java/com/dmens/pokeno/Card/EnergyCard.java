@@ -3,6 +3,8 @@ package com.dmens.pokeno.Card;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.dmens.pokeno.Effect.Damage;
+
 public class EnergyCard extends Card {
 
     private static final Logger LOG = LogManager.getLogger(EnergyCard.class);
@@ -15,14 +17,12 @@ public class EnergyCard extends Card {
 		this.mCategory = category;
 	}
 
-	public EnergyCard(String description){}
-
 	public String getCategory() {
 		return this.mCategory;
 	}
 	
 	public String toString()
 	{
-		return String.format("|ENERGY CARD|\n|%s|\n||%s||\n", this.getName(), this.mCategory);
+		return String.format("%s:\t\tNAME: %s\t\tCAT:%s\n", EnergyCard.class, this.getName(), this.mCategory);
 	}
 }

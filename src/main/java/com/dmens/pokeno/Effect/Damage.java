@@ -11,27 +11,26 @@ public class Damage implements Effect {
 		this.mValue = val;		
 	}
 	
-	public String GetTarget()
+	public String getTarget()
 	{
 		return this.mTarget;
 	}
 	
-	public int GetValue()
+	public int getValue()
 	{
 		return this.mValue;
 	}
 
 	@Override
-	public void Execute() 
+	public void execute() 
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void GetInformation()
+	public String toString()
 	{
-		// TODO Auto-generated method stub
-		
+		return String.format("%s:\t\tTAR: %s\t\tVAL:%d", Damage.class, this.mTarget, this.mValue);
 	}	
 }

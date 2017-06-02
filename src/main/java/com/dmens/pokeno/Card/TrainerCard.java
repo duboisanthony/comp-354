@@ -1,6 +1,8 @@
 package com.dmens.pokeno.Card;
 
 import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.Effect.Effect;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,9 +21,7 @@ public class TrainerCard extends Card {
 		this.mCategory = category;
 		this.mAbilities = abilities;
 	}
-
-	public TrainerCard(String description){}
-
+	
 	public String getCategory() {
 		return this.mCategory;
 	}
@@ -32,7 +32,12 @@ public class TrainerCard extends Card {
 	
 	public String toString()
 	{
-		//TODO: we need to display the content of abilities not its reference
-		return String.format("|TRAINER CARD|\n|%s|\n||%s||\n|%s|\n", this.getName(), this.mCategory, this.mAbilities);
+		StringBuilder abilitiesAsList = new StringBuilder();
+		for (Ability ability: mAbilities)
+		{
+			abilitiesAsList.append("--" + ability.toString() + "\n");
+		}
+		
+		return String.format("%s:\t\tNAME: %s\t\tCAT:%s\n%s", TrainerCard.class, this.getName(), this.mCategory, abilitiesAsList.toString());
 	}
 }
