@@ -23,6 +23,17 @@ public class Damage implements Effect {
 	}
 	
 	/*
+	 * Copy Constructor
+	 * 
+	 * @param		d		Damage Effect.
+	 */
+	public Damage(Damage d)
+	{
+		this.mTarget = d.mTarget;
+		this.mValue = d.mValue;		
+	}
+	
+	/*
      * Get the target of this Effect.
      * 
      * @return		The target as a string.
@@ -53,5 +64,15 @@ public class Damage implements Effect {
 	public String toString()
 	{
 		return String.format("%s:\t\tTAR: %s\t\tVAL:%d", Damage.class, this.mTarget, this.mValue);
-	}	
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		Damage d = (Damage) obj;
+		if(d.mTarget.equals(this.mTarget) && d.mValue == this.mValue)
+			return true;
+		
+		return false;
+	}
 }
