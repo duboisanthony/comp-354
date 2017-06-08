@@ -25,4 +25,9 @@ public class EnergyCard extends Card {
 	{
 		return String.format("%s:\t\tNAME: %s\t\tCAT:%s\n", EnergyCard.class, this.getName(), this.mCategory);
 	}
+
+	@Override
+	public boolean isType(CardTypes c) {
+		return (c == CardTypes.ENERGY) ? true : false;
+	}
 }

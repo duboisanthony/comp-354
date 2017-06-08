@@ -13,7 +13,7 @@ public class AIPlayer extends Player {
 
     private static final Logger LOG = LogManager.getLogger(AIPlayer.class);
 
-	public AIPlayer(ArrayList<Card> deckList) {
+	public AIPlayer(Deck deckList) {
 		super(deckList);
                 humanPlayer = false;
 	}

@@ -40,4 +40,9 @@ public class TrainerCard extends Card {
 		
 		return String.format("%s:\t\tNAME: %s\t\tCAT:%s\n%s", TrainerCard.class, this.getName(), this.mCategory, abilitiesAsList.toString());
 	}
+	
+	@Override
+	public boolean isType(CardTypes c) {
+		return (c == CardTypes.TRAINER) ? true : false;
+	}
 }
