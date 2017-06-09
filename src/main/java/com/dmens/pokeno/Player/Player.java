@@ -57,7 +57,7 @@ public class Player {
         return mBenchedPokemon;
     }
 
-    public CardContainer getHand() {
+    public Hand getHand() {
         return mHand;
     }
 

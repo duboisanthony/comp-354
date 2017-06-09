@@ -57,17 +57,14 @@ public class Driver {
 		Player adversaryPlayer = new Player(mSecondDeck);
 		homePlayer.setOpponent(adversaryPlayer);
 		adversaryPlayer.setOpponent(homePlayer);
+		
 		mPlayers = new ArrayList<Player>();
 		mPlayers.add(homePlayer);
 		mPlayers.add(adversaryPlayer);
-		
-        boolean playersReady = false;
-        ArrayList<Player> playersDeclaringMulligan = new ArrayList<Player>();
         
         board = new GameBoard();
         board.setVisible(true);
         
-        // Set up player's hand and rewards
         boolean readyToStart = true;
         do
         {
@@ -88,7 +85,9 @@ public class Driver {
             
         // Repeat until no more mulligans
 		}while(!readyToStart);
+        
         mPlayers.forEach(currentPlayer->{ currentPlayer.setUpRewards(); });
+        
         AIPlayer opp = (AIPlayer)mPlayers.get(1);
         opp.startPhase();
 		
