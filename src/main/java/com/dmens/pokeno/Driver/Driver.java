@@ -1,12 +1,12 @@
 package com.dmens.pokeno.Driver;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.swing.JOptionPane;
 
 import com.dmens.pokeno.Board.GameBoard;
 import com.dmens.pokeno.Card.Card;
-import com.dmens.pokeno.Card.Pokemon;
 import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Player.AIPlayer;
 import com.dmens.pokeno.Player.Player;
@@ -49,7 +49,8 @@ public class Driver {
 			System.out.println("Second Deck is invalid");
 			// TODO: how do we handle invalid deck?
 		}
-		
+		System.out.println(mFirstDeck.size());
+		System.out.println(mSecondDeck.size());
 		// Create Players and assign decks
 		// TODO: we need to allow player to choose his deck or randomly assign decks
 		System.out.println("Creating players and assigning decks...");
@@ -64,15 +65,17 @@ public class Driver {
         
         board = new GameBoard();
         board.setVisible(true);
-        
-        boolean readyToStart = true;
+        System.out.println(homePlayer.getDeck().size());
+        AtomicReference<Boolean> readyToStart = new AtomicReference<>(true);
         do
         {
         	// Draw Cards and check for mulligans
+        	System.out.println(mPlayers.get(0).getDeck().size());
         	mPlayers.stream()
-        	.filter(player->player.getIsReadyToStart())
+        	.filter(player->!player.getIsReadyToStart())
         	.forEach(player-> {
-        		board.displayHand(player.drawCardsFromDeck(6));
+        		System.out.println(player.getDeck().size());
+        		board.updateHand(player.drawCardsFromDeck(6), player instanceof AIPlayer);
         		player.checkIfPlayerReady();
         	});
             // Execute mulligans
@@ -80,11 +83,11 @@ public class Driver {
             .filter(player->player.isInMulliganState())
             .forEach(player->{
             	player.mulligan();
-            	readyToStart = false;
+            	readyToStart.set(false);;
             });
             
         // Repeat until no more mulligans
-		}while(!readyToStart);
+		}while(!readyToStart.get());
         
         mPlayers.forEach(currentPlayer->{ currentPlayer.setUpRewards(); });
         
@@ -94,12 +97,24 @@ public class Driver {
 		System.out.println("\nTest Run: PokemonNoGo");
 		System.out.println("Print out the Hand of the First Player...");
 		for(int i = 0; i < mPlayers.get(0).getHand().size(); ++i){
-			System.out.println(mPlayers.get(0).getHand().get(i));
+			System.out.println(mPlayers.get(0).getHand().getCards().get(i));
 		}
 			
 		
 		
 		//Clean up	
+	}
+	
+	public static void useCardForPlayer(Card card, int player){
+		mPlayers.get(player).useCard(card);
+	}
+	
+	public static void useActivePokemonForPlayer(int player, int ability){
+		mPlayers.get(player).useActivePokemon(ability);
+	}
+	
+	public static void startAITurn(){
+		mPlayers.get(1).startTurn();
 	}
 	
 	public static void displayMessage(String msg){

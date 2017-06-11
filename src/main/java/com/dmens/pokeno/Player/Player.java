@@ -42,6 +42,7 @@ public class Player {
     
     public Player(Deck deckList) {
     	mDeck = deckList;
+    	System.out.println(mDeck.size());
     	mBenchedPokemon = new ArrayList<Pokemon>();
     	mHand = new Hand();
     	mRewards = new CardContainer();
@@ -78,14 +79,12 @@ public class Player {
     }
     
     //NOTE: Size of mHand should be at most 7. 
-    public CardContainer drawCardsFromDeck(int numOfCards) {
+    public Hand drawCardsFromDeck(int numOfCards) {
     	assert numOfCards >= 0;
     	assert mDeck.size() >= numOfCards;
     	
 		mHand.addCards(mDeck.draw(numOfCards));
         return mHand;
-        if (humanPlayer && mIsReadyToStart)
-            Driver.board.addCardToHand(card, humanPlayer);
     }
     
     public void startTurn()
@@ -229,7 +228,7 @@ public class Player {
         }
         if (card instanceof EnergyCard)
             mActivePokemon.addEnergy((EnergyCard) card);
-        mHand.remove(card);
+        mHand.getCards().remove(card);
     }
 
     /**
