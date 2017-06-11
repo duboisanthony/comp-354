@@ -1,11 +1,12 @@
 package com.dmens.pokeno.Deck;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import com.dmens.pokeno.Card.Card;
 
 public class CardContainer {
-	protected static ArrayList<Card> cards;
+	protected ArrayList<Card> cards;
 	
 	public CardContainer(){
 		cards = new ArrayList<Card>();
@@ -37,20 +38,19 @@ public class CardContainer {
 	 * @param card
 	 */
 	public void addCard(Card c){
-		cards.add(c);
+		cards.add(0, c);
 	}
 	
 	/**
 	 * Add multiple cards to container
 	 * @param cardsToAdd
 	 */
-	public void addCards(Card[] cardsToAdd){
-		cards.addAll(cards);
+	public void addCards(Collection<? extends Card> cardsToAdd){
+		cards.addAll(cardsToAdd);
 	}
 	
-	public Card[] dumpCards(){
-		Card[] dump = new Card[size()];
-		cards.toArray(dump);
+	public ArrayList<Card> dumpCards(){
+		ArrayList<Card> dump = cards;
 		cards = new ArrayList<Card>();
 		return dump;
 	}

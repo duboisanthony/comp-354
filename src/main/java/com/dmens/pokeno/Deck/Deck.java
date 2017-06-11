@@ -1,5 +1,6 @@
 package com.dmens.pokeno.Deck;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 import com.dmens.pokeno.Card.Card;
@@ -16,10 +17,10 @@ public class Deck extends CardContainer {
 	 * @param n
 	 * @return array of cards
 	 */
-	public Card[] draw(int n){
-		Card[] drawnCards = new Card[n];
+	public ArrayList<Card> draw(int n){
+		ArrayList<Card> drawnCards = new ArrayList<Card>(n);
 		for(int i = 0; i < n; i++){
-			drawnCards[i] = super.pickCard();
+			drawnCards.add(super.pickCard());
 		}
 		return drawnCards;
 	}

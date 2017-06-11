@@ -1,26 +1,23 @@
 package com.dmens.pokeno.ParserTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Test;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.EnergyCard;
 import com.dmens.pokeno.Card.Pokemon;
 import com.dmens.pokeno.Card.TrainerCard;
+import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Utils.Parser;
 
 public class ParserTest {
@@ -80,7 +77,7 @@ public class ParserTest {
         LOG.info("Start running ParserLoadCardsTest...");
 		ArrayList<String> validCardsContent = new ArrayList<String>();
 		validCardsContent.add("Pokémon Center Lady:trainer:cat:supporter:1");
-		validCardsContent.add("Doduo:pokemon:cat:basic:cat:colorless:60:retreat:cat:colorless:1:attacks:cat:colorless:1:2,cat:colorless:1:3");
+		validCardsContent.add("Machop:pokemon:cat:basic:cat:colorless:60:retreat:cat:colorless:1:attacks:cat:colorless:1:2,cat:colorless:1:3");
 		validCardsContent.add("Fight:energy:cat:fight");
 		
 		try{
@@ -114,7 +111,7 @@ public class ParserTest {
         LOG.info("Start running ParserLoadAbilitiesTest...");
 		ArrayList<String> validAbilitiesContent = new ArrayList<String>();
 		validAbilitiesContent.add("Rain Splash:dam:target:opponent-active:20");
-		validAbilitiesContent.add("Doduo Delivery:draw:2");
+		validAbilitiesContent.add("Machop Delivery:draw:2");
 		validAbilitiesContent.add("Mach Cross:dam:target:opponent-active:60");
 		
 		try{
@@ -149,7 +146,7 @@ public class ParserTest {
         
         ArrayList<String> validCardsContent = new ArrayList<String>();
 		validCardsContent.add("Pokémon Center Lady:trainer:cat:supporter:1");
-		validCardsContent.add("Doduo:pokemon:cat:basic:cat:colorless:60:retreat:cat:colorless:1:attacks:cat:colorless:1:2,cat:colorless:1:3");
+		validCardsContent.add("Machop:pokemon:cat:basic:cat:fight:70:retreat:cat:colorless:2:attacks:cat:fight:1:2");
 		validCardsContent.add("Fight:energy:cat:fight");
 		
 		try{
@@ -167,7 +164,7 @@ public class ParserTest {
 
 		ArrayList<String> validAbilitiesContent = new ArrayList<String>();
 		validAbilitiesContent.add("Rain Splash:dam:target:opponent-active:20");
-		validAbilitiesContent.add("Doduo Delivery:draw:2");
+		validAbilitiesContent.add("Knuckle Punch:dam:target:opponent-active:10");
 		validAbilitiesContent.add("Mach Cross:dam:target:opponent-active:60");
 		
 		try{
@@ -199,32 +196,31 @@ public class ParserTest {
 			fail("Failed to create a valid deck file");
 		}
 		
-		ArrayList<Card> deckContent = mParserToTest.DeckCreation(mValidDeck);
+		Deck deckContent = mParserToTest.DeckCreation(mValidDeck);
 		Assert.assertNotNull(deckContent);
 		Assert.assertEquals(validDeckContent.size(), deckContent.size());
 		
         LOG.info("Start validating each card in the deck...");
-		Card card = deckContent.get(0);
-/*		Assert.assertEquals(card instanceof Pokemon, true);
+        Card card = deckContent.draw();
+		Assert.assertEquals(card instanceof Pokemon, true);
 		Pokemon pokemonCard = (Pokemon)card;
-		Assert.assertEquals(pokemonCard.getName(), "Doduo");
-		Assert.assertEquals(pokemonCard.getHP(), 60);
+		Assert.assertEquals(pokemonCard.getName(), "Machop");
+		Assert.assertEquals(pokemonCard.getHP(), 70);
 		Assert.assertEquals(pokemonCard.getCategories().get(0), "basic");
-		Assert.assertEquals(pokemonCard.getCategories().get(1), "colorless");
-		Assert.assertEquals(pokemonCard.getRetreatCost(), 1);
-		*/
+		Assert.assertEquals(pokemonCard.getCategories().get(1), "fight");
+		Assert.assertEquals(pokemonCard.getRetreatCost(), 2);
 		// TODO: validate its abilities
-
 		
-		card = deckContent.get(1);
+		// TODO Implement trainer cards
+		card = deckContent.draw();
 		/*Assert.assertEquals(card instanceof TrainerCard, true);
 		TrainerCard trainerCard = (TrainerCard)card;
 		Assert.assertEquals(trainerCard.getName(), "Pokémon Center Lady");
-		Assert.assertEquals(trainerCard.getCategory(), "supporter");
-		*/
+		Assert.assertEquals(trainerCard.getCategory(), "supporter");*/
+
 		// TODO: validate its ability
 
-		card = deckContent.get(2);
+		card = deckContent.draw();
 		Assert.assertEquals(card instanceof EnergyCard, true);
 		EnergyCard energyCard = (EnergyCard)card;
 		Assert.assertEquals(energyCard.getName(), "Fight");

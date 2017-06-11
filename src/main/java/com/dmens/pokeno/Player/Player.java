@@ -190,15 +190,21 @@ public class Player {
     }
     
     public void mulligan(){
-    	this.putHandBackToDeck();
-        this.shuffleDeck();
-        opponent.notifyMulligan();
+    	if(mHand.hasBasicPokemon()){
+    		mIsReadyToStart = true;
+    		mIsInMulliganState = false;
+    	} else{
+    		mIsReadyToStart = false;
+    		this.putHandBackToDeck();
+        	this.shuffleDeck();
+        	opponent.notifyMulligan();
+    	}
     }
     
     private void notifyMulligan(){
     	 int reply = JOptionPane.showConfirmDialog(null, "Would you like to draw a card?", "Mulligan", JOptionPane.YES_NO_OPTION);
          if (reply == JOptionPane.YES_OPTION){
-          	opponent.drawCardsFromDeck(1);
+          	this.drawCardsFromDeck(1);
           	Driver.displayMessage("Player received an extra card.");
          }
     }
@@ -211,6 +217,10 @@ public class Player {
     		mIsReadyToStart = false;
     		declareMulligan();
     	}
+    }
+    
+    public boolean hasBasicPokemon(){
+    	return this.mHand.hasBasicPokemon();
     }
     
     public boolean getIsReadyToStart(){return mIsReadyToStart;}

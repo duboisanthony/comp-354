@@ -18,9 +18,6 @@ public class Driver {
 	private static final String LOCATION_SECOND_DECK = "data/deck2.txt";
 	private static final String LOCATION_CARDS = "data/cards.txt";
 	private static final String LOCATION_ABILITIES = "data/abilities.txt";
-
-	private static Deck mFirstDeck = null;
-	private static Deck mSecondDeck = null;
 	
 	public static ArrayList<Player> mPlayers = null;
 	
@@ -29,7 +26,8 @@ public class Driver {
     public static GameBoard board;
         
 	public static void main(String[] args) {
-		
+		Deck mFirstDeck = null;
+		Deck mSecondDeck = null;
 		// Parse Cards
 		System.out.println("Parsing cards and abilities...");
 		boolean result = Parser.Instance().LoadCards(LOCATION_CARDS);
@@ -55,7 +53,7 @@ public class Driver {
 		// TODO: we need to allow player to choose his deck or randomly assign decks
 		System.out.println("Creating players and assigning decks...");
 		Player homePlayer = new Player(mFirstDeck);
-		Player adversaryPlayer = new Player(mSecondDeck);
+		Player adversaryPlayer = new AIPlayer(mSecondDeck);
 		homePlayer.setOpponent(adversaryPlayer);
 		adversaryPlayer.setOpponent(homePlayer);
 		
@@ -83,7 +81,7 @@ public class Driver {
             .filter(player->player.isInMulliganState())
             .forEach(player->{
             	player.mulligan();
-            	readyToStart.set(false);;
+            	readyToStart.set(player.getIsReadyToStart());;
             });
             
         // Repeat until no more mulligans
