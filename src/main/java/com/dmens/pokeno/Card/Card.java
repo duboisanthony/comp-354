@@ -15,6 +15,8 @@ public abstract class Card {
 		return this.mName;
 	}
 	
+	public abstract boolean isType(CardTypes c);
+	
 	@Override
 	public abstract String toString();
 }

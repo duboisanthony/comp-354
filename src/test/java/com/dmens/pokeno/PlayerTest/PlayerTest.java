@@ -1,13 +1,14 @@
 package com.dmens.pokeno.PlayerTest;
 
-import com.dmens.pokeno.Player.*;
-import com.dmens.pokeno.Utils.Parser;
-import com.dmens.pokeno.Card.*;
-
 import java.util.ArrayList;
 
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
+
+import com.dmens.pokeno.Card.Card;
+import com.dmens.pokeno.Deck.Deck;
+import com.dmens.pokeno.Player.Player;
+import com.dmens.pokeno.Utils.Parser;
 
 /**
  * Basic test class for the Player class. 
@@ -21,8 +22,8 @@ public class PlayerTest{
 	private static final String LOCATION_SECOND_DECK = "data/deck2.txt";
 	private static final String LOCATION_CARDS = "data/cards.txt";
 	private static final String LOCATION_ABILITIES = "data/abilities.txt";
-	private static ArrayList<Card> testDeck1 = new ArrayList<Card>();
-	private static ArrayList<Card> testDeck2 = new ArrayList<Card>();	
+	private static Deck testDeck1 = new Deck();
+	private static Deck testDeck2 = new Deck();	
 	
 	
 	@Test

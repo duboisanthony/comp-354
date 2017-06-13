@@ -1,12 +1,19 @@
 package com.dmens.pokeno.Player;
 
-import com.dmens.pokeno.Card.*;
-import com.dmens.pokeno.Driver.Driver;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import com.dmens.pokeno.Card.Card;
+import com.dmens.pokeno.Card.EnergyCard;
+import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.Deck.CardContainer;
+import com.dmens.pokeno.Deck.Deck;
+import com.dmens.pokeno.Deck.Hand;
+import com.dmens.pokeno.Driver.Driver;
 
 /**
  * Created by Devin on 2017-05-26.
@@ -18,13 +25,14 @@ public class Player {
 
     private Pokemon mActivePokemon = null;
     private ArrayList<Pokemon> mBenchedPokemon = null;
-    private ArrayList<Card> mHand = null;
-    private ArrayList<Card> mDeck = null;
-    private ArrayList<Card> mRewards = null;
-    private ArrayList<Card> mDiscards = null;
+    private Hand mHand = null;
+    private Deck mDeck = null;
+    private CardContainer mRewards = null;
+    private CardContainer mDiscards = null;
     
     private Player opponent;
     private boolean mIsReadyToStart = false;
+    private boolean mIsInMulliganState = false;
     
     protected boolean humanPlayer;
 
@@ -32,12 +40,13 @@ public class Player {
         humanPlayer = true;
     }
     
-    public Player(ArrayList<Card> deckList) {
+    public Player(Deck deckList) {
     	mDeck = deckList;
+    	System.out.println(mDeck.size());
     	mBenchedPokemon = new ArrayList<Pokemon>();
-    	mHand = new ArrayList<Card>();
-    	mRewards = new ArrayList<Card>();
-    	mDiscards = new ArrayList<Card>();
+    	mHand = new Hand();
+    	mRewards = new CardContainer();
+    	mDiscards = new CardContainer();
         humanPlayer = true;
     }
 
@@ -49,43 +58,33 @@ public class Player {
         return mBenchedPokemon;
     }
 
-    public ArrayList<Card> getHand() {
+    public Hand getHand() {
         return mHand;
     }
 
-    public ArrayList<Card> getDeck() {
+    public Deck getDeck() {
         return mDeck;
     }
 
-    public ArrayList<Card> getRewards() {
+    public CardContainer getRewards() {
         return mRewards;
     }
 
-    public ArrayList<Card> getDiscards() {
+    public CardContainer getDiscards() {
         return mDiscards;
     }
     
     public void shuffleDeck(){
-        Collections.shuffle(this.mDeck);
+       this.mDeck.shuffle();
     }
     
     //NOTE: Size of mHand should be at most 7. 
-    public void drawCardsFromDeck(int numOfCards) {
+    public Hand drawCardsFromDeck(int numOfCards) {
     	assert numOfCards >= 0;
     	assert mDeck.size() >= numOfCards;
     	
-    	// note that we are drawing from the end of the deck list for better performance
-    	for(int i = 0; i < numOfCards; ++i) {
-    		Card card = mDeck.get(mDeck.size() - 1);
-        	mDeck.remove(card);
-        	mHand.add(card);
-                
-                if (humanPlayer && mIsReadyToStart)
-                    Driver.board.addCardToHand(card, humanPlayer);
-                
-                if (card instanceof Pokemon && !humanPlayer)
-                    System.out.println("DrewPokemon");
-    	}
+		mHand.addCards(mDeck.draw(numOfCards));
+        return mHand;
     }
     
     public void startTurn()
@@ -103,27 +102,16 @@ public class Player {
     public void putHandBackToDeck(int index) {
     	assert (mHand != null && mHand.size() > 0);
     	
-    	Card card = mHand.get(index);
-    	mHand.remove(card);
-    	mDeck.add(card);
+    	mDeck.addCard(mHand.pickCardFromPosition(index));
     }
     // puts all cards from hand back to the deck
     public void putHandBackToDeck() {
     	assert (mHand != null && mHand.size() > 0);
-    	for(int i = mHand.size() - 1; i >= 0; --i) {
-        	Card card = mHand.get(i);
-        	mHand.remove(card);
-        	mDeck.add(card);
-    	}
+    	mDeck.addCards(mHand.dumpCards());
     }
     
     public void setUpRewards() {
-    	mRewards = new ArrayList<Card>();
-    	for(int i = 0; i < NUM_OF_REWARD_CARDS; ++i) {
-    		Card card = mDeck.get(mDeck.size() - 1);
-        	mDeck.remove(card);
-        	mRewards.add(card);
-    	}
+    	mRewards.addCards(mDeck.draw(NUM_OF_REWARD_CARDS));
     }
 
     public void setOpponent(Player enemy)
@@ -170,7 +158,7 @@ public class Player {
      */
     public Card pickCard(int pickedCardPosition){
     	assert(mHand !=null && mHand.size() > 0);
-    	Card pickedCard = mHand.get(pickedCardPosition);
+    	Card pickedCard = mHand.pickCardFromPosition(pickedCardPosition);
     	return pickedCard;
     }
     
@@ -192,26 +180,47 @@ public class Player {
         }
     }
     
-    public void Mulligan(){}
+    private void declareMulligan(){
+    	mIsInMulliganState = true;
+    	Driver.displayMessage(((humanPlayer) ? "Human " : "AI ") + "Player has declared a Mulligan");
+    }
+    
+    public boolean isInMulliganState(){
+    	return mIsInMulliganState;
+    }
+    
+    public void mulligan(){
+    	if(mHand.hasBasicPokemon()){
+    		mIsReadyToStart = true;
+    		mIsInMulliganState = false;
+    	} else{
+    		mIsReadyToStart = false;
+    		this.putHandBackToDeck();
+        	this.shuffleDeck();
+        	opponent.notifyMulligan();
+    	}
+    }
+    
+    private void notifyMulligan(){
+    	 int reply = JOptionPane.showConfirmDialog(null, "Would you like to draw a card?", "Mulligan", JOptionPane.YES_NO_OPTION);
+         if (reply == JOptionPane.YES_OPTION){
+          	this.drawCardsFromDeck(1);
+          	Driver.displayMessage("Player received an extra card.");
+         }
+    }
 
     // for checking if player should declare a mulligan on their starting hand
+    public void checkIfPlayerReady(){
+    	if(mHand.hasBasicPokemon()){
+    		mIsReadyToStart = true;
+    	} else{
+    		mIsReadyToStart = false;
+    		declareMulligan();
+    	}
+    }
+    
     public boolean hasBasicPokemon(){
-        for(Card card : mHand)
-        {
-            // if is a Pokemon card and is the base Pokemon of the evolution line
-            if(card.getClass() == Pokemon.class && ((Pokemon)card).getBasePokemonName().equals(card.getName()))
-            {
-                mIsReadyToStart = true;
-                for(int i = mHand.size() - 1; i >= 0; --i)
-                {
-                    Card cardToShow = mHand.get(i);
-                    Driver.board.addCardToHand(cardToShow, humanPlayer);
-                }
-                return true;
-            }
-        }
-        
-        return false;
+    	return this.mHand.hasBasicPokemon();
     }
     
     public boolean getIsReadyToStart(){return mIsReadyToStart;}
@@ -223,17 +232,13 @@ public class Player {
         if (card instanceof Pokemon)
         {
             if(mActivePokemon == null)
-            {
-                setActivePokemon((Pokemon)card);
-            }
+            	setActivePokemon((Pokemon)card);
             else
                 benchPokemon((Pokemon)card);
         }
         if (card instanceof EnergyCard)
-        {
             mActivePokemon.addEnergy((EnergyCard) card);
-        }
-        mHand.remove(card);
+        mHand.getCards().remove(card);
     }
 
     /**
@@ -282,11 +287,10 @@ public class Player {
      */
     public void collectPrize(int prizeCardPosition){
     	assert(mRewards !=null);
-    	Card prizeCard = mRewards.get(prizeCardPosition);
-    	mHand.add(prizeCard);
-    	mRewards.remove(prizeCard);
+    	Card card = mRewards.pickCardFromPosition(prizeCardPosition);
+    	mHand.addCard(card);
         if (humanPlayer && mIsReadyToStart)
-            Driver.board.addCardToHand(prizeCard, humanPlayer);
+            Driver.board.addCardToHand(card, humanPlayer);
         Driver.board.setRewardCount(mRewards.size(), humanPlayer);
         if (mRewards.size() <= 0)
         {

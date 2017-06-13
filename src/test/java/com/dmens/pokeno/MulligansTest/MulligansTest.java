@@ -5,22 +5,18 @@
  */
 package com.dmens.pokeno.MulligansTest;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
 import com.dmens.pokeno.Board.GameBoard;
-import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.EnergyCard;
 import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Driver.Driver;
 import com.dmens.pokeno.Player.Player;
-import com.dmens.pokeno.Utils.Parser;
-import java.util.ArrayList;
-import java.util.function.Predicate;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.Ignore;
 
 /**
  *
@@ -33,8 +29,8 @@ public class MulligansTest {
     public void TestBasicPokemonValidation()
     {
         Driver.board = new GameBoard();
-        ArrayList<Card> deck1 = new ArrayList<Card>();
-        ArrayList<Card> deck2 = new ArrayList<Card>();
+        Deck deck1 = new Deck();
+        Deck deck2 = new Deck();
         
         Pokemon basic = new Pokemon("Basic",null,1,1);
         assertNotNull(basic);
@@ -47,13 +43,13 @@ public class MulligansTest {
         EnergyCard notPokemon = new EnergyCard("what","ever");
         assertNotNull(notPokemon);
         
-        deck1.add(evolved);
-        deck1.add(notPokemon);
-        deck1.add(basic);
+        deck1.addCard(evolved);
+        deck1.addCard(notPokemon);
+        deck1.addCard(basic);
         
-        deck2.add(evolved);
-        deck2.add(notPokemon);
-        deck2.add(notPokemon);
+        deck2.addCard(evolved);
+        deck2.addCard(notPokemon);
+        deck2.addCard(notPokemon);
         
         Player player1 = new Player(deck1);
         assertNotNull(player1);

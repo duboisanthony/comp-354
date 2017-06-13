@@ -7,23 +7,25 @@ import org.apache.logging.log4j.Logger;
 
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.Deck.Deck;
+import com.dmens.pokeno.Deck.Hand;
 import com.dmens.pokeno.Driver.Driver;
 
 public class AIPlayer extends Player {
 
     private static final Logger LOG = LogManager.getLogger(AIPlayer.class);
 
-	public AIPlayer(ArrayList<Card> deckList) {
+	public AIPlayer(Deck deckList) {
 		super(deckList);
                 humanPlayer = false;
 	}
         
         public void startPhase()
         {
-            ArrayList<Card> mHand = getHand();
+            Hand mHand = getHand();
             for(int i = mHand.size() - 1; i >= 0; --i)
             {
-        	Card card = mHand.get(i);
+        	Card card = mHand.getCards().get(i);
                 if (card instanceof Pokemon)
                 {
                     useCard(card);

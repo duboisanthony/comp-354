@@ -5,17 +5,19 @@
  */
 package com.dmens.pokeno.Board;
 
-import com.dmens.pokeno.Card.Card;
-import com.dmens.pokeno.Card.Pokemon;
-import com.dmens.pokeno.Driver.Driver;
-import com.dmens.pokeno.Player.AIPlayer;
-import com.dmens.pokeno.Player.Player;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JButton;
+
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import com.dmens.pokeno.Card.Card;
+import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.Deck.Hand;
+import com.dmens.pokeno.Driver.Driver;
+import com.dmens.pokeno.Player.AIPlayer;
+import com.dmens.pokeno.Player.Player;
 
 /**
  *
@@ -49,6 +51,12 @@ public class GameBoard extends javax.swing.JFrame {
         repaint();
     }
     
+    public void updateHand(Hand hand, boolean player){
+    	hand.getCards().forEach(card->{
+    		addCardToHand(card, player);
+    	});
+    }
+    
     public void addCardToHand(Card card, boolean player)
     {
         JTextField newCard = new JTextField();
@@ -63,7 +71,7 @@ public class GameBoard extends javax.swing.JFrame {
             {
                 //player.useCard(card);
                 //if (the card is valid)
-                Driver.mPlayers.get(0).useCard(card);
+                Driver.useCardForPlayer(card, 0);
                 PlayerHandPanel.remove(newCard);
                 CardViewArea.setText("");
                 ViewDamageField.setText("");
@@ -909,13 +917,13 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_ViewLightningEnergyFieldActionPerformed
 
     private void PlayerAttack1BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack1BtnActionPerformed
-        Driver.mPlayers.get(0).useActivePokemon(0);
-        Driver.mPlayers.get(1).startTurn();
+        Driver.useActivePokemonForPlayer(0,0);
+        Driver.startAITurn();
     }//GEN-LAST:event_PlayerAttack1BtnActionPerformed
 
     private void PlayerAttack2BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack2BtnActionPerformed
-        Driver.mPlayers.get(0).useActivePokemon(1);
-        Driver.mPlayers.get(1).startTurn();
+        Driver.useActivePokemonForPlayer(0,1);
+        Driver.startAITurn();
     }//GEN-LAST:event_PlayerAttack2BtnActionPerformed
 
     private void PlayerRetreatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerRetreatBtnActionPerformed
@@ -923,7 +931,7 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_PlayerRetreatBtnActionPerformed
 
     private void PassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassBtnActionPerformed
-        Driver.mPlayers.get(1).startTurn();
+        Driver.startAITurn();
     }//GEN-LAST:event_PassBtnActionPerformed
 
     /**

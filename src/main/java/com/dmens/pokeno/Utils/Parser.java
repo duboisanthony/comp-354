@@ -1,14 +1,23 @@
 package com.dmens.pokeno.Utils;
-import com.dmens.pokeno.Ability.Ability;
-import com.dmens.pokeno.Card.*;
-import com.dmens.pokeno.Effect.*;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.*;
+import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.Card.Card;
+import com.dmens.pokeno.Card.EnergyCard;
+import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.Card.TrainerCard;
+import com.dmens.pokeno.Deck.Deck;
+import com.dmens.pokeno.Effect.ApplyStatus;
+import com.dmens.pokeno.Effect.Damage;
+import com.dmens.pokeno.Effect.Effect;
+import com.dmens.pokeno.Effect.Heal;
 
 /*
  * Parser object
@@ -378,11 +387,11 @@ public class Parser {
 		}
 	}
 	
-	public ArrayList<Card> DeckCreation(String deckLocation)
+	public Deck DeckCreation(String deckLocation)
 	{
 		assert mCardList != null;
 		
-		ArrayList<Card> deck = new ArrayList<Card>();
+		Deck deck = new Deck();
 		
 		try
 		{
@@ -391,7 +400,7 @@ public class Parser {
 			for (String line : deckNumbers)
 			{
 			    Card e = CreateCard(this.mCardList.get(Integer.parseInt(line) - 1));
-			    deck.add(e);
+			    deck.addCard(e);
 			}
 		}
 		catch (FileNotFoundException e)

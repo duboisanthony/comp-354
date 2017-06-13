@@ -153,4 +153,9 @@ public class Pokemon extends Card {
     public void evolvePokemon(Pokemon basePokemon){
 	    this.mDamage = basePokemon.getDamage();
     }
+    
+    @Override
+	public boolean isType(CardTypes c) {
+		return (c == CardTypes.POKEMON) ? true : false;
+	}
 }
