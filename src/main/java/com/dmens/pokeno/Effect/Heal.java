@@ -1,5 +1,6 @@
 package com.dmens.pokeno.Effect;
 
+import com.dmens.pokeno.Driver.Driver;
 /*
  * A Heal effect.
  *
@@ -10,6 +11,11 @@ public class Heal implements Effect {
 	private int mValue;
 	private String mTarget;
 	
+	// we have three possible targets to heal
+	private final String YOUR_ACTIVE = "your-active";
+	private final String CHOICE = "choice";
+	private final String SELF = "self";
+
 	/*
 	 * Constructor
 	 * 
@@ -56,7 +62,18 @@ public class Heal implements Effect {
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		if(mTarget.equals(YOUR_ACTIVE)) {
+			// heal the player's active pokement
+			if(Driver.getIsHomePlayerPlaying()) {
+				Driver.getHomePlayer().getActivePokemon().removeDamage(this.mValue);
+			} else {
+				Driver.getAIPlayer().getActivePokemon().removeDamage(this.mValue);
+			}
+		} else if (mTarget.equals(CHOICE)) {
+			// TODO: heal a pokemon of choice, need to get input from UI
+		} else if(mTarget.equals(SELF)) {
+			// TODO: heal the pokemon this card is attached to, specific to Floral Crown
+		}
 
 	}
 

@@ -19,10 +19,11 @@ public class Driver {
 	private static final String LOCATION_CARDS = "data/cards.txt";
 	private static final String LOCATION_ABILITIES = "data/abilities.txt";
 	
-	public static ArrayList<Player> mPlayers = null;
+	private static ArrayList<Player> mPlayers = null;
 	
 	private static boolean mGameOver = false;
-        
+	private static boolean mIsHomePlayerPlaying = false;
+	
     public static GameBoard board;
         
 	public static void main(String[] args) {
@@ -117,5 +118,21 @@ public class Driver {
 	
 	public static void displayMessage(String msg){
 		JOptionPane.showMessageDialog(null, msg);
+	}
+	
+	public static Player getHomePlayer() {
+		return mPlayers.get(0);
+	}
+	
+	public static Player getAIPlayer() {
+		return mPlayers.get(1);
+	}
+	
+	public static boolean getIsHomePlayerPlaying() {
+		return mIsHomePlayerPlaying;
+	}
+	
+	public static void setIsHomePlayerPlaying(boolean isPlaying) {
+		mIsHomePlayerPlaying = isPlaying;
 	}
 }

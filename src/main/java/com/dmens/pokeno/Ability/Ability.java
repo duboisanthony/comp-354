@@ -156,4 +156,15 @@ public class Ability {
     	
 		return String.format("%s:->%s\n%s", Ability.class, this.mName, effectsAsList.toString());
 	}
+    
+    public void performAbility() {
+    	for (Effect effect: mEffects) {
+    		effect.execute();
+    	}
+    	
+    	for (Condition condition: mConditions) {
+    		// TODO: wait until we decide how we are implementing conditions
+    		//condition.execute();
+    	}
+    }
 }

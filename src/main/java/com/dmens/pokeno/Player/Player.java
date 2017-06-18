@@ -7,9 +7,7 @@ import javax.swing.JOptionPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.dmens.pokeno.Card.Card;
-import com.dmens.pokeno.Card.EnergyCard;
-import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.Card.*;
 import com.dmens.pokeno.Deck.CardContainer;
 import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Deck.Hand;
@@ -93,7 +91,9 @@ public class Player {
         if (this instanceof AIPlayer)
         {
             AIPlayer ai = (AIPlayer)this;
+            Driver.setIsHomePlayerPlaying(false);
             ai.startPhase();
+            Driver.setIsHomePlayerPlaying(true);
             opponent.startTurn();
         }
     }
@@ -229,15 +229,17 @@ public class Player {
 
     public void useCard(Card card)
     {
-        if (card instanceof Pokemon)
+        if(card instanceof Pokemon)
         {
             if(mActivePokemon == null)
             	setActivePokemon((Pokemon)card);
             else
                 benchPokemon((Pokemon)card);
-        }
-        if (card instanceof EnergyCard)
+        } else if(card instanceof EnergyCard) {
             mActivePokemon.addEnergy((EnergyCard) card);
+        } else if(card instanceof TrainerCard) {
+        	((TrainerCard) card).use();
+        }
         mHand.getCards().remove(card);
     }
 

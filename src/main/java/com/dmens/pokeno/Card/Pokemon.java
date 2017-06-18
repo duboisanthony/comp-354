@@ -67,7 +67,17 @@ public class Pokemon extends Card {
             return false;
         }
 
-	public void removeDamage(int damage){}
+	public void removeDamage(int damageToRemove) {
+		if(damageToRemove < 0) {
+			return;
+		}
+		
+		if(damageToRemove > mDamage) {
+			mDamage = 0;
+			return;
+		}
+		mDamage -= damageToRemove;
+	}
 
 	public void addEnergy(EnergyCard energy){
 		mAttachedEnergy.add(energy);
@@ -82,13 +92,13 @@ public class Pokemon extends Card {
 		mBasePokemonName = basePokemonName;
 	}
 	
-        public boolean useAbility(int ability, Pokemon target)
-        {
-            //TODO - if we have enough energy
-            Ability a = mAbilitiesAndCost.get(0).x;//mAbilities.get(ability);
-            target.addDamage(a.getDamageEffect().getValue());
-            return true;
-        }
+    public boolean useAbility(int ability, Pokemon target)
+    {
+        //TODO - if we have enough energy
+        Ability a = mAbilitiesAndCost.get(0).x;//mAbilities.get(ability);
+        target.addDamage(a.getDamageEffect().getValue());
+        return true;
+    }
         
     public void setPoisoned(boolean poisoned) {
         this.mPoisoned = poisoned;

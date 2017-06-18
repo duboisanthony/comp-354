@@ -29,7 +29,7 @@ public class TrainerCard extends Card {
 	public ArrayList<Ability> getAbilities() {
 		return this.mAbilities;
 	}
-	
+
 	public String toString()
 	{
 		StringBuilder abilitiesAsList = new StringBuilder();
@@ -44,5 +44,11 @@ public class TrainerCard extends Card {
 	@Override
 	public boolean isType(CardTypes c) {
 		return (c == CardTypes.TRAINER) ? true : false;
+	}
+	
+	public void use() {
+		for (Ability ability: mAbilities) {
+			ability.performAbility();
+		}
 	}
 }
