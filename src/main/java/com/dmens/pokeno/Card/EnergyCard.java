@@ -30,4 +30,9 @@ public class EnergyCard extends Card {
 	public boolean isType(CardTypes c) {
 		return (c == CardTypes.ENERGY) ? true : false;
 	}
+
+	@Override
+	public CardTypes getType() {
+		return CardTypes.ENERGY;
+	}
 }

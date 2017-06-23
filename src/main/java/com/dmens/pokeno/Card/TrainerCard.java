@@ -51,4 +51,9 @@ public class TrainerCard extends Card {
 			ability.performAbility();
 		}
 	}
+
+	@Override
+	public CardTypes getType() {
+		return CardTypes.TRAINER;
+	}
 }

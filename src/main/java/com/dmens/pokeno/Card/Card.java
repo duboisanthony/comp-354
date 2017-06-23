@@ -17,6 +17,8 @@ public abstract class Card {
 	
 	public abstract boolean isType(CardTypes c);
 	
+	public abstract CardTypes getType();
+	
 	@Override
 	public abstract String toString();
 }

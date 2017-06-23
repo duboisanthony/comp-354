@@ -168,4 +168,9 @@ public class Pokemon extends Card {
 	public boolean isType(CardTypes c) {
 		return (c == CardTypes.POKEMON) ? true : false;
 	}
+
+	@Override
+	public CardTypes getType() {
+		return CardTypes.POKEMON;
+	}
 }

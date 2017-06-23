@@ -38,7 +38,7 @@ public class CardContainer {
 	 * @param card
 	 */
 	public void addCard(Card c){
-		cards.add(0, c);
+		cards.add(c);
 	}
 	
 	/**
@@ -55,7 +55,19 @@ public class CardContainer {
 		return dump;
 	}
 	
+	public Card viewCardInPosition(int pos){
+		return cards.get(pos);
+	}
+	
 	public int size(){
 		return cards.size();
+	}
+	
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		cards.forEach(card ->{
+			sb.append(card.getType()+": "+card.getName()+"\n");
+		});
+		return sb.toString();
 	}
 }
