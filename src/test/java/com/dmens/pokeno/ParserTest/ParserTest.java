@@ -182,9 +182,9 @@ public class ParserTest {
 		Assert.assertEquals(result, true);
 		
 		ArrayList<String> validDeckContent = new ArrayList<String>();
-		validDeckContent.add("2");
-		validDeckContent.add("1");
 		validDeckContent.add("3");
+		validDeckContent.add("1");
+		validDeckContent.add("2");
 		
 		try{
 		    PrintWriter writer = new PrintWriter(mLocationValidDeck, "UTF-8");
