@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import com.dmens.pokeno.Board.GameBoard;
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Deck.Deck;
+import com.dmens.pokeno.Deck.Hand;
 import com.dmens.pokeno.Player.AIPlayer;
 import com.dmens.pokeno.Player.Player;
 import com.dmens.pokeno.Utils.Parser;
@@ -48,8 +49,6 @@ public class Driver {
 			System.out.println("Second Deck is invalid");
 			// TODO: how do we handle invalid deck?
 		}
-		System.out.println(mFirstDeck.size());
-		System.out.println(mSecondDeck.size());
 		// Create Players and assign decks
 		// TODO: we need to allow player to choose his deck or randomly assign decks
 		System.out.println("Creating players and assigning decks...");
@@ -64,7 +63,6 @@ public class Driver {
         
         board = new GameBoard();
         board.setVisible(true);
-        System.out.println(homePlayer.getDeck().size());
         AtomicReference<Boolean> readyToStart = new AtomicReference<>(true);
         do
         {
@@ -73,7 +71,6 @@ public class Driver {
         	mPlayers.stream()
         	.filter(player->!player.getIsReadyToStart())
         	.forEach(player-> {
-        		System.out.println(player.getDeck().size());
         		board.updateHand(player.drawCardsFromDeck(6), player instanceof AIPlayer);
         		player.checkIfPlayerReady();
         	});
@@ -134,5 +131,13 @@ public class Driver {
 	
 	public static void setIsHomePlayerPlaying(boolean isPlaying) {
 		mIsHomePlayerPlaying = isPlaying;
+	}
+	
+	public static void checkGameStatus(){
+		
+	}
+	
+	public static void updateHand(Hand hand, boolean player){
+		board.updateHand(hand, player);
 	}
 }

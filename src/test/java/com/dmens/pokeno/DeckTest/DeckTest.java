@@ -45,13 +45,20 @@ public class DeckTest {
 	
 	@Test
 	public void testShuffle(){
-		Card c  = validDeck.viewCardInPosition(6);
+		Card c1  = validDeck.viewCardInPosition(6);
+		Card c2  = validDeck.viewCardInPosition(12);
+		Card c3  = validDeck.viewCardInPosition(13);
 		System.out.println(validDeck);
-		Assert.assertEquals("Card should be Machop",  "Machop", c.getName());
+		// Checking 3 cards to reduce test's flakyness 
+		Assert.assertEquals("Card should be Machop",  "Machop", c1.getName());
+		Assert.assertEquals("Card should be Machop",  "Machop", c2.getName());
+		Assert.assertEquals("Card should be Machop",  "Machop", c3.getName());
 		validDeck.shuffle();
-		c = validDeck.viewCardInPosition(6);
+		c1  = validDeck.viewCardInPosition(6);
+		c2  = validDeck.viewCardInPosition(12);
+		c3  = validDeck.viewCardInPosition(13);
 		System.out.println(validDeck);
-		Assert.assertNotEquals("Card should not be Machop anymore", "Machop", c.getName());
+		Assert.assertFalse("Cards should not be Machop anymore", c1.getName().equals("Machop") && c2.getName().equals("Machop") && c3.getName().equals("Machop"));
 	}
 
 }

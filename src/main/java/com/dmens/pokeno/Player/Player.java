@@ -40,7 +40,6 @@ public class Player {
     
     public Player(Deck deckList) {
     	mDeck = deckList;
-    	System.out.println(mDeck.size());
     	mBenchedPokemon = new ArrayList<Pokemon>();
     	mHand = new Hand();
     	mRewards = new CardContainer();
@@ -82,6 +81,7 @@ public class Player {
     	assert mDeck.size() >= numOfCards;
     	
 		mHand.addCards(mDeck.draw(numOfCards));
+		Driver.updateHand(mHand, humanPlayer);
         return mHand;
     }
     
@@ -169,6 +169,7 @@ public class Player {
         
         if (opponent.getActivePokemon().getDamage() >= opponent.getActivePokemon().getHP())
         {
+        	checkGameWon();
             opponent.setActivePokemon(null);
             if (humanPlayer)
             {   
@@ -178,6 +179,14 @@ public class Player {
             }
             collectPrize(mRewards.size()-1);
         }
+    }
+    
+    private void checkGameWon(){
+    	if(opponent.mBenchedPokemon.size() == 0 || mRewards.size() == 0){
+    		String message = (humanPlayer) ? "You Won! Game will now exit." : "You Lost! Game will now exit.";
+    		Driver.displayMessage(message);
+    		System.exit(0);
+    	}
     }
     
     private void declareMulligan(){
@@ -196,7 +205,8 @@ public class Player {
     	} else{
     		mIsReadyToStart = false;
     		this.putHandBackToDeck();
-        	this.shuffleDeck();
+    		// Disabled shuffling for now for easier debugging
+        	//this.shuffleDeck();
         	opponent.notifyMulligan();
     	}
     }

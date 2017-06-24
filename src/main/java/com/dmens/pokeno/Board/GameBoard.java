@@ -6,9 +6,17 @@
 package com.dmens.pokeno.Board;
 
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -28,6 +36,12 @@ public class GameBoard extends javax.swing.JFrame {
      * Creates new form GameBoard
      */
     public GameBoard() {
+    	 try {
+ 			this.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("data/images/background.jpg")))));
+ 		} catch (IOException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
         initComponents();
 
         PlayerHandPanel.setLayout(new FlowLayout());
@@ -52,6 +66,10 @@ public class GameBoard extends javax.swing.JFrame {
     }
     
     public void updateHand(Hand hand, boolean player){
+    	if(player)
+    		PlayerHandPanel.removeAll();
+    	else
+    		setOpponentHand(hand);
     	hand.getCards().forEach(card->{
     		addCardToHand(card, player);
     	});
@@ -61,7 +79,6 @@ public class GameBoard extends javax.swing.JFrame {
     {
         JTextField newCard = new JTextField();
         newCard.setText(card.getName());
-        System.out.println(newCard.getName());
         newCard.setEditable(false);
         
         MouseListener viewCard = new java.awt.event.MouseListener()
@@ -306,9 +323,9 @@ public class GameBoard extends javax.swing.JFrame {
         //do it with energy too
     }
     
-    public void setOpponentHand(int cardCount)
+    public void setOpponentHand(Hand hand)
     {
-        OpponentCardHand.setText("Cards in Hand: " + cardCount);
+        OpponentCardHand.setText("Cards in Hand: " + hand.size());
         update();
     }
     
@@ -333,11 +350,11 @@ public class GameBoard extends javax.swing.JFrame {
         update();
     }
     
-    public void updateBoard(Pokemon playerActive, Pokemon opponentActive, int opponentHandCount, int playerRewardCount, int opponentRewardCount, String phase)
+    public void updateBoard(Pokemon playerActive, Pokemon opponentActive, Hand opponentHand, int playerRewardCount, int opponentRewardCount, String phase)
     {
         setActivePokemon(playerActive, true);
         setActivePokemon(opponentActive, false);
-        setOpponentHand(opponentHandCount);
+        setOpponentHand(opponentHand);
         //setRewardCount(playerRewardCount, opponentRewardCount);
         showTurnPhase(phase);
         update();
@@ -903,6 +920,18 @@ public class GameBoard extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    class ImagePanel extends JComponent {
+        private Image image;
+        public ImagePanel(Image image) {
+            this.image = image;
+        }
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(image, 0, 0, this);
+        }
+    }
 
     private void OpponentLightningEnergyFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpponentLightningEnergyFieldActionPerformed
         // TODO add your handling code here:
