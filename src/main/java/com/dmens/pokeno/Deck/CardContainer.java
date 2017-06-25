@@ -17,9 +17,7 @@ public class CardContainer {
 	 * @return
 	 */
 	public Card pickCard(){
-		Card card = cards.get(cards.size()-1);
-		cards.remove(cards.size()-1);
-		return card;
+		return pickCardFromPosition(0);
 	}
 	
 	/**
