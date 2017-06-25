@@ -50,6 +50,34 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         
     }
     
+    public void updatePanel(Card card){
+        switch(card.getType()){
+            case POKEMON:
+                Pokemon p = (Pokemon) card;
+                setPokemon(p);
+                break;
+            case ENERGY:
+                EnergyCard e = (EnergyCard) card;
+                setEnergy(e.getCategory());
+                break;
+            case TRAINER:
+                // TODO Implement Trainer cards
+                break;
+        }
+    }
+    
+    public void clean(){
+        this.cardName.setText("");
+        this.imageLabel.setIcon(null);
+        this.HP.setText("");
+        this.ability1.setText("");
+        this.description1.setText("");
+        this.damage1.setText("");
+        this.ability2.setText("");
+        this.description2.setText("");
+        this.damage2.setText("");
+    }
+    
     private void setPokemon(Pokemon poke){
         cardName.setText(poke.getName());
         ImageIcon imageIcon = null;

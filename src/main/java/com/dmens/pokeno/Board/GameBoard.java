@@ -56,6 +56,8 @@ public class GameBoard extends javax.swing.JFrame {
         OpponentBenchPanel.setLayout(new FlowLayout());
         OpponentHandPanel.setLayout(new FlowLayout());
         OpponentHandScrollPanel.add(OpponentHandPanel);
+        CardPreviewPanel.add(new PokemonCardPanel());
+        cleanCardPreview();
         
         PlayerParalyzedLabel.setText("");
         PlayerAsleepLabel.setText("");
@@ -99,7 +101,6 @@ public class GameBoard extends javax.swing.JFrame {
                 //if (the card is valid)
                 Driver.useCardForPlayer(card, 0);
                 PlayerHandPanel.remove(newCard);
-                CardPreviewPanel.removeAll();
                 ViewDamageField.setText("");
                 update();
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -119,28 +120,31 @@ public class GameBoard extends javax.swing.JFrame {
             public void mouseEntered(MouseEvent me)
             {
                 cardPreview(card);
-                ViewDamageField.setText("100");
             }
 
             @Override
             public void mouseExited(MouseEvent me)
             {
-                CardPreviewPanel.removeAll();
                 ViewDamageField.setText("");
+                cleanCardPreview();
             }
         };
         
         if (player)
         {
             PlayerHandPanel.add(newCard);
-            newCard.addMouseListener(viewCard);
+            
         }
+        newCard.addMouseListener(viewCard);
         update();
     }
     
     private void cardPreview(Card card){
-        CardPreviewPanel.removeAll();
-        CardPreviewPanel.add(new PokemonCardPanel(card));
+        ((PokemonCardPanel)CardPreviewPanel.getComponent(0)).updatePanel(card);
+    }
+    
+    private void cleanCardPreview(){
+        ((PokemonCardPanel)CardPreviewPanel.getComponent(0)).clean();
     }
     
     public void addStatus(int type, boolean player)
@@ -254,10 +258,9 @@ public class GameBoard extends javax.swing.JFrame {
             @Override
             public void mouseEntered(MouseEvent me)
             {
-                CardPreviewPanel.removeAll();
-                CardPreviewPanel.add(new PokemonCardPanel(card));
                 if(card.getClass().toString().equals("class com.dmens.pokeno.Card.Pokemon"))
                 {
+                    cardPreview(card);
                     //TODO - get card.damageTaken
                     ViewDamageField.setText("0");
                     //TODO - get card.attachedEnergies
@@ -272,7 +275,7 @@ public class GameBoard extends javax.swing.JFrame {
             @Override
             public void mouseExited(MouseEvent me)
             {
-                CardPreviewPanel.removeAll();
+                cleanCardPreview();
             }
         };
         

@@ -242,16 +242,19 @@ public class Player {
 
     public void useCard(Card card)
     {
-        if(card instanceof Pokemon)
-        {
-            if(mActivePokemon == null)
-            	setActivePokemon((Pokemon)card);
-            else
-                benchPokemon((Pokemon)card);
-        } else if(card instanceof EnergyCard) {
-            mActivePokemon.addEnergy((EnergyCard) card);
-        } else if(card instanceof TrainerCard) {
-        	((TrainerCard) card).use();
+        switch(card.getType()){
+            case POKEMON:
+                if(mActivePokemon == null)
+                    setActivePokemon((Pokemon)card);
+                else
+                    benchPokemon((Pokemon)card);
+                break;
+            case ENERGY:
+                mActivePokemon.addEnergy((EnergyCard) card);
+                break;
+            case TRAINER:
+                ((TrainerCard) card).use();
+                break;
         }
         mHand.getCards().remove(card);
         Driver.updateHand(mHand, humanPlayer);
