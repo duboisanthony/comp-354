@@ -5,6 +5,11 @@
  */
 package com.dmens.pokeno.Board;
 
+import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.Card.Card;
+import com.dmens.pokeno.Card.EnergyCard;
+import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.Utils.Tuple;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +23,7 @@ import javax.swing.JLabel;
  */
 public class PokemonCardPanel extends javax.swing.JPanel {
     private String POKEMON_ICON_IMAGE = "data/images/pokemon.png";
+    private String ENERGY_ICON_IMAGE = "data/images/energy.png";
 
     /**
      * Creates new form PokemonCardPanel
@@ -26,9 +32,26 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         initComponents();
     }
     
-    public PokemonCardPanel(String name, int HP, String... abilities){
+    public PokemonCardPanel(Card card){
         initComponents();
-        cardName.setText(name);
+        switch(card.getType()){
+            case POKEMON:
+                Pokemon p = (Pokemon) card;
+                setPokemon(p);
+                break;
+            case ENERGY:
+                EnergyCard e = (EnergyCard) card;
+                setEnergy(e.getCategory());
+                break;
+            case TRAINER:
+                // TODO Implement Trainer cards
+                break;
+        }
+        
+    }
+    
+    private void setPokemon(Pokemon poke){
+        cardName.setText(poke.getName());
         ImageIcon imageIcon = null;
         try{
         imageIcon = new ImageIcon(ImageIO.read(new File(POKEMON_ICON_IMAGE)));
@@ -39,10 +62,47 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         Image newimg = image.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
         imageIcon = new ImageIcon(newimg);
         imageLabel.setIcon(imageIcon);
-        this.HP.setText(Integer.toString(HP));
+        this.HP.setText(Integer.toString(poke.getHP()));
+        // set ability 1
+        Tuple<Ability, String, Integer> ability = poke.getAbilitiesAndCost().get(0);
+        this.ability1.setText(ability.x.getName());
+        this.description1.setText(ability.y + ": "+ability.z);
+        this.damage1.setText(Integer.toString(ability.x.getDamageEffect().getValue()));
+        // Set ability 2 if present
+        if(poke.getAbilitiesAndCost().size() >= 2){
+            ability = poke.getAbilitiesAndCost().get(1);
+            this.ability2.setText(ability.x.getName());
+            this.description2.setText(ability.y + ": "+ability.z);
+            this.damage2.setText(Integer.toString(ability.x.getDamageEffect().getValue()));
+        }else{
+            this.ability2.setText("");
+            this.description2.setText("");
+            this.damage2.setText("");
+        }
         // TODO Add Abilities description
         //this.ability1.setText(abilities[0]);
         //this.ability2.setText(abilities[1]);
+    }
+    
+    private void setEnergy(String cat){
+        cardName.setText(cat);
+        ImageIcon imageIcon = null;
+        try{
+        imageIcon = new ImageIcon(ImageIO.read(new File(ENERGY_ICON_IMAGE)));
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        Image image = imageIcon.getImage(); // transform it 
+        Image newimg = image.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        imageIcon = new ImageIcon(newimg);
+        imageLabel.setIcon(imageIcon);
+        this.HP.setText("");
+        ability1.setText("");
+        ability2.setText("");
+        description1.setText("");
+        description2.setText("");
+        damage1.setText("");
+        damage2.setText("");
     }
 
     /**
@@ -59,8 +119,13 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         imageLabel = new javax.swing.JLabel();
         ability1 = new javax.swing.JLabel();
         ability2 = new javax.swing.JLabel();
+        damage1 = new javax.swing.JLabel();
+        damage2 = new javax.swing.JLabel();
+        description1 = new javax.swing.JLabel();
+        description2 = new javax.swing.JLabel();
 
-        setPreferredSize(new java.awt.Dimension(90, 307));
+        setPreferredSize(new java.awt.Dimension(235, 307));
+        setRequestFocusEnabled(false);
 
         cardName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         cardName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -85,6 +150,20 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         ability2.setText("Ability 2");
         ability2.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
+        damage1.setText("10");
+        damage1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
+        damage2.setText("10");
+        damage2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
+        description1.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        description1.setText("description");
+        description1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        description2.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        description2.setText("description");
+        description2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -92,16 +171,21 @@ public class PokemonCardPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(description2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(imageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ability1)
-                            .addComponent(ability2))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(ability2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(damage2))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cardName, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(HP, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)))
+                        .addComponent(HP, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(ability1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(damage1))
+                    .addComponent(description1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -114,10 +198,18 @@ public class PokemonCardPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ability1)
-                .addGap(34, 34, 34)
-                .addComponent(ability2)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ability1)
+                    .addComponent(damage1))
+                .addGap(1, 1, 1)
+                .addComponent(description1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ability2)
+                    .addComponent(damage2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(description2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -127,6 +219,10 @@ public class PokemonCardPanel extends javax.swing.JPanel {
     private javax.swing.JLabel ability1;
     private javax.swing.JLabel ability2;
     private javax.swing.JLabel cardName;
+    private javax.swing.JLabel damage1;
+    private javax.swing.JLabel damage2;
+    private javax.swing.JLabel description1;
+    private javax.swing.JLabel description2;
     private javax.swing.JLabel imageLabel;
     // End of variables declaration//GEN-END:variables
 }

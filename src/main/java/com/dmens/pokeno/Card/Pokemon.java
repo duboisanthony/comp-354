@@ -164,6 +164,10 @@ public class Pokemon extends Card {
 	    this.mDamage = basePokemon.getDamage();
     }
     
+    public ArrayList<Tuple<Ability, String, Integer>> getAbilitiesAndCost(){
+        return mAbilitiesAndCost;
+    }
+    
     @Override
 	public boolean isType(CardTypes c) {
 		return (c == CardTypes.POKEMON) ? true : false;
