@@ -26,16 +26,16 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="description2" max="32767" attributes="0"/>
-                  <Component id="imageLabel" max="32767" attributes="0"/>
+                  <Component id="imageLabel" pref="215" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="ability2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="damage2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="cardName" min="-2" pref="92" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="HP" pref="105" max="32767" attributes="0"/>
+                      <Component id="cardName" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="HP" min="-2" pref="32" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="ability1" min="-2" max="-2" attributes="0"/>

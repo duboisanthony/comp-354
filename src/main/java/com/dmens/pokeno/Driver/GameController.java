@@ -13,7 +13,7 @@ import com.dmens.pokeno.Player.AIPlayer;
 import com.dmens.pokeno.Player.Player;
 import com.dmens.pokeno.Utils.Parser;
 
-public class Driver {
+public class GameController {
 
 	private static final String LOCATION_FIRST_DECK = "data/deck1.txt";
 	private static final String LOCATION_SECOND_DECK = "data/deck2.txt";
@@ -141,11 +141,20 @@ public class Driver {
 		board.updateHand(hand, player);
 	}
         
-        public static void updateDeck(int deckSize, boolean player){
-            board.updateDeckSize(deckSize, player);
-        }
+    public static void updateDeck(int deckSize, boolean player){
+        board.updateDeckSize(deckSize, player);
+    }
+    
+    public static void updateGraveyard(int graveyard, boolean player){
+    	board.updateGraveyard(graveyard, player);
+    }
+    
+    public static void updateRewards(int rewardsSize, boolean player){
+        board.setRewardCount(rewardsSize, player);
+    }
+    
+    public static void cleanActivePokemon(boolean player){
+    	board.clearActivePokemon(player);
+    }
         
-        public static void updateRewards(int rewardsSize, boolean player){
-            board.setRewardCount(rewardsSize, player);
-        }
 }

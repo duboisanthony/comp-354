@@ -1,6 +1,6 @@
 package com.dmens.pokeno.Effect;
 
-import com.dmens.pokeno.Driver.Driver;
+import com.dmens.pokeno.Driver.GameController;
 /*
  * A Heal effect.
  *
@@ -64,10 +64,10 @@ public class Heal implements Effect {
 	{
 		if(mTarget.equals(YOUR_ACTIVE)) {
 			// heal the player's active pokement
-			if(Driver.getIsHomePlayerPlaying()) {
-				Driver.getHomePlayer().getActivePokemon().removeDamage(this.mValue);
+			if(GameController.getIsHomePlayerPlaying()) {
+				GameController.getHomePlayer().getActivePokemon().removeDamage(this.mValue);
 			} else {
-				Driver.getAIPlayer().getActivePokemon().removeDamage(this.mValue);
+				GameController.getAIPlayer().getActivePokemon().removeDamage(this.mValue);
 			}
 		} else if (mTarget.equals(CHOICE)) {
 			// TODO: heal a pokemon of choice, need to get input from UI

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.CardTypes;
 import com.dmens.pokeno.Card.Pokemon;
-import com.dmens.pokeno.Driver.Driver;
+import com.dmens.pokeno.Driver.GameController;
 
 public class Hand extends CardContainer {
 	

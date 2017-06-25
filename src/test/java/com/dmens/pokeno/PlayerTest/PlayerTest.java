@@ -1,12 +1,13 @@
 package com.dmens.pokeno.PlayerTest;
 
-import java.util.ArrayList;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Deck.Deck;
+import com.dmens.pokeno.Driver.GameController;
 import com.dmens.pokeno.Player.Player;
 import com.dmens.pokeno.Utils.Parser;
 
@@ -23,7 +24,7 @@ public class PlayerTest{
 	private static final String LOCATION_CARDS = "data/cards.txt";
 	private static final String LOCATION_ABILITIES = "data/abilities.txt";
 	private static Deck testDeck1 = new Deck();
-	private static Deck testDeck2 = new Deck();	
+	private static Deck testDeck2 = new Deck();
 	
 	
 	@Test
@@ -42,8 +43,10 @@ public class PlayerTest{
 		
 		
 		//! Set up players with their respective decks. 
-		Player player1 = new Player(testDeck1);
-		Player player2 = new Player(testDeck2);
+		Player player1 = new PlayerStubbedDriver(testDeck1);
+		Player player2 = new PlayerStubbedDriver(testDeck2);
+		
+		
 		
 		//! Set up rewards cards for players
 		player1.setUpRewards();
@@ -52,6 +55,18 @@ public class PlayerTest{
 		//! Run assertions to test number of rewards cards attributed to each player. 
 		Assert.assertTrue(player1.getRewards().size() <= 6 && player1.getRewards().size() > 0);
 		Assert.assertTrue(player2.getRewards().size() <= 6 && player2.getRewards().size() > 0);
+	}
+	
+	private class PlayerStubbedDriver extends Player{
+		
+		public PlayerStubbedDriver(Deck deck){
+			super(deck);
+		}
+		
+		@Override
+		public void updateBoard() {
+			return;
+		}
 	}
 	
 }

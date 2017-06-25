@@ -9,7 +9,7 @@ import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.Pokemon;
 import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Deck.Hand;
-import com.dmens.pokeno.Driver.Driver;
+import com.dmens.pokeno.Driver.GameController;
 
 public class AIPlayer extends Player {
 
@@ -41,7 +41,7 @@ public class AIPlayer extends Player {
             ArrayList<Pokemon> mBench = getBenchedPokemon();
             if (mBench.size() <= 0)
             {
-                Driver.board.AnnouncementBox.setText("Opponenthas no available Pokemon! The player wins!");
+                GameController.board.AnnouncementBox.setText("Opponenthas no available Pokemon! The player wins!");
                 return;
             }
             setActivePokemon(mBench.get(0));

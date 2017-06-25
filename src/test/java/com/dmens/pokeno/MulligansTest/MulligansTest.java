@@ -15,7 +15,7 @@ import com.dmens.pokeno.Board.GameBoard;
 import com.dmens.pokeno.Card.EnergyCard;
 import com.dmens.pokeno.Card.Pokemon;
 import com.dmens.pokeno.Deck.Deck;
-import com.dmens.pokeno.Driver.Driver;
+import com.dmens.pokeno.Driver.GameController;
 import com.dmens.pokeno.Player.Player;
 
 /**
@@ -28,7 +28,7 @@ public class MulligansTest {
     @Test
     public void TestBasicPokemonValidation()
     {
-        Driver.board = new GameBoard();
+        GameController.board = new GameBoard();
         Deck deck1 = new Deck();
         Deck deck2 = new Deck();
         

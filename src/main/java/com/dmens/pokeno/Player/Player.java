@@ -11,7 +11,7 @@ import com.dmens.pokeno.Card.*;
 import com.dmens.pokeno.Deck.CardContainer;
 import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Deck.Hand;
-import com.dmens.pokeno.Driver.Driver;
+import com.dmens.pokeno.Driver.GameController;
 
 /**
  * Created by Devin on 2017-05-26.
@@ -81,8 +81,8 @@ public class Player {
     	assert mDeck.size() >= numOfCards;
     	
 		mHand.addCards(mDeck.draw(numOfCards));
-		Driver.updateHand(mHand, humanPlayer);
-                Driver.updateDeck(mDeck.size(), humanPlayer);
+		GameController.updateHand(mHand, humanPlayer);
+                GameController.updateDeck(mDeck.size(), humanPlayer);
         return mHand;
     }
     
@@ -92,9 +92,9 @@ public class Player {
         if (this instanceof AIPlayer)
         {
             AIPlayer ai = (AIPlayer)this;
-            Driver.setIsHomePlayerPlaying(false);
+            GameController.setIsHomePlayerPlaying(false);
             ai.startPhase();
-            Driver.setIsHomePlayerPlaying(true);
+            GameController.setIsHomePlayerPlaying(true);
             opponent.startTurn();
         }
     }
@@ -113,8 +113,13 @@ public class Player {
     
     public void setUpRewards() {
     	mRewards.addCards(mDeck.draw(NUM_OF_REWARD_CARDS));
-        Driver.updateRewards(mRewards.size(), humanPlayer);
-        Driver.updateDeck(mDeck.size(), humanPlayer);
+    	updateBoard();
+        
+    }
+    
+    public void updateBoard(){
+    	GameController.updateRewards(mRewards.size(), humanPlayer);
+        GameController.updateDeck(mDeck.size(), humanPlayer);
     }
 
     public void setOpponent(Player enemy)
@@ -132,7 +137,7 @@ public class Player {
     public void setActivePokemon(Pokemon activePokemon){
     	mActivePokemon = activePokemon;
         //if (humanPlayer)
-        Driver.board.setActivePokemon(activePokemon, humanPlayer);
+        GameController.board.setActivePokemon(activePokemon, humanPlayer);
     }
    
 
@@ -147,7 +152,7 @@ public class Player {
     	assert(mBenchedPokemon.size() < 5);
     	mBenchedPokemon.add(benchPokemon);
         //if (humanPlayer)
-        Driver.board.addCardToBench(benchPokemon, humanPlayer);
+        GameController.board.addCardToBench(benchPokemon, humanPlayer);
     }
     
     /**
@@ -168,33 +173,40 @@ public class Player {
     public void useActivePokemon(int ability)
     {
         mActivePokemon.useAbility(ability, opponent.getActivePokemon());
-        Driver.board.updateActivePokemon(opponent);
+        GameController.board.updateActivePokemon(opponent);
         
         if (opponent.getActivePokemon().getDamage() >= opponent.getActivePokemon().getHP())
         {
         	checkGameWon();
-            opponent.setActivePokemon(null);
+            opponent.cleanActivePokemon();
             if (humanPlayer)
             {   
                 AIPlayer ai = (AIPlayer)opponent;
                 ai.activeFainted();
-                Driver.board.OpponentBenchPanel.remove(Driver.board.OpponentBenchPanel.getComponent(0));
+                GameController.board.OpponentBenchPanel.remove(GameController.board.OpponentBenchPanel.getComponent(0));
             }
             collectPrize(mRewards.size()-1);
         }
     }
     
+    private void cleanActivePokemon(){
+    	mDiscards.addCard(mActivePokemon);
+    	mActivePokemon = null;
+    	GameController.updateGraveyard(mDiscards.size(), humanPlayer);
+    	GameController.cleanActivePokemon(humanPlayer);
+    }
+    
     private void checkGameWon(){
     	if(opponent.mBenchedPokemon.size() == 0 || mRewards.size() == 0){
     		String message = (humanPlayer) ? "You Won! Game will now exit." : "You Lost! Game will now exit.";
-    		Driver.displayMessage(message);
+    		GameController.displayMessage(message);
     		System.exit(0);
     	}
     }
     
     private void declareMulligan(){
     	mIsInMulliganState = true;
-    	Driver.displayMessage(((humanPlayer) ? "Human " : "AI ") + "Player has declared a Mulligan");
+    	GameController.displayMessage(((humanPlayer) ? "Human " : "AI ") + "Player has declared a Mulligan");
     }
     
     public boolean isInMulliganState(){
@@ -218,7 +230,7 @@ public class Player {
     	 int reply = JOptionPane.showConfirmDialog(null, "Would you like to draw a card?", "Mulligan", JOptionPane.YES_NO_OPTION);
          if (reply == JOptionPane.YES_OPTION){
           	this.drawCardsFromDeck(1);
-          	Driver.displayMessage("Player received an extra card.");
+          	GameController.displayMessage("Player received an extra card.");
          }
     }
 
@@ -257,7 +269,7 @@ public class Player {
                 break;
         }
         mHand.getCards().remove(card);
-        Driver.updateHand(mHand, humanPlayer);
+        GameController.updateHand(mHand, humanPlayer);
     }
 
     /**
@@ -307,14 +319,14 @@ public class Player {
     public void collectPrize(int prizeCardPosition){
     	assert(mRewards !=null);
     	Card card = mRewards.pickCardFromPosition(prizeCardPosition);
-        Driver.updateRewards(mRewards.size(), humanPlayer);
+    	updateBoard();
     	mHand.addCard(card);
         if (humanPlayer && mIsReadyToStart)
-            Driver.board.addCardToHand(card, humanPlayer);
-        Driver.board.setRewardCount(mRewards.size(), humanPlayer);
+            GameController.board.addCardToHand(card, humanPlayer);
+        GameController.board.setRewardCount(mRewards.size(), humanPlayer);
         if (mRewards.size() <= 0)
         {
-            Driver.board.AnnouncementBox.setText("No more reward cards! The player wins!");
+            GameController.board.AnnouncementBox.setText("No more reward cards! The player wins!");
         }
     }
     

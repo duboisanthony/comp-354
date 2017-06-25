@@ -23,7 +23,7 @@ import javax.swing.JTextField;
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.Pokemon;
 import com.dmens.pokeno.Deck.Hand;
-import com.dmens.pokeno.Driver.Driver;
+import com.dmens.pokeno.Driver.GameController;
 import com.dmens.pokeno.Player.AIPlayer;
 import com.dmens.pokeno.Player.Player;
 import java.awt.Color;
@@ -99,7 +99,7 @@ public class GameBoard extends javax.swing.JFrame {
             {
                 //player.useCard(card);
                 //if (the card is valid)
-                Driver.useCardForPlayer(card, 0);
+                GameController.useCardForPlayer(card, 0);
                 PlayerHandPanel.remove(newCard);
                 ViewDamageField.setText("");
                 update();
@@ -288,6 +288,13 @@ public class GameBoard extends javax.swing.JFrame {
         update();
     }
     
+    public void clearActivePokemon(boolean player){
+    	if(player)
+    		playerActivePokemonPanel.removeAll();
+    	else
+    		OpponentActivePanel.removeAll();
+    }
+    
     public void setActivePokemon(Pokemon card, boolean player)
     {
         javax.swing.JPanel activePokemonField;
@@ -343,6 +350,13 @@ public class GameBoard extends javax.swing.JFrame {
             PlayerDeckSize.setText("Deck Size: "+deckSize);
         else
             OpponentDeckSize.setText("Deck Size: "+deckSize);
+    }
+    
+    public void updateGraveyard(int graveyard, boolean player){
+    	if(player)
+    		PlayerGraveryard.setText("Graveyard: " + Integer.toString(graveyard));
+    	else
+    		OpponentGraveyard.setText("Graveyard: " + Integer.toString(graveyard));
     }
     
     public void setOpponentHand(Hand hand)
@@ -1004,13 +1018,13 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_ViewLightningEnergyFieldActionPerformed
 
     private void PlayerAttack1BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack1BtnActionPerformed
-        Driver.useActivePokemonForPlayer(0,0);
-        Driver.startAITurn();
+        GameController.useActivePokemonForPlayer(0,0);
+        GameController.startAITurn();
     }//GEN-LAST:event_PlayerAttack1BtnActionPerformed
 
     private void PlayerAttack2BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack2BtnActionPerformed
-        Driver.useActivePokemonForPlayer(0,1);
-        Driver.startAITurn();
+        GameController.useActivePokemonForPlayer(0,1);
+        GameController.startAITurn();
     }//GEN-LAST:event_PlayerAttack2BtnActionPerformed
 
     private void PlayerRetreatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerRetreatBtnActionPerformed
@@ -1018,7 +1032,7 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_PlayerRetreatBtnActionPerformed
 
     private void PassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassBtnActionPerformed
-        Driver.startAITurn();
+        GameController.startAITurn();
     }//GEN-LAST:event_PassBtnActionPerformed
 
     /**
