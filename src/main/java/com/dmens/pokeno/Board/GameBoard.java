@@ -44,8 +44,8 @@ public class GameBoard extends javax.swing.JFrame {
      */
     public GameBoard() {
     	 try {
- 			this.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("data/images/background.jpg")))));
- 		} catch (IOException e) {
+ 			this.setContentPane(new JLabel(new ImageIcon(getClass().getClassLoader().getResource("data/images/background.jpg"))));
+ 		} catch (Exception e) {
  			// TODO Auto-generated catch block
  			e.printStackTrace();
  		}
@@ -364,8 +364,9 @@ public class GameBoard extends javax.swing.JFrame {
         OpponentHandPanel.removeAll();
         ImageIcon imageIcon = null;
         try{
-        imageIcon = new ImageIcon(ImageIO.read(new File("data/images/card.png")));
-        }catch(IOException e){
+        imageIcon = new ImageIcon(getClass().getClassLoader().getResource("data/images/card.png"));
+
+        }catch(Exception e){
             e.printStackTrace();
         }
         Image image = imageIcon.getImage(); // transform it 

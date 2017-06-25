@@ -82,8 +82,8 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         cardName.setText(poke.getName());
         ImageIcon imageIcon = null;
         try{
-        imageIcon = new ImageIcon(ImageIO.read(new File(POKEMON_ICON_IMAGE)));
-        }catch(IOException e){
+        imageIcon = new ImageIcon(getClass().getClassLoader().getResource(POKEMON_ICON_IMAGE));
+        }catch(Exception e){
             e.printStackTrace();
         }
         Image image = imageIcon.getImage(); // transform it 
@@ -116,8 +116,8 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         cardName.setText("Energy - "+ (Character.toUpperCase(cat.charAt(0)) + cat.substring(1)));
         ImageIcon imageIcon = null;
         try{
-        imageIcon = new ImageIcon(ImageIO.read(new File(ENERGY_ICON_IMAGE)));
-        }catch(IOException e){
+        imageIcon = new ImageIcon(getClass().getClassLoader().getResource(ENERGY_ICON_IMAGE));
+        }catch(Exception e){
             e.printStackTrace();
         }
         Image image = imageIcon.getImage(); // transform it 
