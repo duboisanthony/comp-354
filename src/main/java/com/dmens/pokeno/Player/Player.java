@@ -82,6 +82,7 @@ public class Player {
     	
 		mHand.addCards(mDeck.draw(numOfCards));
 		Driver.updateHand(mHand, humanPlayer);
+                Driver.updateDeck(mDeck.size(), humanPlayer);
         return mHand;
     }
     
@@ -112,6 +113,8 @@ public class Player {
     
     public void setUpRewards() {
     	mRewards.addCards(mDeck.draw(NUM_OF_REWARD_CARDS));
+        Driver.updateRewards(mRewards.size(), humanPlayer);
+        Driver.updateDeck(mDeck.size(), humanPlayer);
     }
 
     public void setOpponent(Player enemy)
@@ -251,6 +254,7 @@ public class Player {
         	((TrainerCard) card).use();
         }
         mHand.getCards().remove(card);
+        Driver.updateHand(mHand, humanPlayer);
     }
 
     /**
@@ -300,6 +304,7 @@ public class Player {
     public void collectPrize(int prizeCardPosition){
     	assert(mRewards !=null);
     	Card card = mRewards.pickCardFromPosition(prizeCardPosition);
+        Driver.updateRewards(mRewards.size(), humanPlayer);
     	mHand.addCard(card);
         if (humanPlayer && mIsReadyToStart)
             Driver.board.addCardToHand(card, humanPlayer);
@@ -308,6 +313,10 @@ public class Player {
         {
             Driver.board.AnnouncementBox.setText("No more reward cards! The player wins!");
         }
+    }
+    
+    public boolean isHumanPlayer(){
+    	return humanPlayer;
     }
 
     //TODO

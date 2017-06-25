@@ -26,6 +26,11 @@ import com.dmens.pokeno.Deck.Hand;
 import com.dmens.pokeno.Driver.Driver;
 import com.dmens.pokeno.Player.AIPlayer;
 import com.dmens.pokeno.Player.Player;
+import java.awt.Color;
+import javafx.scene.control.ScrollPane;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 /**
  *
@@ -47,6 +52,8 @@ public class GameBoard extends javax.swing.JFrame {
         PlayerHandPanel.setLayout(new FlowLayout());
         PlayerBenchPanel.setLayout(new FlowLayout());
         OpponentBenchPanel.setLayout(new FlowLayout());
+        OpponentHandPanel.setLayout(new FlowLayout());
+        OpponentHandScrollPanel.add(OpponentHandPanel);
         
         PlayerParalyzedLabel.setText("");
         PlayerAsleepLabel.setText("");
@@ -277,10 +284,10 @@ public class GameBoard extends javax.swing.JFrame {
     
     public void setActivePokemon(Pokemon card, boolean player)
     {
-        JTextArea activePokemonField;
+        javax.swing.JPanel activePokemonField;
         if (player)
         {
-            activePokemonField = PlayersActivePokemonArea;
+            activePokemonField = playerActivePokemonPanel;
             PlayerDamageField.setText(Integer.toString(card.getDamage()));
             
             clearEnergy(true);
@@ -291,7 +298,7 @@ public class GameBoard extends javax.swing.JFrame {
         }
         else
         {
-            activePokemonField = OpponentsActivePokemonArea;
+            activePokemonField = OpponentActivePanel;
             if (card == null)
                 OpponentDamageField.setText("");
             else
@@ -303,10 +310,12 @@ public class GameBoard extends javax.swing.JFrame {
             //if(card.poisoned) {addStatus(3, false)}
             //...
         }
-        if (card != null)
-            activePokemonField.setText(card.toString());
-        else
-            activePokemonField.setText("");
+        activePokemonField.removeAll();
+        activePokemonField.add(new PokemonCardPanel(card.getName(), card.getHP(), ""));
+//        if (card != null)
+//            activePokemonField.setText(card.toString());
+//        else
+//            activePokemonField.setText("");
         update();
     }
     
@@ -323,18 +332,40 @@ public class GameBoard extends javax.swing.JFrame {
         //do it with energy too
     }
     
+    public void updateDeckSize(int deckSize, boolean player){
+        if(player)
+            PlayerDeckSize.setText("Deck Size: "+deckSize);
+        else
+            OpponentDeckSize.setText("Deck Size: "+deckSize);
+    }
+    
     public void setOpponentHand(Hand hand)
     {
-        OpponentCardHand.setText("Cards in Hand: " + hand.size());
-        update();
+        OpponentHandPanel.removeAll();
+        ImageIcon imageIcon = null;
+        try{
+        imageIcon = new ImageIcon(ImageIO.read(new File("data/images/card.png")));
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        Image image = imageIcon.getImage(); // transform it 
+        Image newimg = image.getScaledInstance(70, 70,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        imageIcon = new ImageIcon(newimg);
+        for(Card c : hand.getCards()){
+            OpponentHandPanel.add(new JLabel(imageIcon));
+        }
+        OpponentHandScrollPanel.removeAll();
+        OpponentHandScrollPanel.add(OpponentHandPanel);
+        //OpponentCardHand.setText("Cards in Hand: " + hand.size());
+        //update();
     }
     
     public void setRewardCount(int rewardCount, boolean player)
     {
         if (player)
-            PlayerRewardCardLabel.setText("RemainingRewardCards: " + rewardCount);
+            PlayerRewardCardLabel.setText("Rewards: " + rewardCount);
         else
-            OpponentRewardCardLabel.setText("RemainingRewardCards: " + rewardCount);
+            OpponentRewardCardLabel.setText("Rewards: " + rewardCount);
         update();
     }
     
@@ -373,10 +404,6 @@ public class GameBoard extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         CardViewArea = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        OpponentsActivePokemonArea = new javax.swing.JTextArea();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        PlayersActivePokemonArea = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         OpponentLightningEnergyField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -431,10 +458,17 @@ public class GameBoard extends javax.swing.JFrame {
         OpponentPoisonedLabel = new javax.swing.JLabel();
         AnnouncementBox = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        OpponentCardHand = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         CoinResultField = new javax.swing.JTextField();
         PassBtn = new javax.swing.JButton();
+        OpponentDeckSize = new javax.swing.JLabel();
+        PlayerDeckSize = new javax.swing.JLabel();
+        OpponentGraveyard = new javax.swing.JLabel();
+        PlayerGraveryard = new javax.swing.JLabel();
+        OpponentHandScrollPanel = new javax.swing.JScrollPane();
+        OpponentHandPanel = new javax.swing.JPanel();
+        playerActivePokemonPanel = new javax.swing.JPanel();
+        OpponentActivePanel = new javax.swing.JPanel();
 
         jLabel4.setText("Lightning");
 
@@ -444,18 +478,6 @@ public class GameBoard extends javax.swing.JFrame {
         CardViewArea.setColumns(20);
         CardViewArea.setRows(5);
         jScrollPane2.setViewportView(CardViewArea);
-
-        OpponentsActivePokemonArea.setEditable(false);
-        OpponentsActivePokemonArea.setColumns(20);
-        OpponentsActivePokemonArea.setRows(5);
-        OpponentsActivePokemonArea.setText("Card Type\nCard Name\n\nDescription/abilities");
-        jScrollPane3.setViewportView(OpponentsActivePokemonArea);
-
-        PlayersActivePokemonArea.setEditable(false);
-        PlayersActivePokemonArea.setColumns(20);
-        PlayersActivePokemonArea.setRows(5);
-        PlayersActivePokemonArea.setText("Card Type\nCard Name\n\nDescription/abilities");
-        jScrollPane4.setViewportView(PlayersActivePokemonArea);
 
         OpponentLightningEnergyField.setEditable(false);
         OpponentLightningEnergyField.setText("0");
@@ -528,19 +550,23 @@ public class GameBoard extends javax.swing.JFrame {
 
         ViewFightingEnergyField.setEditable(false);
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Hand");
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Bench");
 
-        PlayerRewardCardLabel.setText("Remaining Reward Cards: 6");
+        PlayerRewardCardLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        PlayerRewardCardLabel.setText("Rewards: 6");
 
-        OpponentRewardCardLabel.setText("Remaining Reward Cards: 6");
+        OpponentRewardCardLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        OpponentRewardCardLabel.setText("Rewards: 0");
 
         javax.swing.GroupLayout PlayerHandPanelLayout = new javax.swing.GroupLayout(PlayerHandPanel);
         PlayerHandPanel.setLayout(PlayerHandPanelLayout);
         PlayerHandPanelLayout.setHorizontalGroup(
             PlayerHandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 960, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         PlayerHandPanelLayout.setVerticalGroup(
             PlayerHandPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -551,7 +577,7 @@ public class GameBoard extends javax.swing.JFrame {
         PlayerBenchPanel.setLayout(PlayerBenchPanelLayout);
         PlayerBenchPanelLayout.setHorizontalGroup(
             PlayerBenchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 960, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         PlayerBenchPanelLayout.setVerticalGroup(
             PlayerBenchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -572,8 +598,10 @@ public class GameBoard extends javax.swing.JFrame {
 
         ViewDamageField.setEditable(false);
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Bench");
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Hand");
 
         javax.swing.GroupLayout OpponentBenchPanelLayout = new javax.swing.GroupLayout(OpponentBenchPanel);
@@ -584,7 +612,7 @@ public class GameBoard extends javax.swing.JFrame {
         );
         OpponentBenchPanelLayout.setVerticalGroup(
             OpponentBenchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 38, Short.MAX_VALUE)
+            .addGap(0, 60, Short.MAX_VALUE)
         );
 
         PlayerAttack1Btn.setText("Attack1");
@@ -629,8 +657,6 @@ public class GameBoard extends javax.swing.JFrame {
 
         jLabel12.setText("Current Phase:");
 
-        OpponentCardHand.setText("Cards in Hand: 7");
-
         jLabel13.setText("Coin:");
 
         CoinResultField.setEditable(false);
@@ -642,6 +668,33 @@ public class GameBoard extends javax.swing.JFrame {
             }
         });
 
+        OpponentDeckSize.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        OpponentDeckSize.setText("Deck Size: 60");
+
+        PlayerDeckSize.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        PlayerDeckSize.setText("Deck Size: 60");
+
+        OpponentGraveyard.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        OpponentGraveyard.setText("Graveyard: 0");
+
+        PlayerGraveryard.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        PlayerGraveryard.setText("Graveyard: 0");
+
+        OpponentHandScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        OpponentHandScrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout();
+        flowLayout1.setAlignOnBaseline(true);
+        OpponentHandPanel.setLayout(flowLayout1);
+        OpponentHandScrollPanel.setViewportView(OpponentHandPanel);
+
+        playerActivePokemonPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        playerActivePokemonPanel.setPreferredSize(new java.awt.Dimension(235, 307));
+        playerActivePokemonPanel.setLayout(new java.awt.GridLayout(1, 1));
+
+        OpponentActivePanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        OpponentActivePanel.setLayout(new java.awt.GridLayout(1, 1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -651,115 +704,125 @@ public class GameBoard extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(OpponentRewardCardLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(OpponentParalyzedLabel))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(OpponentDeckSize)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                                .addComponent(OpponentRewardCardLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(OpponentDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(OpponentGraveyard)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(OpponentAsleepLabel))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(PlayerGraveryard)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(PlayerAsleepLabel))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(PlayerRewardCardLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(OpponentRewardCardLabel)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(PlayerParalyzedLabel))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(OpponentRewardCardLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(OpponentDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(OpponentRewardCardLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(PlayerDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(PlayerParalyzedLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(PlayerAsleepLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(PlayerStuckLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(PlayerPoisonedLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(OpponentParalyzedLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(OpponentAsleepLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(OpponentStuckLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(OpponentPoisonedLabel, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                    .addComponent(OpponentPoisonedLabel, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(PlayerDeckSize)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(OpponentRewardCardLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(PlayerDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(playerActivePokemonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(OpponentActivePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel10)
-                                            .addGap(10, 10, 10)
-                                            .addComponent(OpponentLightningEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel9)
-                                            .addGap(15, 15, 15)
-                                            .addComponent(OpponentFightingEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel8)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(OpponentPsychicEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel7)
-                                            .addGap(23, 23, 23)
-                                            .addComponent(OpponentWaterEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGap(70, 70, 70)
-                                        .addComponent(OpponentRewardCardLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(ViewDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel12)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel13)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(CoinResultField, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel10)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(OpponentLightningEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(AnnouncementBox, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel20)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(ViewLightningEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel22)
-                                                .addGap(15, 15, 15)
-                                                .addComponent(ViewFightingEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel21)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(ViewPsychicEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel19)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(ViewWaterEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addComponent(jLabel9)
+                                        .addGap(15, 15, 15)
+                                        .addComponent(OpponentFightingEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(OpponentPsychicEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addGap(23, 23, 23)
+                                        .addComponent(OpponentWaterEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGap(70, 70, 70)
+                                    .addComponent(OpponentRewardCardLabel3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(ViewDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel18)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(PlayerLightningEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel16)
-                                        .addGap(15, 15, 15)
-                                        .addComponent(PlayerFightingEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel17)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(PlayerPsychicEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel15)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(PlayerWaterEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(PlayerAttack2Btn, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                                    .addComponent(PlayerAttack1Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(PlayerRetreatBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(PassBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(PlayerAttack2Btn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                                    .addComponent(PlayerAttack1Btn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(PlayerRetreatBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(PassBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel16)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(PlayerFightingEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(CoinResultField, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(AnnouncementBox, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel20)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(ViewLightningEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel22)
+                                        .addGap(15, 15, 15)
+                                        .addComponent(ViewFightingEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel21)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(ViewPsychicEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel19)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(ViewWaterEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap(35, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -771,44 +834,44 @@ public class GameBoard extends javax.swing.JFrame {
                         .addGap(14, 14, 14))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(OpponentBenchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(419, 419, 419)
-                                .addComponent(OpponentCardHand)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(10, 10, 10))))
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(OpponentHandScrollPanel)
+                            .addComponent(OpponentBenchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(OpponentCardHand))
-                .addGap(54, 54, 54)
+                    .addComponent(OpponentHandScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(OpponentBenchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(OpponentRewardCardLabel)
-                        .addGap(290, 290, 290)
+                        .addGap(304, 304, 304)
+                        .addComponent(jLabel1)
+                        .addGap(64, 64, 64)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(PlayerRewardCardLabel))
-                        .addGap(44, 44, 44)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(PlayerDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(OpponentRewardCardLabel2))
+                            .addComponent(PlayerDeckSize, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(PlayerDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(OpponentRewardCardLabel2)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(PlayerParalyzedLabel)
-                        .addGap(13, 13, 13)
-                        .addComponent(PlayerAsleepLabel)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(PlayerParalyzedLabel)
+                            .addComponent(PlayerRewardCardLabel))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(PlayerAsleepLabel)
+                            .addComponent(PlayerGraveryard))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel11)
                         .addGap(9, 9, 9)
@@ -816,51 +879,60 @@ public class GameBoard extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(PlayerPoisonedLabel))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(58, 58, 58)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(OpponentDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(OpponentRewardCardLabel1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(OpponentParalyzedLabel)
-                                .addGap(13, 13, 13)
-                                .addComponent(OpponentAsleepLabel)
-                                .addGap(15, 15, 15)
-                                .addComponent(OpponentStuckLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(OpponentPoisonedLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(OpponentFightingEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel12))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(OpponentLightningEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel10)
-                                    .addComponent(AnnouncementBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(OpponentPsychicEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel8))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
+                                        .addGap(64, 64, 64)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(OpponentDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(OpponentRewardCardLabel1)
+                                            .addComponent(OpponentDeckSize))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(OpponentWaterEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel7)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(1, 1, 1)
+                                            .addComponent(OpponentParalyzedLabel)
+                                            .addComponent(OpponentRewardCardLabel))
+                                        .addGap(10, 10, 10)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel13)
-                                            .addComponent(CoinResultField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(73, 73, 73)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(ViewDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(OpponentRewardCardLabel3)))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
+                                            .addComponent(OpponentAsleepLabel)
+                                            .addComponent(OpponentGraveyard))
+                                        .addGap(15, 15, 15)
+                                        .addComponent(OpponentStuckLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(OpponentPoisonedLabel))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(OpponentFightingEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jLabel12))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(OpponentLightningEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel10)
+                                            .addComponent(AnnouncementBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(OpponentPsychicEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel8))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                    .addComponent(OpponentWaterEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel7)))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(1, 1, 1)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                    .addComponent(jLabel13)
+                                                    .addComponent(CoinResultField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGap(73, 73, 73)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(ViewDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(OpponentRewardCardLabel3))))
+                                .addGap(112, 112, 112))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(OpponentActivePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -886,7 +958,7 @@ public class GameBoard extends javax.swing.JFrame {
                                 .addComponent(PlayerRetreatBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(PassBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(playerActivePokemonPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(144, 144, 144)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -907,7 +979,7 @@ public class GameBoard extends javax.swing.JFrame {
                                     .addComponent(ViewWaterEnergyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel19)))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
                     .addComponent(PlayerBenchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1002,11 +1074,15 @@ public class GameBoard extends javax.swing.JFrame {
     public javax.swing.JTextField AnnouncementBox;
     private javax.swing.JTextArea CardViewArea;
     private javax.swing.JTextField CoinResultField;
+    private javax.swing.JPanel OpponentActivePanel;
     private javax.swing.JLabel OpponentAsleepLabel;
     public javax.swing.JPanel OpponentBenchPanel;
-    private javax.swing.JLabel OpponentCardHand;
     private javax.swing.JTextField OpponentDamageField;
+    private javax.swing.JLabel OpponentDeckSize;
     private javax.swing.JTextField OpponentFightingEnergyField;
+    private javax.swing.JLabel OpponentGraveyard;
+    private javax.swing.JPanel OpponentHandPanel;
+    private javax.swing.JScrollPane OpponentHandScrollPanel;
     private javax.swing.JTextField OpponentLightningEnergyField;
     private javax.swing.JLabel OpponentParalyzedLabel;
     private javax.swing.JLabel OpponentPoisonedLabel;
@@ -1017,14 +1093,15 @@ public class GameBoard extends javax.swing.JFrame {
     private javax.swing.JLabel OpponentRewardCardLabel3;
     private javax.swing.JLabel OpponentStuckLabel;
     private javax.swing.JTextField OpponentWaterEnergyField;
-    private javax.swing.JTextArea OpponentsActivePokemonArea;
     private javax.swing.JButton PassBtn;
     private javax.swing.JLabel PlayerAsleepLabel;
     private javax.swing.JButton PlayerAttack1Btn;
     private javax.swing.JButton PlayerAttack2Btn;
     private javax.swing.JPanel PlayerBenchPanel;
     private javax.swing.JTextField PlayerDamageField;
+    private javax.swing.JLabel PlayerDeckSize;
     private javax.swing.JTextField PlayerFightingEnergyField;
+    private javax.swing.JLabel PlayerGraveryard;
     private javax.swing.JPanel PlayerHandPanel;
     private javax.swing.JTextField PlayerLightningEnergyField;
     private javax.swing.JLabel PlayerParalyzedLabel;
@@ -1034,7 +1111,6 @@ public class GameBoard extends javax.swing.JFrame {
     private javax.swing.JLabel PlayerRewardCardLabel;
     private javax.swing.JLabel PlayerStuckLabel;
     private javax.swing.JTextField PlayerWaterEnergyField;
-    private javax.swing.JTextArea PlayersActivePokemonArea;
     private javax.swing.JTextField ViewDamageField;
     private javax.swing.JTextField ViewFightingEnergyField;
     private javax.swing.JTextField ViewLightningEnergyField;
@@ -1062,8 +1138,10 @@ public class GameBoard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JPanel playerActivePanel1;
+    private javax.swing.JPanel playerActivePanel2;
+    private javax.swing.JPanel playerActivePanel3;
+    private javax.swing.JPanel playerActivePokemonPanel;
     // End of variables declaration//GEN-END:variables
 }

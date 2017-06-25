@@ -71,7 +71,7 @@ public class Driver {
         	mPlayers.stream()
         	.filter(player->!player.getIsReadyToStart())
         	.forEach(player-> {
-        		board.updateHand(player.drawCardsFromDeck(6), player instanceof AIPlayer);
+        		board.updateHand(player.drawCardsFromDeck(6), player.isHumanPlayer());
         		player.checkIfPlayerReady();
         	});
             // Execute mulligans
@@ -140,4 +140,12 @@ public class Driver {
 	public static void updateHand(Hand hand, boolean player){
 		board.updateHand(hand, player);
 	}
+        
+        public static void updateDeck(int deckSize, boolean player){
+            board.updateDeckSize(deckSize, player);
+        }
+        
+        public static void updateRewards(int rewardsSize, boolean player){
+            board.setRewardCount(rewardsSize, player);
+        }
 }
