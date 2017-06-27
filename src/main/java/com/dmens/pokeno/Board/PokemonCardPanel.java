@@ -5,17 +5,14 @@
  */
 package com.dmens.pokeno.Board;
 
-import com.dmens.pokeno.Ability.Ability;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+import com.dmens.pokeno.Ability.AbilityCost;
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.EnergyCard;
 import com.dmens.pokeno.Card.Pokemon;
-import com.dmens.pokeno.Utils.Tuple;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 /**
  *
@@ -41,7 +38,7 @@ public class PokemonCardPanel extends javax.swing.JPanel {
                 break;
             case ENERGY:
                 EnergyCard e = (EnergyCard) card;
-                setEnergy(e.getCategory());
+                setEnergy(e.getCategory().toString());
                 break;
             case TRAINER:
                 // TODO Implement Trainer cards
@@ -58,7 +55,7 @@ public class PokemonCardPanel extends javax.swing.JPanel {
                 break;
             case ENERGY:
                 EnergyCard e = (EnergyCard) card;
-                setEnergy(e.getCategory());
+                setEnergy(e.getCategory().toString());
                 break;
             case TRAINER:
                 // TODO Implement Trainer cards
@@ -92,16 +89,16 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         imageLabel.setIcon(imageIcon);
         this.HP.setText(Integer.toString(poke.getHP()));
         // set ability 1
-        Tuple<Ability, String, Integer> ability = poke.getAbilitiesAndCost().get(0);
-        this.ability1.setText(ability.x.getName());
-        this.description1.setText(ability.y + ": "+ability.z);
-        this.damage1.setText(Integer.toString(ability.x.getDamageEffect().getValue()));
+        AbilityCost ability = poke.getAbilitiesAndCost().get(0);
+        this.ability1.setText(ability.getAbility().getName());
+        this.description1.setText(ability.showCosts());
+        this.damage1.setText(Integer.toString(ability.getAbility().getDamageEffect().getValue()));
         // Set ability 2 if present
         if(poke.getAbilitiesAndCost().size() >= 2){
             ability = poke.getAbilitiesAndCost().get(1);
-            this.ability2.setText(ability.x.getName());
-            this.description2.setText(ability.y + ": "+ability.z);
-            this.damage2.setText(Integer.toString(ability.x.getDamageEffect().getValue()));
+            this.ability2.setText(ability.getAbility().getName());
+            this.description2.setText(ability.showCosts());
+            this.damage2.setText(Integer.toString(ability.getAbility().getDamageEffect().getValue()));
         }else{
             this.ability2.setText("");
             this.description2.setText("");

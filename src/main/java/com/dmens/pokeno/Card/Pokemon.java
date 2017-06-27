@@ -1,12 +1,14 @@
 package com.dmens.pokeno.Card;
 
 import java.util.ArrayList;
-import com.dmens.pokeno.Ability.Ability;
-import com.dmens.pokeno.Driver.GameController;
-import com.dmens.pokeno.Effect.Effect;
-import com.dmens.pokeno.Utils.Tuple;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.Ability.AbilityCost;
 
 public class Pokemon extends Card {
 
@@ -17,7 +19,7 @@ public class Pokemon extends Card {
     private ArrayList<EnergyCard> mAttachedEnergy;
 	private ArrayList<String> mCategories;
 	private ArrayList<Ability> mAbilities;
-    private ArrayList<Tuple<Ability, String, Integer>> mAbilitiesAndCost;
+    private ArrayList<AbilityCost> mAbilitiesAndCost;
 	private int mRetreatCost;
 	private String mBasePokemonName;
     private boolean mPoisoned;
@@ -32,7 +34,7 @@ public class Pokemon extends Card {
         mRetreatCost = retreatCost;
         mAbilities = new ArrayList<Ability>();
         mAttachedEnergy = new ArrayList<EnergyCard>();
-        mAbilitiesAndCost = new ArrayList<Tuple<Ability, String, Integer>>();
+        mAbilitiesAndCost = new ArrayList<AbilityCost>();
     }
 	
 	public void AddCategory(String category)
@@ -40,18 +42,18 @@ public class Pokemon extends Card {
 		this.mCategories.add(category);
 	}
 	
-	public void AddAbilityAndCost(Tuple<Ability, String, Integer> tuple)
+	public void AddAbilityAndCost(AbilityCost abilityCost)
 	{
-		this.mAbilitiesAndCost.add(tuple);
+		this.mAbilitiesAndCost.add(abilityCost);
 	}
 
 	public String toString()
 	{
 		StringBuilder abilitiesAsList = new StringBuilder();
-		for (Tuple<Ability, String, Integer> tuple: mAbilitiesAndCost)
-		{
-			abilitiesAsList.append(String.format("--T:%s C:%d\t",  tuple.y, tuple.z) + tuple.x.toString() + "\n");
-		}
+//		for (AbilityCost tuple: mAbilitiesAndCost)
+//		{
+//			abilitiesAsList.append(String.format("--T:%s C:%d\t",  tuple.y, tuple.z) + tuple.x.toString() + "\n");
+//		}
 		
 		return String.format("%s:\t\tNAME: %s\n%s", Pokemon.class, this.getName(), abilitiesAsList.toString());
 	}
@@ -95,7 +97,7 @@ public class Pokemon extends Card {
     public boolean useAbility(int ability, Pokemon target)
     {
         //TODO - if we have enough energy
-        Ability a = mAbilitiesAndCost.get(0).x;//mAbilities.get(ability);
+        Ability a = mAbilitiesAndCost.get(0).getAbility();//mAbilities.get(ability);
         target.addDamage(a.getDamageEffect().getValue());
         return true;
     }
@@ -164,8 +166,40 @@ public class Pokemon extends Card {
 	    this.mDamage = basePokemon.getDamage();
     }
     
-    public ArrayList<Tuple<Ability, String, Integer>> getAbilitiesAndCost(){
+    public ArrayList<AbilityCost> getAbilitiesAndCost(){
         return mAbilitiesAndCost;
+    }
+    
+    public Map<EnergyTypes, Integer> getTotalEnergyNeeds(){
+    	Map<EnergyTypes, Integer> totalCosts = new HashMap<EnergyTypes, Integer>();
+    	this.mAbilitiesAndCost.forEach(abilityCost ->{
+    		abilityCost.getCosts().forEach((energy, cost) ->{
+    			if(totalCosts.containsKey(energy))
+    				totalCosts.put(energy, cost + totalCosts.get(energy));
+    			else
+    				totalCosts.put(energy, cost);
+    		});
+    	});
+    	this.mAttachedEnergy.forEach(energyAttached ->{
+    		if(totalCosts.containsKey(energyAttached.getCategory())){
+    			totalCosts.put(energyAttached.getCategory(), totalCosts.get(energyAttached.getCategory()) - 1);
+    		}else if(totalCosts.containsKey(EnergyTypes.COLORLESS)){
+    			totalCosts.put(EnergyTypes.COLORLESS, totalCosts.get(EnergyTypes.COLORLESS) - 1);
+    		}
+    	});
+    	return totalCosts;
+    }
+    
+    public Map<EnergyTypes, Integer> getMapOfAttachedEnergies(){
+        Map<EnergyTypes, Integer> energies = new HashMap<EnergyTypes, Integer>();
+        this.mAttachedEnergy.forEach(energyAttached ->{
+    		if(energies.containsKey(energyAttached.getCategory())){
+    			energies.put(energyAttached.getCategory(), energies.get(energyAttached.getCategory()) + 1);
+    		}else{
+    			energies.put(energyAttached.getCategory(), 1);
+    		}
+    	});
+        return energies;
     }
     
     @Override

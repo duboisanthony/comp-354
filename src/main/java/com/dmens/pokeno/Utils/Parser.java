@@ -9,8 +9,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.Ability.AbilityCost;
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.EnergyCard;
+import com.dmens.pokeno.Card.EnergyTypes;
 import com.dmens.pokeno.Card.Pokemon;
 import com.dmens.pokeno.Card.TrainerCard;
 import com.dmens.pokeno.Deck.Deck;
@@ -300,11 +302,12 @@ public class Parser {
 			
 			Ability ability = abilities.get(0);
 			
-			Tuple<Ability, String, Integer> tuple = new Tuple<Ability, String, Integer>(ability, "colorless", 1);
+			AbilityCost abilityCost = new AbilityCost(ability);
+			abilityCost.addCost(EnergyTypes.COLORLESS, 1);
 
 			c = new Pokemon(pokemonName, categories, hp, retreatCost);
 			
-			((Pokemon)c).AddAbilityAndCost(tuple);
+			((Pokemon)c).AddAbilityAndCost(abilityCost);
 			
 			
 			if(basePokemonName != null) 

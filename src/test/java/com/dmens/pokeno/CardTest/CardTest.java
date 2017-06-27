@@ -1,17 +1,18 @@
 package com.dmens.pokeno.CardTest;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import java.util.ArrayList;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import com.dmens.pokeno.Ability.Ability;
-import com.dmens.pokeno.Effect.*;
-import com.dmens.pokeno.Utils.Tuple;
-import com.dmens.pokeno.Card.*;
+import com.dmens.pokeno.Ability.AbilityCost;
+import com.dmens.pokeno.Card.EnergyCard;
+import com.dmens.pokeno.Card.EnergyTypes;
+import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.Card.TrainerCard;
+import com.dmens.pokeno.Effect.Damage;
+import com.dmens.pokeno.Effect.Heal;
 
 public class CardTest {
 	
@@ -31,7 +32,7 @@ public class CardTest {
 	static int mPokemonFroakieHP = 50;
 	static int mPokemonFroakieRetreatCost = 1;
 	static int mPokemonFroakieAttackCost = 1;
-	static String mPokemonFroakieAttackRequiredType = "colorless";
+	static EnergyTypes mPokemonFroakieAttackRequiredType = EnergyTypes.COLORLESS;
 	
 	//Pound:dam:target:opponent-active:10
 	static String mAbilityPoundName = "Pound";
@@ -44,7 +45,7 @@ public class CardTest {
 		// Test EnergyCard
         EnergyCard energyCard = new EnergyCard(mEnergyCardName, mEnergyCardCategory);
         Assert.assertEquals(energyCard.getName(), mEnergyCardName);
-        Assert.assertEquals(energyCard.getCategory(), mEnergyCardCategory);
+        Assert.assertEquals(energyCard.getCategory(), EnergyTypes.WATER);
         
         // Test TrainerCard
         ArrayList<Ability> potionAbilities = new ArrayList<Ability>();
@@ -67,10 +68,11 @@ public class CardTest {
         mPokemonFroakieCategories.add("basic");
         mPokemonFroakieCategories.add("water");
         
-        Tuple<Ability, String, Integer> tuple = new Tuple<Ability, String, Integer>(abilityPound, mPokemonFroakieAttackRequiredType, mPokemonFroakieAttackCost);
+        AbilityCost abilityCost = new AbilityCost(abilityPound);
+		abilityCost.addCost(mPokemonFroakieAttackRequiredType, mPokemonFroakieAttackCost);
 
         Pokemon froakie = new Pokemon(mPokemonFroakieName, mPokemonFroakieCategories, mPokemonFroakieHP, mPokemonFroakieRetreatCost);
-        froakie.AddAbilityAndCost(tuple);
+        froakie.AddAbilityAndCost(abilityCost);
         
         Assert.assertEquals(froakie.getName(), mPokemonFroakieName);
         Assert.assertEquals(froakie.getCategories(), mPokemonFroakieCategories);
