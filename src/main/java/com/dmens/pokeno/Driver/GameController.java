@@ -1,17 +1,22 @@
 package com.dmens.pokeno.Driver;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.swing.JOptionPane;
 
 import com.dmens.pokeno.Board.GameBoard;
 import com.dmens.pokeno.Card.Card;
+import com.dmens.pokeno.Card.EnergyTypes;
+import com.dmens.pokeno.Card.Pokemon;
 import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Deck.Hand;
 import com.dmens.pokeno.Player.AIPlayer;
 import com.dmens.pokeno.Player.Player;
 import com.dmens.pokeno.Utils.Parser;
+import java.util.Collections;
 
 public class GameController {
 
@@ -88,7 +93,7 @@ public class GameController {
         mPlayers.forEach(currentPlayer->{ currentPlayer.setUpRewards(); });
         
         AIPlayer opp = (AIPlayer)mPlayers.get(1);
-        opp.startPhase();
+        opp.selectStarterPokemon();
 		
 		System.out.println("\nTest Run: PokemonNoGo");
 		System.out.println("Print out the Hand of the First Player...");
@@ -155,6 +160,47 @@ public class GameController {
     
     public static void cleanActivePokemon(boolean player){
     	board.clearActivePokemon(player);
+    }
+    
+    public static void updateEnergyCountersForCard(Card card, int player){
+        mPlayers.get(player).updateEnergyCounters((Pokemon) card, true);
+    }
+    
+    public static void updateEnergyCounters(Map<EnergyTypes, Integer> energies, boolean player){
+        board.setEnergy(getAttachedEnergyList(energies), player);
+    }
+    
+    public static void updateEnergyCountersPreview(Map<EnergyTypes, Integer> energies, boolean player){
+        board.setEnergyPreview(getAttachedEnergyList(energies));
+    }
+    
+    private static ArrayList<Integer> getAttachedEnergyList(Map<EnergyTypes, Integer> energies){
+        ArrayList<Integer> energyList = new ArrayList<Integer>(5);
+        energyList.add(0);energyList.add(0);energyList.add(0);energyList.add(0);energyList.add(0);
+    	energies.forEach((energyType, amount) -> {
+    		switch(energyType){
+    		case FIGHT:
+                    energyList.set(0, amount);
+                    break;
+    		case LIGHTNING:
+                    energyList.set(1, amount);
+                    break;
+    		case PSYCHIC:
+                    energyList.set(2, amount);
+                    break;
+    		case WATER:
+                    energyList.set(3, amount);
+                    break;
+    		case COLORLESS:
+                    energyList.set(4, amount);
+                    break;
+    		case FIRE:
+                    break;
+    		case GRASS:
+                    break;
+    		}
+    	});
+        return energyList;
     }
         
 }

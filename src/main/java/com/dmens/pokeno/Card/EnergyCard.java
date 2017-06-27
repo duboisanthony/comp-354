@@ -9,16 +9,33 @@ public class EnergyCard extends Card {
 
     private static final Logger LOG = LogManager.getLogger(EnergyCard.class);
 	
-	private String mCategory;
+	private EnergyTypes mCategory;
 
 	public EnergyCard(String name, String category)
 	{
 		super(name);
-		this.mCategory = category;
+		setCategory(category);
 	}
 
-	public String getCategory() {
+	public EnergyTypes getCategory() {
 		return this.mCategory;
+	}
+	
+	private void setCategory(String cat){
+		if(cat.equalsIgnoreCase("COLORLESS"))
+			mCategory = EnergyTypes.COLORLESS;
+		else if(cat.equalsIgnoreCase("WATER"))
+			mCategory = EnergyTypes.WATER;
+		else if(cat.equalsIgnoreCase("FIGHT"))
+			mCategory = EnergyTypes.FIGHT;
+		else if(cat.equalsIgnoreCase("FIRE"))
+			mCategory = EnergyTypes.FIRE;
+		else if(cat.equalsIgnoreCase("PSYCHIC"))
+			mCategory = EnergyTypes.PSYCHIC;
+		else if(cat.equalsIgnoreCase("GRASS"))
+			mCategory = EnergyTypes.GRASS;
+		else if(cat.equalsIgnoreCase("LIGHTNING"))
+			mCategory = EnergyTypes.LIGHTNING;
 	}
 	
 	public String toString()
@@ -34,5 +51,9 @@ public class EnergyCard extends Card {
 	@Override
 	public CardTypes getType() {
 		return CardTypes.ENERGY;
+	}
+	
+	public boolean isCategory(EnergyTypes energy){
+		return (mCategory == energy || energy == EnergyTypes.COLORLESS ? true : false);
 	}
 }

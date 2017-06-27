@@ -262,7 +262,8 @@ public class Player {
                     benchPokemon((Pokemon)card);
                 break;
             case ENERGY:
-                mActivePokemon.addEnergy((EnergyCard) card);
+                // TODO: Assign Energies to benched pokemon
+                setEnergy(card, mActivePokemon);
                 break;
             case TRAINER:
                 ((TrainerCard) card).use();
@@ -270,6 +271,20 @@ public class Player {
         }
         mHand.getCards().remove(card);
         GameController.updateHand(mHand, humanPlayer);
+    }
+    
+    public void setEnergy(Card energy, Pokemon pokemon){
+        pokemon.addEnergy((EnergyCard) energy);
+        if(pokemon.equals(mActivePokemon)){
+            updateEnergyCounters(mActivePokemon, false);
+        }
+    }
+    
+    public void updateEnergyCounters(Pokemon pokemon, boolean preview){
+        if(!preview)
+            GameController.updateEnergyCounters(pokemon.getMapOfAttachedEnergies(), humanPlayer);
+        else
+            GameController.updateEnergyCountersPreview(pokemon.getMapOfAttachedEnergies(), humanPlayer);
     }
 
     /**
