@@ -110,8 +110,8 @@ public class GameController {
 		mPlayers.get(player).useCard(card);
 	}
 	
-	public static void useActivePokemonForPlayer(int player, int ability){
-		mPlayers.get(player).useActivePokemon(ability);
+	public static boolean useActivePokemonForPlayer(int player, int ability){
+		return mPlayers.get(player).useActivePokemon(ability);
 	}
 	
 	public static void startAITurn(){
@@ -174,7 +174,7 @@ public class GameController {
         board.setEnergyPreview(getAttachedEnergyList(energies));
     }
     
-    private static ArrayList<Integer> getAttachedEnergyList(Map<EnergyTypes, Integer> energies){
+    public static ArrayList<Integer> getAttachedEnergyList(Map<EnergyTypes, Integer> energies){
         ArrayList<Integer> energyList = new ArrayList<Integer>(5);
         energyList.add(0);energyList.add(0);energyList.add(0);energyList.add(0);energyList.add(0);
     	energies.forEach((energyType, amount) -> {

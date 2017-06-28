@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.dmens.pokeno.Ability.Ability;
 import com.dmens.pokeno.Ability.AbilityCost;
+import com.dmens.pokeno.Driver.GameController;
 
 public class Pokemon extends Card {
 
@@ -96,10 +97,56 @@ public class Pokemon extends Card {
 	
     public boolean useAbility(int ability, Pokemon target)
     {
-        //TODO - if we have enough energy
-        Ability a = mAbilitiesAndCost.get(0).getAbility();//mAbilities.get(ability);
-        target.addDamage(a.getDamageEffect().getValue());
-        return true;
+        if (mAbilitiesAndCost.size() <= ability)
+            return false;
+        Ability a = mAbilitiesAndCost.get(ability).getAbility();//mAbilities.get(ability);
+        HashMap <EnergyTypes, Integer> cost = mAbilitiesAndCost.get(ability).getCosts();
+        ArrayList<Integer> energyCounts = GameController.getAttachedEnergyList(getMapOfAttachedEnergies());
+        int remainingEnergyCount = 0;
+        for (int count : energyCounts)
+        {
+            remainingEnergyCount += count;
+        }
+        
+        boolean hasEnoughEnergy = true;
+        if(cost.containsKey(EnergyTypes.FIGHT))
+        {
+            if (cost.get(EnergyTypes.FIGHT) <= energyCounts.get(0))
+                remainingEnergyCount -= cost.get(EnergyTypes.FIGHT);
+            else
+                hasEnoughEnergy = false;
+        }
+        if(cost.containsKey(EnergyTypes.LIGHTNING))
+        {
+            if (cost.get(EnergyTypes.LIGHTNING) <= energyCounts.get(1))
+                remainingEnergyCount -= cost.get(EnergyTypes.LIGHTNING);
+            else
+                hasEnoughEnergy = false;
+        }
+
+        if(cost.containsKey(EnergyTypes.PSYCHIC))
+        {
+            if (cost.get(EnergyTypes.PSYCHIC) <= energyCounts.get(2))
+                remainingEnergyCount -= cost.get(EnergyTypes.PSYCHIC);
+            else
+                hasEnoughEnergy = false;
+        }
+        if(cost.containsKey(EnergyTypes.WATER))
+        {
+            if (cost.get(EnergyTypes.WATER) <= energyCounts.get(3))
+                remainingEnergyCount -= cost.get(EnergyTypes.WATER);
+            else
+                hasEnoughEnergy = false;
+        }
+        if (cost.containsKey(EnergyTypes.COLORLESS) && cost.get(EnergyTypes.COLORLESS) > remainingEnergyCount)
+            hasEnoughEnergy = false;
+        
+        if (hasEnoughEnergy)
+        {
+            target.addDamage(a.getDamageEffect().getValue());
+            return true;
+        }
+        return false;
     }
         
     public void setPoisoned(boolean poisoned) {
