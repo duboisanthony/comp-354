@@ -170,14 +170,17 @@ public class Player {
     	return pickedCard;
     }
     
-    public void useActivePokemon(int ability)
+    public boolean useActivePokemon(int ability)
     {
-        mActivePokemon.useAbility(ability, opponent.getActivePokemon());
+        if (mActivePokemon == null)
+            return false;
+        
+        boolean usedAbility =  mActivePokemon.useAbility(ability, opponent.getActivePokemon());
         GameController.board.updateActivePokemon(opponent);
         
         if (opponent.getActivePokemon().getDamage() >= opponent.getActivePokemon().getHP())
         {
-        	checkGameWon();
+            checkGameWon();
             opponent.cleanActivePokemon();
             if (humanPlayer)
             {   
@@ -187,6 +190,7 @@ public class Player {
             }
             collectPrize(mRewards.size()-1);
         }
+        return usedAbility;
     }
     
     private void cleanActivePokemon(){

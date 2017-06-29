@@ -90,60 +90,68 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="PlayerColorlessEnergyField" min="-2" pref="19" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="PlayerLightningEnergyField" min="-2" pref="19" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="PlayerPsychicEnergyField" min="-2" pref="19" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="PlayerWaterEnergyField" min="-2" pref="19" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="PlayerAttack2Btn" alignment="0" pref="86" max="32767" attributes="0"/>
-                              <Component id="PlayerAttack1Btn" alignment="0" max="32767" attributes="0"/>
-                              <Component id="PlayerRetreatBtn" alignment="0" max="32767" attributes="0"/>
-                              <Component id="PassBtn" alignment="0" max="32767" attributes="0"/>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="PlayerFightingEnergyField" min="-2" pref="19" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="OpponentRewardCardLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel14" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="OpponentLightningEnergyField" alignment="1" min="-2" pref="19" max="-2" attributes="0"/>
-                                      <Component id="OpponentFightingEnergyField" alignment="1" min="-2" pref="19" max="-2" attributes="0"/>
-                                      <Component id="OpponentPsychicEnergyField" alignment="1" min="-2" pref="19" max="-2" attributes="0"/>
-                                      <Component id="OpponentWaterEnergyField" alignment="1" min="-2" pref="19" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="PlayerColorlessEnergyField" min="-2" pref="19" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="PlayerLightningEnergyField" min="-2" pref="19" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="PlayerPsychicEnergyField" min="-2" pref="19" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="PlayerWaterEnergyField" min="-2" pref="19" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="PlayerAttack2Btn" alignment="0" pref="86" max="32767" attributes="0"/>
+                                      <Component id="PlayerAttack1Btn" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="PlayerRetreatBtn" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="PassBtn" alignment="0" max="32767" attributes="0"/>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="PlayerFightingEnergyField" min="-2" pref="19" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
-                                  <Component id="OpponentColorlessEnergyField" alignment="0" min="-2" pref="19" max="-2" attributes="0"/>
-                                  <Component id="ViewDamageField" min="-2" pref="25" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jLabel14" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                              <Component id="OpponentLightningEnergyField" alignment="1" min="-2" pref="19" max="-2" attributes="0"/>
+                                              <Component id="OpponentFightingEnergyField" alignment="1" min="-2" pref="19" max="-2" attributes="0"/>
+                                              <Component id="OpponentPsychicEnergyField" alignment="1" min="-2" pref="19" max="-2" attributes="0"/>
+                                              <Component id="OpponentWaterEnergyField" alignment="1" min="-2" pref="19" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="OpponentColorlessEnergyField" alignment="0" min="-2" pref="19" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
+                              <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="OpponentRewardCardLabel3" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="ViewDamageField" min="-2" pref="25" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
@@ -346,12 +354,12 @@
                           <Component id="OpponentColorlessEnergyField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="ViewDamageField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="OpponentRewardCardLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="116" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
