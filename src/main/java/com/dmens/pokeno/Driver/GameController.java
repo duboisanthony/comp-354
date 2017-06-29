@@ -206,7 +206,7 @@ public class GameController {
     public static int dispayCustomOptionPane(String[] buttons, String title, String prompt)
     {
         return JOptionPane.showOptionDialog(null, prompt, title,
-        JOptionPane.WARNING_MESSAGE, 0, null, buttons, buttons[0]);
+        0, JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
         //System.out.println("Value: " + returnValue);
     }
 }
