@@ -106,8 +106,8 @@ public class GameController {
 		//Clean up	
 	}
 	
-	public static void useCardForPlayer(Card card, int player){
-		mPlayers.get(player).useCard(card);
+	public static boolean useCardForPlayer(Card card, int player){
+		return mPlayers.get(player).useCard(card);
 	}
 	
 	public static boolean useActivePokemonForPlayer(int player, int ability){
@@ -202,5 +202,11 @@ public class GameController {
     	});
         return energyList;
     }
-        
+    
+    public static int dispayCustomOptionPane(String[] buttons, String title, String prompt)
+    {
+        return JOptionPane.showOptionDialog(null, prompt, title,
+        0, JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
+        //System.out.println("Value: " + returnValue);
+    }
 }

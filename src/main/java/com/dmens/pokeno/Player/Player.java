@@ -139,7 +139,6 @@ public class Player {
         //if (humanPlayer)
         GameController.board.setActivePokemon(activePokemon, humanPlayer);
     }
-   
 
     /**
      * Sends a Pokemon to player's bench. Condition
@@ -202,10 +201,10 @@ public class Player {
     
     private void checkGameWon(){
     	if(opponent.mBenchedPokemon.size() == 0 || mRewards.size() == 0){
-    		String message = (humanPlayer) ? "You Won! Game will now exit." : "You Lost! Game will now exit.";
-    		GameController.displayMessage(message);
-    		System.exit(0);
-    	}
+            String message = (humanPlayer) ? "You Won! Game will now exit." : "You Lost! Game will now exit.";
+            GameController.displayMessage(message);
+            System.exit(0);
+        }
     }
     
     private void declareMulligan(){
@@ -256,7 +255,7 @@ public class Player {
 
     public void pickCard(){}
 
-    public void useCard(Card card)
+    public boolean useCard(Card card)
     {
         switch(card.getType()){
             case POKEMON:
@@ -265,9 +264,26 @@ public class Player {
                 else
                     benchPokemon((Pokemon)card);
                 break;
-            case ENERGY:
-                // TODO: Assign Energies to benched pokemon
-                setEnergy(card, mActivePokemon);
+            case ENERGY: //Working here
+                if (mActivePokemon == null)
+                    return false;
+                String[] buttons = new String[mBenchedPokemon.size()+2];
+                buttons[0] = "Active " + mActivePokemon.getName();
+                buttons[buttons.length-1] = "Cancel";
+                int i = 1;
+                for (Pokemon p : mBenchedPokemon)
+                {
+                    buttons[i] = mBenchedPokemon.get(i-1).getName();
+                    i++;
+                }
+                int cardNum = GameController.dispayCustomOptionPane(buttons, "Card Select", "Which Pokemon would you like to attach it to?");
+                if (cardNum == 0)
+                    setEnergy(card, mActivePokemon);
+                else if (cardNum == buttons.length-1)
+                    return false;
+                else
+                    setEnergy(card, mBenchedPokemon.get(cardNum-1));
+                
                 break;
             case TRAINER:
                 ((TrainerCard) card).use();
@@ -275,6 +291,7 @@ public class Player {
         }
         mHand.getCards().remove(card);
         GameController.updateHand(mHand, humanPlayer);
+        return true;
     }
     
     public void setEnergy(Card energy, Pokemon pokemon){

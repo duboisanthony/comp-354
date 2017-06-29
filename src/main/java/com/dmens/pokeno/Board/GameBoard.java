@@ -101,8 +101,8 @@ public class GameBoard extends javax.swing.JFrame {
             {
                 //player.useCard(card);
                 //if (the card is valid)
-                GameController.useCardForPlayer(card, 0);
-                PlayerHandPanel.remove(newCard);
+                if(GameController.useCardForPlayer(card, 0))
+                    PlayerHandPanel.remove(newCard);
                 ViewDamageField.setText("");
                 update();
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -148,6 +148,12 @@ public class GameBoard extends javax.swing.JFrame {
     
     private void cleanCardPreview(){
         ((PokemonCardPanel)CardPreviewPanel.getComponent(0)).clean();
+        ViewFightingEnergyField.setText("");
+        ViewLightningEnergyField.setText("");
+        ViewPsychicEnergyField.setText("");
+        ViewWaterEnergyField.setText("");
+        ViewColorlessEnergyField.setText("");
+        ViewDamageField.setText("");
     }
     
     public void addStatus(int type, boolean player)
