@@ -255,6 +255,31 @@ public class Player {
 
     public void pickCard(){}
 
+    //Should be able to use this method when the player decides which Pokemon they want when retreating/losing a Pokemon
+    private boolean createPokemonOptionPane(EnergyCard card, String title, String message)
+    {
+        if (mActivePokemon == null)
+            return false;
+        String[] buttons = new String[mBenchedPokemon.size()+2];
+        buttons[0] = "Active " + mActivePokemon.getName();
+        buttons[buttons.length-1] = "Cancel";
+        int i = 1;
+        for (Pokemon p : mBenchedPokemon)
+        {
+            buttons[i] = mBenchedPokemon.get(i-1).getName();
+            i++;
+        }
+        int cardNum = GameController.dispayCustomOptionPane(buttons, title, message);
+        if (cardNum == 0)
+            setEnergy(card, mActivePokemon);
+        else if (cardNum == buttons.length-1)
+            return false;
+        else
+            setEnergy(card, mBenchedPokemon.get(cardNum-1));
+        
+        return true;
+    }
+    
     public boolean useCard(Card card)
     {
         switch(card.getType()){
@@ -264,26 +289,9 @@ public class Player {
                 else
                     benchPokemon((Pokemon)card);
                 break;
-            case ENERGY: //Working here
-                if (mActivePokemon == null)
+            case ENERGY:
+                if(!createPokemonOptionPane((EnergyCard)card, "Pokemon Select", "Which Pokemon would you like to attach it to?"))
                     return false;
-                String[] buttons = new String[mBenchedPokemon.size()+2];
-                buttons[0] = "Active " + mActivePokemon.getName();
-                buttons[buttons.length-1] = "Cancel";
-                int i = 1;
-                for (Pokemon p : mBenchedPokemon)
-                {
-                    buttons[i] = mBenchedPokemon.get(i-1).getName();
-                    i++;
-                }
-                int cardNum = GameController.dispayCustomOptionPane(buttons, "Card Select", "Which Pokemon would you like to attach it to?");
-                if (cardNum == 0)
-                    setEnergy(card, mActivePokemon);
-                else if (cardNum == buttons.length-1)
-                    return false;
-                else
-                    setEnergy(card, mBenchedPokemon.get(cardNum-1));
-                
                 break;
             case TRAINER:
                 ((TrainerCard) card).use();
