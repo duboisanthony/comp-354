@@ -148,6 +148,12 @@ public class GameBoard extends javax.swing.JFrame {
     
     private void cleanCardPreview(){
         ((PokemonCardPanel)CardPreviewPanel.getComponent(0)).clean();
+        ViewFightingEnergyField.setText("");
+        ViewLightningEnergyField.setText("");
+        ViewPsychicEnergyField.setText("");
+        ViewWaterEnergyField.setText("");
+        ViewColorlessEnergyField.setText("");
+        ViewDamageField.setText("");
     }
     
     public void addStatus(int type, boolean player)
