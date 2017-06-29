@@ -101,8 +101,8 @@ public class GameBoard extends javax.swing.JFrame {
             {
                 //player.useCard(card);
                 //if (the card is valid)
-                GameController.useCardForPlayer(card, 0);
-                PlayerHandPanel.remove(newCard);
+                if(GameController.useCardForPlayer(card, 0))
+                    PlayerHandPanel.remove(newCard);
                 ViewDamageField.setText("");
                 update();
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

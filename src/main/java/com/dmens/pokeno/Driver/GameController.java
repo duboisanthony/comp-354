@@ -106,8 +106,8 @@ public class GameController {
 		//Clean up	
 	}
 	
-	public static void useCardForPlayer(Card card, int player){
-		mPlayers.get(player).useCard(card);
+	public static boolean useCardForPlayer(Card card, int player){
+		return mPlayers.get(player).useCard(card);
 	}
 	
 	public static boolean useActivePokemonForPlayer(int player, int ability){
