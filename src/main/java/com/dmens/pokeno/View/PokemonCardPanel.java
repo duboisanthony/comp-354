@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dmens.pokeno.Board;
+package com.dmens.pokeno.View;
 
 import java.awt.Image;
 

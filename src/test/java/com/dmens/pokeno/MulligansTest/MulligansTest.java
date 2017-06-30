@@ -11,12 +11,12 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.dmens.pokeno.Board.GameBoard;
 import com.dmens.pokeno.Card.EnergyCard;
 import com.dmens.pokeno.Card.Pokemon;
 import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Driver.GameController;
 import com.dmens.pokeno.Player.Player;
+import com.dmens.pokeno.View.GameBoard;
 
 /**
  *
