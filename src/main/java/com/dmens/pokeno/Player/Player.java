@@ -187,9 +187,31 @@ public class Player {
                 ai.activeFainted();
                 GameController.board.OpponentBenchPanel.remove(GameController.board.OpponentBenchPanel.getComponent(0));
             }
+            else
+                opponent.activeFainted();
             collectPrize(mRewards.size()-1);
         }
         return usedAbility;
+    }
+    
+    private void activeFainted()
+    {
+        //if you have pokemon on the bench, swapping method?
+        if (humanPlayer)
+        {
+            System.out.println("Before popup");
+            setActiveFromBench(createPokemonOptionPane("PokemonSwap", "Which Pokemon would you like to set as your new active?"));
+        }
+    }
+    
+    private void setActiveFromBench(int pos)
+    {
+        if (pos == -1)
+            return;
+        ArrayList<Pokemon> mBench = getBenchedPokemon();
+        setActivePokemon(mBench.get(pos));
+        mBench.remove(mBench.get(pos));
+        GameController.board.PlayerBenchPanel.remove(GameController.board.PlayerBenchPanel.getComponent(pos));
     }
     
     private void cleanActivePokemon(){
@@ -256,28 +278,25 @@ public class Player {
     public void pickCard(){}
 
     //Should be able to use this method when the player decides which Pokemon they want when retreating/losing a Pokemon
-    private boolean createPokemonOptionPane(EnergyCard card, String title, String message)
+    private int createPokemonOptionPane(String title, String message)
     {
+        int offset = 1;
         if (mActivePokemon == null)
-            return false;
-        String[] buttons = new String[mBenchedPokemon.size()+2];
-        buttons[0] = "Active " + mActivePokemon.getName();
+            offset = 0;
+        String[] buttons = new String[mBenchedPokemon.size()+1+offset];
+        if (offset == 1)
+            buttons[0] = "Active " + mActivePokemon.getName();
         buttons[buttons.length-1] = "Cancel";
-        int i = 1;
+        int i = offset;
         for (Pokemon p : mBenchedPokemon)
         {
-            buttons[i] = mBenchedPokemon.get(i-1).getName();
+            buttons[i] = mBenchedPokemon.get(i-offset).getName();
             i++;
         }
         int cardNum = GameController.dispayCustomOptionPane(buttons, title, message);
-        if (cardNum == 0)
-            setEnergy(card, mActivePokemon);
-        else if (cardNum == buttons.length-1)
-            return false;
-        else
-            setEnergy(card, mBenchedPokemon.get(cardNum-1));
-        
-        return true;
+        if (cardNum == buttons.length-1) //If the user clicks cancel it will return -1
+            cardNum = -1;
+        return cardNum;
     }
     
     public boolean useCard(Card card)
@@ -290,8 +309,13 @@ public class Player {
                     benchPokemon((Pokemon)card);
                 break;
             case ENERGY:
-                if(!createPokemonOptionPane((EnergyCard)card, "Pokemon Select", "Which Pokemon would you like to attach it to?"))
+                int cardNum = createPokemonOptionPane("Pokemon Select", "Which Pokemon would you like to attach it to?");
+                if (cardNum == -1)
                     return false;
+                if (cardNum == 0 && mActivePokemon != null)
+                    setEnergy(card, mActivePokemon);
+                else
+                    setEnergy(card, mBenchedPokemon.get(cardNum-1));
                 break;
             case TRAINER:
                 ((TrainerCard) card).use();
@@ -321,7 +345,7 @@ public class Player {
      * and to swap it with a benched Pokemon. 
      * @param benchedPokemon
      */
-    public void swapPokemon(Pokemon benchedPokemon){
+    public void swapPokemon(Pokemon benchedPokemon){ //FIXME - misleading name, this is specficially for retreating, not for fainted Pokemon
     	int numEnergyCards = mActivePokemon.getAttachedEnergy().size();
     	if(numEnergyCards >= mActivePokemon.getRetreatCost()){
     		

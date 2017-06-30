@@ -1173,7 +1173,7 @@ public class GameBoard extends javax.swing.JFrame {
     private javax.swing.JLabel PlayerAsleepLabel;
     private javax.swing.JButton PlayerAttack1Btn;
     private javax.swing.JButton PlayerAttack2Btn;
-    private javax.swing.JPanel PlayerBenchPanel;
+    public javax.swing.JPanel PlayerBenchPanel;
     private javax.swing.JTextField PlayerColorlessEnergyField;
     private javax.swing.JTextField PlayerDamageField;
     private javax.swing.JLabel PlayerDeckSize;

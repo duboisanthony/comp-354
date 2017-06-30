@@ -603,6 +603,9 @@
       </Layout>
     </Container>
     <Container class="javax.swing.JPanel" name="PlayerBenchPanel">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+      </AuxValues>
 
       <Layout>
         <DimensionLayout dim="0">
