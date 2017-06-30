@@ -16,8 +16,8 @@ import com.dmens.pokeno.Utils.Parser;
 
 public class PlayerTest{
 	
-	private static final String LOCATION_FIRST_DECK = "data/deck1.txt";
-	private static final String LOCATION_SECOND_DECK = "data/deck2.txt";
+	private static final String LOCATION_FIRST_DECK = "data/decks/deck1.txt";
+	private static final String LOCATION_SECOND_DECK = "data/decks/deck2.txt";
 	private static final String LOCATION_CARDS = "data/cards.txt";
 	private static final String LOCATION_ABILITIES = "data/abilities.txt";
 	private static Deck testDeck1 = new Deck();

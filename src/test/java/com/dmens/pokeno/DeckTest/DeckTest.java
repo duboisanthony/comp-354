@@ -22,8 +22,8 @@ public class DeckTest {
 	
 	@Before
 	public void setup(){
-		validDeck = Parser.Instance().DeckCreation("data/deck1.txt");
-		invalidDeck = Parser.Instance().DeckCreation("data/deck1.txt");
+		validDeck = Parser.Instance().DeckCreation("data/decks/deck1.txt");
+		invalidDeck = Parser.Instance().DeckCreation("data/decks/deck1.txt");
 		invalidDeck.draw(10);
 	}
 

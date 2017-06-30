@@ -20,7 +20,7 @@ public class CardContainerTest {
 	
 	@Before
 	public void setupCardContainer(){
-		ct = Parser.Instance().DeckCreation("data/deck1.txt");
+		ct = Parser.Instance().DeckCreation("data/decks/deck1.txt");
 	}
 	
 	@Test

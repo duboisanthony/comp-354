@@ -24,7 +24,7 @@ public class HandTest {
 	
 	@Before
 	public void setupCardContainer(){
-		deck = Parser.Instance().DeckCreation("data/deck1.txt");
+		deck = Parser.Instance().DeckCreation("data/decks/deck1.txt");
 		hand = new Hand();
 	}
 	
