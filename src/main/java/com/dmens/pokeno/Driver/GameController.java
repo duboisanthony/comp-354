@@ -218,7 +218,7 @@ public class GameController {
         return energyList;
     }
 
-    private static List<File> getFilesFromFolder(String folder){
+    private static List<File> getFilesFromFolder(String folder, String extension){
         List<File> files = new ArrayList<File>();
         List<String> filePaths = new ArrayList<String>();
         try {
@@ -226,7 +226,7 @@ public class GameController {
             JarFile unJar = new JarFile(GameController.class.getProtectionDomain().getCodeSource().getLocation().getFile());
             for (Enumeration<JarEntry> jnum = unJar.entries(); jnum.hasMoreElements();) {
                 JarEntry entry = jnum.nextElement();
-                if(entry.getName().startsWith(folder) && entry.getName().endsWith(".txt"))
+                if(entry.getName().startsWith(folder) && entry.getName().endsWith(extension))
                     filePaths.add(entry.getName());
             }
 //            filePaths.stream().forEach(name -> LOG.info(name));
@@ -250,10 +250,9 @@ public class GameController {
     	final File folder = new File(LOCATION_DECKS).getAbsoluteFile();
 //    	final File folder = new File( GameController.class.getClassLoader().getResource(LOCATION_DECKS).getPath());
     	ArrayList<Component> deckButtons = new ArrayList<Component>();
-    	List<File> folders = getFilesFromFolder(LOCATION_DECKS);
     	
     	Icon icon = new ImageIcon(GameController.class.getClassLoader().getResource("data/images/deckIcon.png"));
-		for (File fileEntry : getFilesFromFolder(LOCATION_DECKS)) {
+		for (File fileEntry : getFilesFromFolder(LOCATION_DECKS, ".txt")) {
 			System.out.println(LOCATION_DECKS+"/"+fileEntry.getName());
 			deckButtons.add(getButton(optionPane, fileEntry.getName(), icon, deckList.size()));
 			deckList.add(Parser.Instance().DeckCreation(LOCATION_DECKS+"/"+fileEntry.getName()));
