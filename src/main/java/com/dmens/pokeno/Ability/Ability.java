@@ -40,18 +40,7 @@ public class Ability {
      */
     public void addEffect(Effect e)
 	{
-    	if(e.getClass().getName().equals("com.dmens.pokeno.Effect.Heal"))
-    	{
-    		this.mEffects.add(new Heal((Heal) e));
-    	}
-    	else if(e.getClass().getName().equals("com.dmens.pokeno.Effect.Damage"))
-    	{
-    		this.mEffects.add(new Damage((Damage) e));
-    	}
-    	else if(e.getClass().getName().equals("com.dmens.pokeno.Effect.ApplyStatus"))
-    	{
-    		this.mEffects.add(new ApplyStatus((ApplyStatus) e));
-    	}	
+    	this.mEffects.add(e);
 	} 
     
     /*

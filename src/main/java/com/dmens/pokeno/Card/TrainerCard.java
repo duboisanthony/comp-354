@@ -13,32 +13,26 @@ public class TrainerCard extends Card {
     private static final Logger LOG = LogManager.getLogger(TrainerCard.class);
 
 	private String mCategory;
-	private ArrayList<Ability> mAbilities;
+	private Ability mAbility;
 
-	public TrainerCard(String name, String category, ArrayList<Ability> abilities)
+	public TrainerCard(String name, String category, Ability ability)
 	{
 		super(name);
 		this.mCategory = category;
-		this.mAbilities = abilities;
+		this.mAbility = ability;
 	}
 	
 	public String getCategory() {
 		return this.mCategory;
 	}
 	
-	public ArrayList<Ability> getAbilities() {
-		return this.mAbilities;
+	public Ability getAbility() {
+		return this.mAbility;
 	}
 
 	public String toString()
 	{
-		StringBuilder abilitiesAsList = new StringBuilder();
-		for (Ability ability: mAbilities)
-		{
-			abilitiesAsList.append("--" + ability.toString() + "\n");
-		}
-		
-		return String.format("%s:\t\tNAME: %s\t\tCAT:%s\n%s", TrainerCard.class, this.getName(), this.mCategory, abilitiesAsList.toString());
+		return String.format("%s:\t\tNAME: %s\t\tCAT:%s\n%s", TrainerCard.class, this.getName(), this.mCategory, mAbility);
 	}
 	
 	@Override
@@ -47,13 +41,16 @@ public class TrainerCard extends Card {
 	}
 	
 	public void use() {
-		for (Ability ability: mAbilities) {
-			ability.performAbility();
-		}
+		mAbility.performAbility();
 	}
 
 	@Override
 	public CardTypes getType() {
 		return CardTypes.TRAINER;
+	}
+
+	@Override
+	public Card copy() {
+		return new TrainerCard(this.getName(), this.getCategory(), this.getAbility());
 	}
 }

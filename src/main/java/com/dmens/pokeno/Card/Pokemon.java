@@ -18,8 +18,8 @@ public class Pokemon extends Card {
     private int mHP;
     private int mDamage;
     private ArrayList<EnergyCard> mAttachedEnergy;
-	private ArrayList<String> mCategories;
-	private ArrayList<Ability> mAbilities;
+	private String mCategory;
+	private String mPokemonType;
     private ArrayList<AbilityCost> mAbilitiesAndCost;
 	private int mRetreatCost;
 	private String mBasePokemonName;
@@ -28,19 +28,44 @@ public class Pokemon extends Card {
     private boolean mParalyzed;
     private boolean mSleep;
     
-    public Pokemon(String name, ArrayList<String> categories, int initialHP, Integer retreatCost){
+    public Pokemon(String name){
+    	super(name);
+    	mAttachedEnergy = new ArrayList<EnergyCard>();
+        mAbilitiesAndCost = new ArrayList<AbilityCost>();
+    }
+    
+    public Pokemon(String name, String category, int initialHP, Integer retreatCost){
         super(name);
-        mCategories = categories;
+        mCategory = category;
         mHP = initialHP;
         mRetreatCost = retreatCost;
-        mAbilities = new ArrayList<Ability>();
         mAttachedEnergy = new ArrayList<EnergyCard>();
         mAbilitiesAndCost = new ArrayList<AbilityCost>();
     }
-	
-	public void AddCategory(String category)
-	{
-		this.mCategories.add(category);
+
+	public void setHP(int mHP) {
+		this.mHP = mHP;
+	}
+
+	public String getPokemonType() {
+		return mPokemonType;
+	}
+
+	public void setPokemonType(String mType) {
+		this.mPokemonType = mType;
+	}
+
+	public String getCategory() {
+		return mCategory;
+	}
+
+	public void setCategory(String mCategory) {
+		this.mCategory = mCategory;
+	}
+
+
+	public void setmRetreatCost(int mRetreatCost) {
+		this.mRetreatCost = mRetreatCost;
 	}
 	
 	public void AddAbilityAndCost(AbilityCost abilityCost)
@@ -91,7 +116,6 @@ public class Pokemon extends Card {
 	}
 
 	public void setBasePokemonName(String basePokemonName) {
-		assert basePokemonName != null;
 		mBasePokemonName = basePokemonName;
 	}
 	
@@ -176,15 +200,6 @@ public class Pokemon extends Card {
     public ArrayList<EnergyCard> getAttachedEnergy() {
         return mAttachedEnergy;
     }
-
-    public ArrayList<String> getCategories() {
-        return mCategories;
-    }
-
-    public ArrayList<Ability> getAbilities() {
-        return mAbilities;
-    }
-
     public int getRetreatCost() {
         return mRetreatCost;
     }
@@ -207,6 +222,12 @@ public class Pokemon extends Card {
 
     public boolean isSleep() {
         return mSleep;
+    }
+    
+    public boolean isEvolvedCategory(){
+    	if(this.mCategory.equalsIgnoreCase("stage-one") || this.mCategory.equalsIgnoreCase("stage-two"))
+    		return true;
+    	return false;
     }
 
     public void evolvePokemon(Pokemon basePokemon){
@@ -257,5 +278,15 @@ public class Pokemon extends Card {
 	@Override
 	public CardTypes getType() {
 		return CardTypes.POKEMON;
+	}
+	
+	@Override
+	public Card copy() {
+		Pokemon p = new Pokemon(this.getName(), this.mCategory, this.getHP(), this.getRetreatCost());
+		p.setBasePokemonName(this.getBasePokemonName());
+		this.getAbilitiesAndCost().forEach(abilityCost->{
+			p.AddAbilityAndCost(abilityCost);
+		});
+		return p;
 	}
 }

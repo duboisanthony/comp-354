@@ -21,6 +21,7 @@ public class AbilityCost {
 	}
 
 	public AbilityCost() {
+		costs = new HashMap<EnergyTypes, Integer>();
 	}
 
 	public Ability getAbility() {

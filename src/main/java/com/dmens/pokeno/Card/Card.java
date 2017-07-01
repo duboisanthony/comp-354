@@ -21,4 +21,6 @@ public abstract class Card {
 	
 	@Override
 	public abstract String toString();
+	
+	public abstract Card copy();
 }

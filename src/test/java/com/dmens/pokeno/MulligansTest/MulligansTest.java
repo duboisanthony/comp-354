@@ -32,15 +32,15 @@ public class MulligansTest {
         Deck deck1 = new Deck();
         Deck deck2 = new Deck();
         
-        Pokemon basic = new Pokemon("Basic",null,1,1);
+        Pokemon basic = new Pokemon("BasicPokemon","basic",1,1);
         assertNotNull(basic);
         basic.setBasePokemonName("Basic");
         
-        Pokemon evolved = new Pokemon("BasicKing",null,2,1);
+        Pokemon evolved = new Pokemon("BasicKing","stage-one",2,1);
         evolved.setBasePokemonName("Basic");
         assertNotNull(evolved);
         
-        EnergyCard notPokemon = new EnergyCard("what","ever");
+        EnergyCard notPokemon = new EnergyCard("Colorless","colorless");
         assertNotNull(notPokemon);
         
         deck1.addCard(evolved);

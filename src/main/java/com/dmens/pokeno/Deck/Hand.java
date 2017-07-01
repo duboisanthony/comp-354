@@ -14,7 +14,7 @@ public class Hand extends CardContainer {
 	
 	public boolean hasBasicPokemon(){
 		for(Card card : cards)
-            if(card.isType(CardTypes.POKEMON) && ((Pokemon)card).getBasePokemonName().equals(card.getName()))
+            if(card.isType(CardTypes.POKEMON) && !((Pokemon)card).isEvolvedCategory())
                 return true;
 		return false;
 	}

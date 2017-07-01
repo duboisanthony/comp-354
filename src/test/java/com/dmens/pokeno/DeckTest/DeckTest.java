@@ -9,6 +9,8 @@ import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.CardTypes;
 import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Utils.Parser;
+import com.dmens.pokeno.database.AbilitiesDatabase;
+import com.dmens.pokeno.database.CardsDatabase;
 
 public class DeckTest {
 	private Deck validDeck;
@@ -16,8 +18,8 @@ public class DeckTest {
 	
 	@BeforeClass
 	public static void loadParser(){
-		Parser.Instance().LoadCards("data/cards.txt");
-		Parser.Instance().LoadAbilities("data/abilities.txt");
+		AbilitiesDatabase.getInstance().initialize("data/abilities.txt");
+		CardsDatabase.getInstance().initialize("data/cards.txt");
 	}
 	
 	@Before

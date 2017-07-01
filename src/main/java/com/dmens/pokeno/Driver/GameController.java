@@ -26,6 +26,8 @@ import com.dmens.pokeno.Player.AIPlayer;
 import com.dmens.pokeno.Player.Player;
 import com.dmens.pokeno.Utils.Parser;
 import com.dmens.pokeno.View.GameBoard;
+import com.dmens.pokeno.database.AbilitiesDatabase;
+import com.dmens.pokeno.database.CardsDatabase;
 
 public class GameController {
 
@@ -41,15 +43,10 @@ public class GameController {
     public static GameBoard board;
         
 	public static void main(String[] args) {
-		
+		AbilitiesDatabase.getInstance().initialize(LOCATION_ABILITIES);
+		CardsDatabase.getInstance().initialize(LOCATION_CARDS);
 		Deck mFirstDeck = null;
 		Deck mSecondDeck = null;
-		// Parse Cards
-		System.out.println("Parsing cards and abilities...");
-		boolean result = Parser.Instance().LoadCards(LOCATION_CARDS);
-		assert result;
-		result = Parser.Instance().LoadAbilities(LOCATION_ABILITIES);
-		assert result;
 		
 		board = new GameBoard();
         board.setVisible(true);
@@ -69,7 +66,6 @@ public class GameController {
 			// TODO: how do we handle invalid deck?
 		}
 		// Create Players and assign decks
-		// TODO: we need to allow player to choose his deck or randomly assign decks
 		System.out.println("Creating players and assigning decks...");
 		Player homePlayer = new Player(mFirstDeck);
 		Player adversaryPlayer = new AIPlayer(mSecondDeck);
@@ -104,18 +100,9 @@ public class GameController {
         
         mPlayers.forEach(currentPlayer->{ currentPlayer.setUpRewards(); });
         
+        // TODO set start turn
         AIPlayer opp = (AIPlayer)mPlayers.get(1);
         opp.selectStarterPokemon();
-		
-		System.out.println("\nTest Run: PokemonNoGo");
-		System.out.println("Print out the Hand of the First Player...");
-		for(int i = 0; i < mPlayers.get(0).getHand().size(); ++i){
-			System.out.println(mPlayers.get(0).getHand().getCards().get(i));
-		}
-			
-		
-		
-		//Clean up	
 	}
 	
 	public static boolean useCardForPlayer(Card card, int player){

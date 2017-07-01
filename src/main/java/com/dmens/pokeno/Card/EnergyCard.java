@@ -22,20 +22,7 @@ public class EnergyCard extends Card {
 	}
 	
 	private void setCategory(String cat){
-		if(cat.equalsIgnoreCase("COLORLESS"))
-			mCategory = EnergyTypes.COLORLESS;
-		else if(cat.equalsIgnoreCase("WATER"))
-			mCategory = EnergyTypes.WATER;
-		else if(cat.equalsIgnoreCase("FIGHT"))
-			mCategory = EnergyTypes.FIGHT;
-		else if(cat.equalsIgnoreCase("FIRE"))
-			mCategory = EnergyTypes.FIRE;
-		else if(cat.equalsIgnoreCase("PSYCHIC"))
-			mCategory = EnergyTypes.PSYCHIC;
-		else if(cat.equalsIgnoreCase("GRASS"))
-			mCategory = EnergyTypes.GRASS;
-		else if(cat.equalsIgnoreCase("LIGHTNING"))
-			mCategory = EnergyTypes.LIGHTNING;
+		mCategory = EnergyTypes.valueOf(cat.toUpperCase());
 	}
 	
 	public String toString()
@@ -56,4 +43,11 @@ public class EnergyCard extends Card {
 	public boolean isCategory(EnergyTypes energy){
 		return (mCategory == energy || energy == EnergyTypes.COLORLESS ? true : false);
 	}
+
+	@Override
+	public Card copy() {
+		return new EnergyCard(this.getName(), this.getCategory().toString());
+	}
+	
+	
 }

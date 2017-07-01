@@ -7,6 +7,8 @@ import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Driver.GameController;
 import com.dmens.pokeno.Player.Player;
 import com.dmens.pokeno.Utils.Parser;
+import com.dmens.pokeno.database.AbilitiesDatabase;
+import com.dmens.pokeno.database.CardsDatabase;
 
 /**
  * Basic test class for the Player class. 
@@ -28,11 +30,8 @@ public class PlayerTest{
 	public void testSetupRewards()
 	{
 		
-		//! Load cards from text files. 
-		boolean result = Parser.Instance().LoadCards(LOCATION_CARDS);
-		assert result;
-		result = Parser.Instance().LoadAbilities(LOCATION_ABILITIES);
-		assert result;
+		AbilitiesDatabase.getInstance().initialize(LOCATION_ABILITIES);
+		CardsDatabase.getInstance().initialize(LOCATION_CARDS);
 		
 		//! Initialize test decks. 
 		testDeck1 = Parser.Instance().DeckCreation(LOCATION_FIRST_DECK);

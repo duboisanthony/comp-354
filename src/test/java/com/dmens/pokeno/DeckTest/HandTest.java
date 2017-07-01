@@ -11,15 +11,17 @@ import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Deck.Hand;
 import com.dmens.pokeno.Utils.Parser;
+import com.dmens.pokeno.database.AbilitiesDatabase;
+import com.dmens.pokeno.database.CardsDatabase;
 
 public class HandTest {
 	private Hand hand;
 	private Deck deck;
 	
 	@BeforeClass
-	public static void loadParser(){
-		Parser.Instance().LoadCards("data/cards.txt");
-		Parser.Instance().LoadAbilities("data/abilities.txt");
+	public static void loadParser(){		
+		AbilitiesDatabase.getInstance().initialize("data/abilities.txt");
+		CardsDatabase.getInstance().initialize("data/cards.txt");
 	}
 	
 	@Before
