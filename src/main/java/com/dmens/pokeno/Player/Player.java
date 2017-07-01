@@ -138,8 +138,9 @@ public class Player {
     	mActivePokemon = activePokemon;
         //if (humanPlayer)
         GameController.board.setActivePokemon(activePokemon, humanPlayer);
+        updateEnergyCounters(mActivePokemon, false);
     }
-
+    
     /**
      * Sends a Pokemon to player's bench. Condition
      * verifies if player's bench has already reached
@@ -177,7 +178,7 @@ public class Player {
         boolean usedAbility =  mActivePokemon.useAbility(ability, opponent.getActivePokemon());
         GameController.board.updateActivePokemon(opponent);
         
-        if (opponent.getActivePokemon().getDamage() >= opponent.getActivePokemon().getHP())
+        if (opponent.getActivePokemon().getDamage() >= 250)//opponent.getActivePokemon().getHP())
         {
             checkGameWon();
             opponent.cleanActivePokemon();
@@ -200,7 +201,8 @@ public class Player {
         if (humanPlayer)
         {
             System.out.println("Before popup");
-            setActiveFromBench(createPokemonOptionPane("PokemonSwap", "Which Pokemon would you like to set as your new active?"));
+            setActiveFromBench(createPokemonOptionPane("PokemonSwap", "Which Pokemon would you like to set as your new active?", false));
+            
         }
     }
     
@@ -212,6 +214,7 @@ public class Player {
         setActivePokemon(mBench.get(pos));
         mBench.remove(mBench.get(pos));
         GameController.board.PlayerBenchPanel.remove(GameController.board.PlayerBenchPanel.getComponent(pos));
+        updateEnergyCounters(mActivePokemon, false);
     }
     
     private void cleanActivePokemon(){
@@ -278,9 +281,8 @@ public class Player {
     public void pickCard(){}
 
     //Should be able to use this method when the player decides which Pokemon they want when retreating/losing a Pokemon
-    private int createPokemonOptionPane(String title, String message)
+    private int deprecatedCreatePokemonOptionPane(String title, String message)
     {
-        //FIXME - rework this to use an arrayList and then .toArray() to clean it up!
         int offset = 1;
         if (mActivePokemon == null)
             offset = 0;
@@ -300,6 +302,27 @@ public class Player {
         return cardNum;
     }
     
+    private int createPokemonOptionPane(String title, String message, boolean cancelable)
+    {
+        ArrayList<String> buttons = new ArrayList<String>(); 
+        if (mActivePokemon != null)
+            buttons.add("Active " + mActivePokemon.getName());
+        int i = 0;
+        for (Pokemon p : mBenchedPokemon)
+        {
+            buttons.add(mBenchedPokemon.get(i).getName());
+            i++;
+        }
+        if (cancelable)
+            buttons.add("Cancel");
+        String[] buttonsAsArray = new String[buttons.size()];
+        buttonsAsArray = buttons.toArray(buttonsAsArray);
+        int buttonNum = GameController.dispayCustomOptionPane(buttonsAsArray, title, message);
+        if (cancelable && buttonNum == buttonsAsArray.length-1) //If the user clicks cancel it will return -1
+            buttonNum = -1;
+        return buttonNum;
+    }
+    
     public boolean useCard(Card card)
     {
         switch(card.getType()){
@@ -310,7 +333,7 @@ public class Player {
                     benchPokemon((Pokemon)card);
                 break;
             case ENERGY:
-                int cardNum = createPokemonOptionPane("Pokemon Select", "Which Pokemon would you like to attach it to?");
+                int cardNum = createPokemonOptionPane("Pokemon Select", "Which Pokemon would you like to attach it to?", true);
                 if (cardNum == -1)
                     return false;
                 if (cardNum == 0 && mActivePokemon != null)
