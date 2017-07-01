@@ -73,7 +73,7 @@ public class Parser {
 	private static ArrayList<String> GetFileContentsAsArrayList(String location) throws FileNotFoundException
 	{
 
-		InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
+		InputStream in = Parser.class.getClassLoader().getResourceAsStream(location);
 		if(in == null)
 			throw new FileNotFoundException();
 		Scanner scanner = new Scanner(in, ENCODING);
@@ -301,7 +301,8 @@ public class Parser {
 			}
 			
 			Ability ability = abilities.get(0);
-			
+
+            //TODO: Remove hard coded energy cost
 			AbilityCost abilityCost = new AbilityCost(ability);
 			abilityCost.addCost(EnergyTypes.COLORLESS, 1);
 

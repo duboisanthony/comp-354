@@ -4,11 +4,10 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -26,8 +25,12 @@ import com.dmens.pokeno.Player.AIPlayer;
 import com.dmens.pokeno.Player.Player;
 import com.dmens.pokeno.Utils.Parser;
 import com.dmens.pokeno.View.GameBoard;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class GameController {
+
+    private static final Logger LOG = LogManager.getLogger(GameController.class);
 
 	private static final String LOCATION_DECKS = "data/decks";
 	private static final String LOCATION_CARDS = "data/cards.txt";
@@ -214,7 +217,28 @@ public class GameController {
     	});
         return energyList;
     }
-    
+
+    private static List<File> getFilesFromFolder(String folder){
+        List<File> files = new ArrayList<File>();
+        List<String> filePaths = new ArrayList<String>();
+        try {
+            LOG.info("Getting current jar location {}", GameController.class.getProtectionDomain().getCodeSource().getLocation().toURI().toString());
+            JarFile unJar = new JarFile(GameController.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+            for (Enumeration<JarEntry> jnum = unJar.entries(); jnum.hasMoreElements();) {
+                JarEntry entry = jnum.nextElement();
+                if(entry.getName().startsWith(folder) && entry.getName().endsWith(".txt"))
+                    filePaths.add(entry.getName());
+            }
+//            filePaths.stream().forEach(name -> LOG.info(name));
+            filePaths.stream().forEach(name -> files.add(new File(name)));
+            files.stream().forEach(file -> LOG.info(file.getName()));
+        }
+        catch (Exception e){
+            LOG.error(e.getMessage());
+        }
+
+        return files;
+	}
     private static Deck[] chooseDeck()
     {
     	JFrame frame = new JFrame();
@@ -223,11 +247,13 @@ public class GameController {
         optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
     	
     	List<Deck> deckList = new ArrayList<Deck>();
-    	final File folder = new File( GameController.class.getClassLoader().getResource(LOCATION_DECKS).getPath());
+    	final File folder = new File(LOCATION_DECKS).getAbsoluteFile();
+//    	final File folder = new File( GameController.class.getClassLoader().getResource(LOCATION_DECKS).getPath());
     	ArrayList<Component> deckButtons = new ArrayList<Component>();
+    	List<File> folders = getFilesFromFolder(LOCATION_DECKS);
     	
     	Icon icon = new ImageIcon(GameController.class.getClassLoader().getResource("data/images/deckIcon.png"));
-		for (final File fileEntry : folder.listFiles()) {
+		for (File fileEntry : getFilesFromFolder(LOCATION_DECKS)) {
 			System.out.println(LOCATION_DECKS+"/"+fileEntry.getName());
 			deckButtons.add(getButton(optionPane, fileEntry.getName(), icon, deckList.size()));
 			deckList.add(Parser.Instance().DeckCreation(LOCATION_DECKS+"/"+fileEntry.getName()));
