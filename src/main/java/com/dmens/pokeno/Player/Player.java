@@ -178,7 +178,7 @@ public class Player {
         boolean usedAbility =  mActivePokemon.useAbility(ability, opponent.getActivePokemon());
         GameController.board.updateActivePokemon(opponent);
         
-        if (opponent.getActivePokemon().getDamage() >= 250)//opponent.getActivePokemon().getHP())
+        if (opponent.getActivePokemon().getDamage() >= opponent.getActivePokemon().getHP()) //250)//
         {
             checkGameWon();
             opponent.cleanActivePokemon();
