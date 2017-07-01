@@ -80,9 +80,11 @@ public class Player {
     	assert numOfCards >= 0;
     	assert mDeck.size() >= numOfCards;
     	
-		mHand.addCards(mDeck.draw(numOfCards));
-		GameController.updateHand(mHand, humanPlayer);
-                GameController.updateDeck(mDeck.size(), humanPlayer);
+        if (numOfCards > mDeck.size())
+            numOfCards = mDeck.size();
+        mHand.addCards(mDeck.draw(numOfCards));
+        GameController.updateHand(mHand, humanPlayer);
+        GameController.updateDeck(mDeck.size(), humanPlayer);
         return mHand;
     }
     
@@ -178,7 +180,7 @@ public class Player {
         boolean usedAbility =  mActivePokemon.useAbility(ability, opponent.getActivePokemon());
         GameController.board.updateActivePokemon(opponent);
         
-        if (opponent.getActivePokemon().getDamage() >= opponent.getActivePokemon().getHP()) //250)//
+        if (opponent.getActivePokemon().getDamage() >= 250)//opponent.getActivePokemon().getHP()) //
         {
             checkGameWon();
             opponent.cleanActivePokemon();
