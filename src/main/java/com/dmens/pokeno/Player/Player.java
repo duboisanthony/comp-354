@@ -280,6 +280,7 @@ public class Player {
     //Should be able to use this method when the player decides which Pokemon they want when retreating/losing a Pokemon
     private int createPokemonOptionPane(String title, String message)
     {
+        //FIXME - rework this to use an arrayList and then .toArray() to clean it up!
         int offset = 1;
         if (mActivePokemon == null)
             offset = 0;
