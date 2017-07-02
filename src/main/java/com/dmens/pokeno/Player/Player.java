@@ -80,9 +80,11 @@ public class Player {
     	assert numOfCards >= 0;
     	assert mDeck.size() >= numOfCards;
     	
-		mHand.addCards(mDeck.draw(numOfCards));
-		GameController.updateHand(mHand, humanPlayer);
-                GameController.updateDeck(mDeck.size(), humanPlayer);
+        if (numOfCards > mDeck.size())
+            numOfCards = mDeck.size();
+        mHand.addCards(mDeck.draw(numOfCards));
+        GameController.updateHand(mHand, humanPlayer);
+        GameController.updateDeck(mDeck.size(), humanPlayer);
         return mHand;
     }
     
@@ -138,8 +140,9 @@ public class Player {
     	mActivePokemon = activePokemon;
         //if (humanPlayer)
         GameController.board.setActivePokemon(activePokemon, humanPlayer);
+        updateEnergyCounters(mActivePokemon, false);
     }
-
+    
     /**
      * Sends a Pokemon to player's bench. Condition
      * verifies if player's bench has already reached
@@ -177,7 +180,7 @@ public class Player {
         boolean usedAbility =  mActivePokemon.useAbility(ability, opponent.getActivePokemon());
         GameController.board.updateActivePokemon(opponent);
         
-        if (opponent.getActivePokemon().getDamage() >= opponent.getActivePokemon().getHP())
+        if (opponent.getActivePokemon().getDamage() >= opponent.getActivePokemon().getHP()) //250)//
         {
             checkGameWon();
             opponent.cleanActivePokemon();
@@ -187,9 +190,33 @@ public class Player {
                 ai.activeFainted();
                 GameController.board.OpponentBenchPanel.remove(GameController.board.OpponentBenchPanel.getComponent(0));
             }
+            else
+                opponent.activeFainted();
             collectPrize(mRewards.size()-1);
         }
         return usedAbility;
+    }
+    
+    private void activeFainted()
+    {
+        //if you have pokemon on the bench, swapping method?
+        if (humanPlayer)
+        {
+            System.out.println("Before popup");
+            setActiveFromBench(createPokemonOptionPane("PokemonSwap", "Which Pokemon would you like to set as your new active?", false));
+            
+        }
+    }
+    
+    private void setActiveFromBench(int pos)
+    {
+        if (pos == -1)
+            return;
+        ArrayList<Pokemon> mBench = getBenchedPokemon();
+        setActivePokemon(mBench.get(pos));
+        mBench.remove(mBench.get(pos));
+        GameController.board.PlayerBenchPanel.remove(GameController.board.PlayerBenchPanel.getComponent(pos));
+        updateEnergyCounters(mActivePokemon, false);
     }
     
     private void cleanActivePokemon(){
@@ -255,6 +282,49 @@ public class Player {
 
     public void pickCard(){}
 
+    //Should be able to use this method when the player decides which Pokemon they want when retreating/losing a Pokemon
+    private int deprecatedCreatePokemonOptionPane(String title, String message)
+    {
+        int offset = 1;
+        if (mActivePokemon == null)
+            offset = 0;
+        String[] buttons = new String[mBenchedPokemon.size()+1+offset];
+        if (offset == 1)
+            buttons[0] = "Active " + mActivePokemon.getName();
+        buttons[buttons.length-1] = "Cancel";
+        int i = offset;
+        for (Pokemon p : mBenchedPokemon)
+        {
+            buttons[i] = mBenchedPokemon.get(i-offset).getName();
+            i++;
+        }
+        int cardNum = GameController.dispayCustomOptionPane(buttons, title, message);
+        if (cardNum == buttons.length-1) //If the user clicks cancel it will return -1
+            cardNum = -1;
+        return cardNum;
+    }
+    
+    private int createPokemonOptionPane(String title, String message, boolean cancelable)
+    {
+        ArrayList<String> buttons = new ArrayList<String>(); 
+        if (mActivePokemon != null)
+            buttons.add("Active " + mActivePokemon.getName());
+        int i = 0;
+        for (Pokemon p : mBenchedPokemon)
+        {
+            buttons.add(mBenchedPokemon.get(i).getName());
+            i++;
+        }
+        if (cancelable)
+            buttons.add("Cancel");
+        String[] buttonsAsArray = new String[buttons.size()];
+        buttonsAsArray = buttons.toArray(buttonsAsArray);
+        int buttonNum = GameController.dispayCustomOptionPane(buttonsAsArray, title, message);
+        if (cancelable && buttonNum == buttonsAsArray.length-1) //If the user clicks cancel it will return -1
+            buttonNum = -1;
+        return buttonNum;
+    }
+    
     public boolean useCard(Card card)
     {
         switch(card.getType()){
@@ -264,26 +334,14 @@ public class Player {
                 else
                     benchPokemon((Pokemon)card);
                 break;
-            case ENERGY: //Working here
-                if (mActivePokemon == null)
+            case ENERGY:
+                int cardNum = createPokemonOptionPane("Pokemon Select", "Which Pokemon would you like to attach it to?", true);
+                if (cardNum == -1)
                     return false;
-                String[] buttons = new String[mBenchedPokemon.size()+2];
-                buttons[0] = "Active " + mActivePokemon.getName();
-                buttons[buttons.length-1] = "Cancel";
-                int i = 1;
-                for (Pokemon p : mBenchedPokemon)
-                {
-                    buttons[i] = mBenchedPokemon.get(i-1).getName();
-                    i++;
-                }
-                int cardNum = GameController.dispayCustomOptionPane(buttons, "Card Select", "Which Pokemon would you like to attach it to?");
-                if (cardNum == 0)
+                if (cardNum == 0 && mActivePokemon != null)
                     setEnergy(card, mActivePokemon);
-                else if (cardNum == buttons.length-1)
-                    return false;
                 else
                     setEnergy(card, mBenchedPokemon.get(cardNum-1));
-                
                 break;
             case TRAINER:
                 ((TrainerCard) card).use();
@@ -313,7 +371,7 @@ public class Player {
      * and to swap it with a benched Pokemon. 
      * @param benchedPokemon
      */
-    public void swapPokemon(Pokemon benchedPokemon){
+    public void swapPokemon(Pokemon benchedPokemon){ //FIXME - misleading name, this is specficially for retreating, not for fainted Pokemon
     	int numEnergyCards = mActivePokemon.getAttachedEnergy().size();
     	if(numEnergyCards >= mActivePokemon.getRetreatCost()){
     		
