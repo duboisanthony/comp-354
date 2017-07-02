@@ -12,6 +12,7 @@ import com.dmens.pokeno.Deck.CardContainer;
 import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Deck.Hand;
 import com.dmens.pokeno.Driver.GameController;
+import com.dmens.pokeno.Utils.Randomizer;
 
 /**
  * Created by Devin on 2017-05-26.
@@ -99,6 +100,39 @@ public class Player {
             GameController.setIsHomePlayerPlaying(true);
             opponent.startTurn();
         }
+    }
+    
+    // call this at the end of a turn and give the active pokemon
+    public void aggregateEffects(Pokemon poke, boolean clearAll)
+    {
+		//1 paralyzed .. clear it on end of turn
+		if(poke.isParalyzed())
+		{
+			poke.setParalyzed(false);
+		}
+		//2 asleep .. 50% chance of wake up
+		if(poke.isSleep())
+		{
+			if(Randomizer.Instance().getFiftyPercentChance())
+				poke.setSleep(false);
+		}
+		//3 stuck .. clear it on end of turn
+		//TODO : implement
+		//4 poisoned .. hurt 'em
+		if(poke.isPoisoned())
+		{
+			poke.addDamage(1); //TODO: constant for poison damage
+		}
+    }
+    
+    // call this when retreating or evolving
+  //"Status effects are always removed when retreating or evolving" 
+    public void resolveEffects(Pokemon poke)
+    {
+    	poke.setParalyzed(false);
+		poke.setSleep(false);
+		poke.setStuck(false);
+		poke.setPoisoned(false);
     }
     
     // allows player to pick a specific card from hand and put it back to the deck

@@ -28,6 +28,7 @@ public class Pokemon extends Card {
     private boolean mConfused;
     private boolean mParalyzed;
     private boolean mSleep;
+    private boolean mStuck;
     
     public Pokemon(String name, ArrayList<String> categories, int initialHP, Integer retreatCost){
         super(name);
@@ -171,6 +172,7 @@ public class Pokemon extends Card {
         this.mPoisoned = poisoned;
     }
 
+    // TODO: remove confused
     public void setConfused(boolean confused) {
         this.mConfused = confused;
     }
@@ -181,6 +183,10 @@ public class Pokemon extends Card {
 
     public void setSleep(boolean sleep) {
         this.mSleep = sleep;
+    }
+    
+    public void setStuck(boolean stuck) {
+        this.mStuck = stuck;
     }
 
     public int getHP() {
@@ -225,6 +231,10 @@ public class Pokemon extends Card {
 
     public boolean isSleep() {
         return mSleep;
+    }
+    
+    public boolean isStuck() {
+        return mStuck;
     }
 
     public void evolvePokemon(Pokemon basePokemon){
