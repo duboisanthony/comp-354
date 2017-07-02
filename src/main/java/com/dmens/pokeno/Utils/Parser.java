@@ -32,7 +32,7 @@ public class Parser {
     private static final Logger LOG = LogManager.getLogger(Parser.class);
     
     private static boolean mSupportedPokemonOnly = true;
-    private static String[] mSupportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Machop", "Zubat"};
+    private static String[] mSupportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Machop", "Zubat", "Espurr"};
     
     private static boolean mSupportedTrainersOnly = true;
     private static String[] mSupportedTrainers = {""};
@@ -186,7 +186,7 @@ public class Parser {
 		else if(results[0].equals("applystat") && c == -1)
 		{
 			//System.out.println("APPLYSTATUS effect added");
-			return new ApplyStatus(results[2], results[3]);
+			return new ApplyStatus(results[3], results[2]);
 		}
 		
 		// fix because it wasnt implemented
@@ -294,7 +294,9 @@ public class Parser {
 					try {						
 						int abilityIndex = Integer.parseInt(results[i]);				
 						
-						abilities.add(CreateAbility(this.mAbilitiesList.get(abilityIndex - 1)));
+						// TESTING HACK - force all abilities to be "Twinkle"
+						abilities.add(CreateAbility(this.mAbilitiesList.get(63)));
+						//abilities.add(CreateAbility(this.mAbilitiesList.get(abilityIndex - 1)));
 						
 					} catch (NumberFormatException e) {System.out.print("EXXXXXXXXCEPTION");}
 				}
