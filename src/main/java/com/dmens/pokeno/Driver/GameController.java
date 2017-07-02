@@ -78,6 +78,8 @@ public class GameController {
 		Player adversaryPlayer = new AIPlayer(mSecondDeck);
 		homePlayer.setOpponent(adversaryPlayer);
 		adversaryPlayer.setOpponent(homePlayer);
+		homePlayer.getDeck().shuffle();
+		adversaryPlayer.getDeck().shuffle();
 		
 		mPlayers = new ArrayList<Player>();
 		mPlayers.add(homePlayer);
