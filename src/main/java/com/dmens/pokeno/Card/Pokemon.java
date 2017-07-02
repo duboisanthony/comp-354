@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.dmens.pokeno.Ability.Ability;
 import com.dmens.pokeno.Ability.AbilityCost;
 import com.dmens.pokeno.Driver.GameController;
+import com.dmens.pokeno.Effect.*;
 
 public class Pokemon extends Card {
 
@@ -143,8 +144,22 @@ public class Pokemon extends Card {
         
         if (hasEnoughEnergy)
         {
-            target.addDamage(a.getDamageEffect().getValue());
-            return true;
+        	//is it a simple ApplyStatus effect or a simple Damage effect
+        	if(a.getEffects().get(0) instanceof ApplyStatus)
+        	{
+        		String status = a.getApplyStatusEffect().getStatus();
+        		
+        		//TODO check target
+        		if(status.compareTo("asleep") == 0)
+        			target.setSleep(true);
+        		
+        		return true;
+        	}
+        	else if (a.getEffects().get(0) instanceof Damage)
+        	{
+        		target.addDamage(a.getDamageEffect().getValue());
+                return true;
+        	}
         }
         return false;
     }
