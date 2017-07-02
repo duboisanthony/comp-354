@@ -151,7 +151,10 @@ public class Pokemon extends Card {
         		
         		//TODO check target
         		if(status.compareTo("asleep") == 0)
-        			target.setSleep(true);
+        			{
+        				target.setSleep(true);
+        				GameController.board.addStatus(1, false);
+        			}
         		
         		return true;
         	}
