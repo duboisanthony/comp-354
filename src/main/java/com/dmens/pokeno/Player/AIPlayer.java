@@ -67,7 +67,7 @@ public class AIPlayer extends Player {
         }
         
         public void selectStarterPokemon(){
-        	Hand mHand = getHand();
+            Hand mHand = getHand();
             useCard(mHand.getPokemon().get(0));
         }
         

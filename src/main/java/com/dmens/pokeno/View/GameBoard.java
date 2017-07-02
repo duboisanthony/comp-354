@@ -1089,7 +1089,8 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_PlayerRetreatBtnActionPerformed
 
     private void PassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassBtnActionPerformed
-        GameController.startAITurn();
+        if (GameController.hasActivePokemon(0))
+            GameController.startAITurn();
     }//GEN-LAST:event_PassBtnActionPerformed
 
     private void ViewColorlessEnergyFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewColorlessEnergyFieldActionPerformed
@@ -1159,7 +1160,7 @@ public class GameBoard extends javax.swing.JFrame {
     private javax.swing.JLabel PlayerAsleepLabel;
     private javax.swing.JButton PlayerAttack1Btn;
     private javax.swing.JButton PlayerAttack2Btn;
-    private javax.swing.JPanel PlayerBenchPanel;
+    public javax.swing.JPanel PlayerBenchPanel;
     private javax.swing.JTextField PlayerColorlessEnergyField;
     private javax.swing.JTextField PlayerDamageField;
     private javax.swing.JLabel PlayerDeckSize;
