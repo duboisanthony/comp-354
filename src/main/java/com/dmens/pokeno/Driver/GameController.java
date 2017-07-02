@@ -222,16 +222,22 @@ public class GameController {
         List<File> files = new ArrayList<File>();
         List<String> filePaths = new ArrayList<String>();
         try {
+
             LOG.info("Getting current jar location {}", GameController.class.getProtectionDomain().getCodeSource().getLocation().toURI().toString());
-            JarFile unJar = new JarFile(GameController.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-            for (Enumeration<JarEntry> jnum = unJar.entries(); jnum.hasMoreElements();) {
-                JarEntry entry = jnum.nextElement();
-                if(entry.getName().startsWith(folder) && entry.getName().endsWith(extension))
-                    filePaths.add(entry.getName());
-            }
-//            filePaths.stream().forEach(name -> LOG.info(name));
-            filePaths.stream().forEach(name -> files.add(new File(name)));
-            files.stream().forEach(file -> LOG.info(file.getName()));
+            if (GameController.class.getProtectionDomain().getCodeSource().getLocation().toURI().toString().endsWith(".jar")) {
+				JarFile unJar = new JarFile(GameController.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+				for (Enumeration<JarEntry> jnum = unJar.entries(); jnum.hasMoreElements(); ) {
+					JarEntry entry = jnum.nextElement();
+					if (entry.getName().startsWith(folder) && entry.getName().endsWith(extension))
+						filePaths.add(entry.getName());
+				}
+				filePaths.stream().forEach(name -> files.add(new File(name)));
+				files.stream().forEach(file -> LOG.info(file.getName()));
+			}
+			else{
+                File fileFolder = new File( GameController.class.getClassLoader().getResource(folder).getPath());
+            	return Arrays.asList(fileFolder.listFiles());
+			}
         }
         catch (Exception e){
             LOG.error(e.getMessage());
