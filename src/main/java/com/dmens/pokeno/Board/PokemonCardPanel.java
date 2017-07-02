@@ -13,6 +13,7 @@ import com.dmens.pokeno.Ability.AbilityCost;
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.EnergyCard;
 import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.Effect.*;
 
 /**
  *
@@ -92,7 +93,19 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         AbilityCost ability = poke.getAbilitiesAndCost().get(0);
         this.ability1.setText(ability.getAbility().getName());
         this.description1.setText(ability.showCosts());
-        this.damage1.setText(Integer.toString(ability.getAbility().getDamageEffect().getValue()));
+        
+        //is it a simple ApplyStatus effect or a simple Damage effect
+        if(poke.getAbilitiesAndCost().get(0).getAbility().getEffects().get(0) instanceof ApplyStatus)
+       	{
+        	System.out.println("is app stat");
+        	this.damage1.setText(ability.getAbility().getApplyStatusEffect().getStatus());
+        }
+        else if(poke.getAbilitiesAndCost().get(0).getAbility().getEffects().get(0) instanceof Damage)
+        {
+        	this.damage1.setText(Integer.toString(ability.getAbility().getDamageEffect().getValue()));
+        }
+        
+        
         // Set ability 2 if present
         if(poke.getAbilitiesAndCost().size() >= 2){
             ability = poke.getAbilitiesAndCost().get(1);
