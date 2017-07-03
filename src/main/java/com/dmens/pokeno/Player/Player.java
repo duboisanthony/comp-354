@@ -51,6 +51,15 @@ public class Player {
     public Pokemon getActivePokemon() {
         return mActivePokemon;
     }
+    
+    public boolean isActivePokemonBlocked() {
+    	if(null != mActivePokemon)
+    	{
+    		return mActivePokemon.isSleep() || mActivePokemon.isStuck();
+    	}
+    	
+    	return true;	// null blocked...
+    }
 
     public ArrayList<Pokemon> getBenchedPokemon() {
         return mBenchedPokemon;

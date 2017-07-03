@@ -114,9 +114,13 @@ public class GameController {
 		return mPlayers.get(player).useActivePokemon(ability);
 	}
 	
-        public static boolean hasActivePokemon(int player){
-            return mPlayers.get(player).getActivePokemon() != null;
-        }
+    public static boolean hasActivePokemon(int player){
+        return mPlayers.get(player).getActivePokemon() != null;
+    }
+    
+    public static boolean hasActivePokemonBlocked(int player) {
+    	return mPlayers.get(player).isActivePokemonBlocked();
+    }
         
 	public static void startAITurn(){
 		mPlayers.get(1).startTurn();
