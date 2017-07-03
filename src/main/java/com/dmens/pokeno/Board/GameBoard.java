@@ -1089,12 +1089,18 @@ public class GameBoard extends javax.swing.JFrame {
 
     private void PlayerAttack1BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack1BtnActionPerformed
         if(GameController.useActivePokemonForPlayer(0,0))
-            GameController.startAITurn();
+        {
+        	GameController.getHomePlayer().aggregateEffects(GameController.getHomePlayer().getActivePokemon());
+    		GameController.startAITurn();
+        }
     }//GEN-LAST:event_PlayerAttack1BtnActionPerformed
 
     private void PlayerAttack2BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack2BtnActionPerformed
         if(GameController.useActivePokemonForPlayer(0,1))
-            GameController.startAITurn();
+        {
+        	GameController.getHomePlayer().aggregateEffects(GameController.getHomePlayer().getActivePokemon());
+        	GameController.startAITurn();
+        }
     }//GEN-LAST:event_PlayerAttack2BtnActionPerformed
 
     private void PlayerRetreatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerRetreatBtnActionPerformed
@@ -1103,7 +1109,10 @@ public class GameBoard extends javax.swing.JFrame {
 
     private void PassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassBtnActionPerformed
         if (GameController.hasActivePokemon(0))
-            GameController.startAITurn();
+        {
+        	GameController.getHomePlayer().aggregateEffects(GameController.getHomePlayer().getActivePokemon());
+        	GameController.startAITurn();
+        }
     }//GEN-LAST:event_PassBtnActionPerformed
 
     private void ViewColorlessEnergyFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewColorlessEnergyFieldActionPerformed

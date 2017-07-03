@@ -20,7 +20,7 @@ public class AIPlayer extends Player {
 
 	public AIPlayer(Deck deckList) {
 		super(deckList);
-                humanPlayer = false;
+        humanPlayer = false;
 	}
         
         public void startPhase()
@@ -44,7 +44,9 @@ public class AIPlayer extends Player {
             
             // Attack if possible
             GameController.useActivePokemonForPlayer(1, 0);
-
+            
+            // End turn
+            aggregateEffects(this.getActivePokemon());
         }
         
         private boolean checkAndPlayEnergyOn(Pokemon pokemon){
