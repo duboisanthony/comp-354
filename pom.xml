@@ -92,7 +92,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.dmens.pokeno.Driver.GameController</mainClass>
+                            <mainClass>com.dmens.pokeno.controller.GameController</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
