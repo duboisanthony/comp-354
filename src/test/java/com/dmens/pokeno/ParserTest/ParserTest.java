@@ -4,13 +4,14 @@ import static org.junit.Assert.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.*;
 
 import com.dmens.pokeno.Deck.Deck;
-import com.dmens.pokeno.Utils.Parser;
 import com.dmens.pokeno.database.AbilitiesDatabase;
 import com.dmens.pokeno.database.CardsDatabase;
+import com.dmens.pokeno.utils.Parser;
 
 public class ParserTest {
 
@@ -18,14 +19,14 @@ public class ParserTest {
     
 	@BeforeClass
 	public static void setUp() {
-		AbilitiesDatabase.getInstance().initialize("data/abilities.txt");
-		CardsDatabase.getInstance().initialize("data/cards.txt");
+		AbilitiesDatabase.getInstance().initialize("abilities.txt");
+		CardsDatabase.getInstance().initialize("cards.txt");
 	}
 	
 	@Test
 	public void testCreateDeck() {
-		Deck deck = Parser.Instance().DeckCreation("data/validDeck.txt");
+		Deck deck = Parser.Instance().DeckCreation("decks/deck1.txt");
         assertNotNull(deck);
-        assertEquals(deck.size(), 3);
+        assertEquals(deck.size(), 60);
 	}
 }

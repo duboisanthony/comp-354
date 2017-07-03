@@ -6,12 +6,12 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dmens.pokeno.Card.EnergyCard;
-import com.dmens.pokeno.Card.EnergyTypes;
-import com.dmens.pokeno.Card.Pokemon;
-import com.dmens.pokeno.Card.TrainerCard;
-import com.dmens.pokeno.Utils.CardUtil;
+import com.dmens.pokeno.card.EnergyCard;
+import com.dmens.pokeno.card.EnergyTypes;
+import com.dmens.pokeno.card.Pokemon;
+import com.dmens.pokeno.card.TrainerCard;
 import com.dmens.pokeno.database.AbilitiesDatabase;
+import com.dmens.pokeno.utils.CardUtil;
 
 public class CardUtilsTest {
 	private static String pokemonString = "Shellder:pokemon:cat:basic:cat:water:60:retreat:cat:colorless:1:attacks:cat:colorless:1,cat:water:1:9";
@@ -20,7 +20,7 @@ public class CardUtilsTest {
 	
 	@BeforeClass
 	public static void initAbilities(){
-		AbilitiesDatabase.getInstance().initialize("data/abilities.txt");
+		AbilitiesDatabase.getInstance().initialize("abilities.txt");
 	}
 
 	@Test

@@ -1,19 +1,14 @@
 package com.dmens.pokeno.database;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import com.dmens.pokeno.Card.Card;
-import com.dmens.pokeno.Card.CardTypes;
-import com.dmens.pokeno.Card.EnergyCard;
-import com.dmens.pokeno.Utils.CardUtil;
+import com.dmens.pokeno.card.Card;
+import com.dmens.pokeno.card.CardTypes;
+import com.dmens.pokeno.card.EnergyCard;
+import com.dmens.pokeno.utils.CardUtil;
+import com.dmens.pokeno.utils.FileUtils;
 
 public class CardsDatabase extends Database<Card>{
 	private static Database<Card> database;
@@ -31,15 +26,8 @@ public class CardsDatabase extends Database<Card>{
 	}
 	
 	public void initialize(String cardsFilePath){
-		List<String> list = null;
-		try (BufferedReader br = Files.newBufferedReader(Paths.get(getClass().getClassLoader().getResource(cardsFilePath).toURI()))) {
-			list = br.lines().collect(Collectors.toList());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e1) {
-			e1.printStackTrace();
-		}
-		list.forEach(line -> {
+		List<String> list = FileUtils.getFileContentsAsList(cardsFilePath);
+		list.stream().filter(line -> !line.isEmpty()).forEach(line -> {
 			db.add(CardUtil.getCardFromString(line));
 		});
 	}

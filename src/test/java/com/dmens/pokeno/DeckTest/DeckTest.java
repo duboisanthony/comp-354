@@ -5,12 +5,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dmens.pokeno.Card.Card;
-import com.dmens.pokeno.Card.CardTypes;
 import com.dmens.pokeno.Deck.Deck;
-import com.dmens.pokeno.Utils.Parser;
+import com.dmens.pokeno.card.Card;
+import com.dmens.pokeno.card.CardTypes;
 import com.dmens.pokeno.database.AbilitiesDatabase;
 import com.dmens.pokeno.database.CardsDatabase;
+import com.dmens.pokeno.utils.Parser;
 
 public class DeckTest {
 	private Deck validDeck;
@@ -18,14 +18,14 @@ public class DeckTest {
 	
 	@BeforeClass
 	public static void loadParser(){
-		AbilitiesDatabase.getInstance().initialize("data/abilities.txt");
-		CardsDatabase.getInstance().initialize("data/cards.txt");
+		AbilitiesDatabase.getInstance().initialize("abilities.txt");
+		CardsDatabase.getInstance().initialize("cards.txt");
 	}
 	
 	@Before
 	public void setup(){
-		validDeck = Parser.Instance().DeckCreation("data/decks/deck1.txt");
-		invalidDeck = Parser.Instance().DeckCreation("data/decks/deck1.txt");
+		validDeck = Parser.Instance().DeckCreation("decks/deck1.txt");
+		invalidDeck = Parser.Instance().DeckCreation("decks/deck1.txt");
 		invalidDeck.draw(10);
 	}
 

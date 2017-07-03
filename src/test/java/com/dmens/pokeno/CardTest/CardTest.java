@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.dmens.pokeno.Ability.Ability;
-import com.dmens.pokeno.Ability.AbilityCost;
-import com.dmens.pokeno.Card.EnergyCard;
-import com.dmens.pokeno.Card.EnergyTypes;
-import com.dmens.pokeno.Card.Pokemon;
-import com.dmens.pokeno.Card.TrainerCard;
-import com.dmens.pokeno.Effect.Damage;
-import com.dmens.pokeno.Effect.Heal;
+import com.dmens.pokeno.ability.Ability;
+import com.dmens.pokeno.ability.AbilityCost;
+import com.dmens.pokeno.card.EnergyCard;
+import com.dmens.pokeno.card.EnergyTypes;
+import com.dmens.pokeno.card.Pokemon;
+import com.dmens.pokeno.card.TrainerCard;
+import com.dmens.pokeno.effect.Damage;
+import com.dmens.pokeno.effect.Heal;
 
 public class CardTest {
 	

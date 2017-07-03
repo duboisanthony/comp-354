@@ -3,8 +3,8 @@ package com.dmens.pokeno.Deck;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.dmens.pokeno.Card.Card;
-import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.card.Card;
+import com.dmens.pokeno.card.Pokemon;
 
 public class Deck extends CardContainer {
 	

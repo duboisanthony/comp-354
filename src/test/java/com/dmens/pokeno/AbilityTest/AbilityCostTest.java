@@ -6,10 +6,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.dmens.pokeno.Ability.Ability;
-import com.dmens.pokeno.Ability.AbilityCost;
-import com.dmens.pokeno.Card.EnergyTypes;
-import com.dmens.pokeno.Effect.Damage;
+import com.dmens.pokeno.ability.Ability;
+import com.dmens.pokeno.ability.AbilityCost;
+import com.dmens.pokeno.card.EnergyTypes;
+import com.dmens.pokeno.effect.Damage;
 
 public class AbilityCostTest {
 	static String mAbilityName = "Ability";

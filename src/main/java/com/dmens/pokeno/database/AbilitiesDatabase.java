@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.dmens.pokeno.Ability.Ability;
-import com.dmens.pokeno.Utils.AbilityUtil;
+import com.dmens.pokeno.ability.Ability;
+import com.dmens.pokeno.utils.AbilityUtil;
+import com.dmens.pokeno.utils.FileUtils;
 
 public class AbilitiesDatabase extends Database<Ability>{
 	private static Database<Ability> database;
@@ -26,16 +27,7 @@ public class AbilitiesDatabase extends Database<Ability>{
 	}
 
 	public void initialize(String ablitiesFilePath){
-		List<String> list = null;
-		System.out.println(getClass().getClassLoader().getResource(ablitiesFilePath));
-		try (BufferedReader br = Files.newBufferedReader(Paths.get(getClass().getClassLoader().getResource(ablitiesFilePath).toURI()))) {
-			list = br.lines().collect(Collectors.toList());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		List<String> list = FileUtils.getFileContentsAsList(ablitiesFilePath);
 		list.forEach(line -> {
 			System.out.println(line);
 			db.add(AbilityUtil.getAbilityFromString(line));

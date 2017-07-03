@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.dmens.pokeno.Card.Card;
-import com.dmens.pokeno.Card.CardTypes;
-import com.dmens.pokeno.Card.EnergyCard;
-import com.dmens.pokeno.Card.EnergyTypes;
-import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.card.Card;
+import com.dmens.pokeno.card.CardTypes;
+import com.dmens.pokeno.card.EnergyCard;
+import com.dmens.pokeno.card.EnergyTypes;
+import com.dmens.pokeno.card.Pokemon;
 
 public class Hand extends CardContainer {
 	

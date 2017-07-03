@@ -3,7 +3,7 @@ package com.dmens.pokeno.Deck;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.dmens.pokeno.Card.Card;
+import com.dmens.pokeno.card.Card;
 
 public class CardContainer {
 	protected ArrayList<Card> cards;
