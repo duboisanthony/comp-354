@@ -1,4 +1,4 @@
-package com.dmens.pokeno.ParserTest;
+package com.dmens.pokeno.UtilsTest;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedWriter;

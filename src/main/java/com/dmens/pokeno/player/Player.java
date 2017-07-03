@@ -7,11 +7,11 @@ import javax.swing.JOptionPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.dmens.pokeno.Deck.CardContainer;
-import com.dmens.pokeno.Deck.Deck;
-import com.dmens.pokeno.Deck.Hand;
 import com.dmens.pokeno.card.*;
 import com.dmens.pokeno.controller.GameController;
+import com.dmens.pokeno.deck.CardContainer;
+import com.dmens.pokeno.deck.Deck;
+import com.dmens.pokeno.deck.Hand;
 
 /**
  * Created by Devin on 2017-05-26.

@@ -2,6 +2,9 @@ package com.dmens.pokeno.utils;
 
 import java.util.Stack;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.dmens.pokeno.ability.Ability;
 import com.dmens.pokeno.ability.AbilityCost;
 import com.dmens.pokeno.card.Card;
@@ -12,10 +15,11 @@ import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.card.TrainerCard;
 import com.dmens.pokeno.database.AbilitiesDatabase;
 
-public class CardUtil {
+public class CardParser {
+	private static final Logger LOG = LogManager.getLogger(CardParser.class);
 	
 	public static Card getCardFromString(String cardString){
-		System.out.println(cardString);
+		LOG.debug(cardString);
 		if(cardString.contains("#"))
 			return null;
 		Stack<String> cardStack = new Stack<String>();

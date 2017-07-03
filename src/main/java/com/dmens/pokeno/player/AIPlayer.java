@@ -7,12 +7,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.dmens.pokeno.Deck.Deck;
-import com.dmens.pokeno.Deck.Hand;
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.EnergyTypes;
 import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.controller.GameController;
+import com.dmens.pokeno.deck.Deck;
+import com.dmens.pokeno.deck.Hand;
 
 public class AIPlayer extends Player {
 

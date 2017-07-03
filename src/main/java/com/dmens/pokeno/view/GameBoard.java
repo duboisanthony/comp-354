@@ -15,11 +15,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import com.dmens.pokeno.Deck.Hand;
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.CardTypes;
 import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.controller.GameController;
+import com.dmens.pokeno.deck.Hand;
 import com.dmens.pokeno.player.AIPlayer;
 import com.dmens.pokeno.player.Player;
 

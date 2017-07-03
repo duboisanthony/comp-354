@@ -7,12 +7,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dmens.pokeno.Deck.Deck;
-import com.dmens.pokeno.Deck.Hand;
 import com.dmens.pokeno.card.Card;
-import com.dmens.pokeno.utils.Parser;
+import com.dmens.pokeno.utils.DeckCreator;
 import com.dmens.pokeno.database.AbilitiesDatabase;
 import com.dmens.pokeno.database.CardsDatabase;
+import com.dmens.pokeno.deck.Deck;
+import com.dmens.pokeno.deck.Hand;
 
 public class HandTest {
 	private Hand hand;
@@ -26,7 +26,7 @@ public class HandTest {
 	
 	@Before
 	public void setupCardContainer(){
-		deck = Parser.Instance().DeckCreation("decks/deck1.txt");
+		deck = DeckCreator.Instance().DeckCreation("decks/deck1.txt");
 		hand = new Hand();
 	}
 	

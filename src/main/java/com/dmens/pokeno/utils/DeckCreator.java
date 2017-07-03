@@ -2,8 +2,8 @@ package com.dmens.pokeno.utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.database.CardsDatabase;
+import com.dmens.pokeno.deck.Deck;
 
 /*
  * Parser object
@@ -11,20 +11,20 @@ import com.dmens.pokeno.database.CardsDatabase;
  * @author Jing
  * @author James
  */
-public class Parser {
-    private static final Logger LOG = LogManager.getLogger(Parser.class);
-	private static Parser instance = null;
+public class DeckCreator {
+    private static final Logger LOG = LogManager.getLogger(DeckCreator.class);
+	private static DeckCreator instance = null;
 	
-	private Parser() { }
+	private DeckCreator() { }
 	
 	/*
 	 * Get the instance (lazy instantiation).
 	 * 
 	 * @param		The instance of this object.
 	 */
-	public static Parser Instance( ) {
+	public static DeckCreator Instance( ) {
 		if(instance == null)
-			instance = new Parser();
+			instance = new DeckCreator();
 		return instance;
 	}
 	

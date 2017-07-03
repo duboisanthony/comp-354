@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.dmens.pokeno.ability.Ability;
 import com.dmens.pokeno.effect.ApplyStatus;
 import com.dmens.pokeno.effect.Damage;
@@ -11,7 +14,8 @@ import com.dmens.pokeno.effect.Effect;
 import com.dmens.pokeno.effect.EffectTypes;
 import com.dmens.pokeno.effect.Heal;
 
-public class AbilityUtil {
+public class AbilityParser {
+	private static final Logger LOG = LogManager.getLogger(AbilityParser.class);
 	
 	public static Ability getAbilityFromString(String abilityInformation){
     	int indexName = abilityInformation.indexOf(":");
@@ -20,7 +24,7 @@ public class AbilityUtil {
     	List<String> effects = Arrays.asList(restStr.split(","));
     	
     	effects.forEach(effect ->{
-    		System.out.println("--- " + effect);
+    		LOG.debug(effect);
     		ability.addEffect(ParseEfect(effect));
     	});
     	

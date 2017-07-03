@@ -1,4 +1,4 @@
-package com.dmens.pokeno.Deck;
+package com.dmens.pokeno.deck;
 
 import java.util.ArrayList;
 import java.util.Collections;

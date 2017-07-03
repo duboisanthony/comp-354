@@ -1,4 +1,4 @@
-package com.dmens.pokeno.ParserTest;
+package com.dmens.pokeno.UtilsTest;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,9 +11,9 @@ import com.dmens.pokeno.card.EnergyTypes;
 import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.card.TrainerCard;
 import com.dmens.pokeno.database.AbilitiesDatabase;
-import com.dmens.pokeno.utils.CardUtil;
+import com.dmens.pokeno.utils.CardParser;
 
-public class CardUtilsTest {
+public class CardParserTest {
 	private static String pokemonString = "Shellder:pokemon:cat:basic:cat:water:60:retreat:cat:colorless:1:attacks:cat:colorless:1,cat:water:1:9";
 	private static String energyString = "Water:energy:cat:water";
 	private static String trainerString = "Clemont:trainer:cat:supporter:35";
@@ -25,7 +25,7 @@ public class CardUtilsTest {
 
 	@Test
 	public void testCreatePokemonCard() {
-		Pokemon c = (Pokemon) CardUtil.getCardFromString(pokemonString);
+		Pokemon c = (Pokemon) CardParser.getCardFromString(pokemonString);
 		Assert.assertNotNull(c);
 		assertEquals(c.getName(), "Shellder");
 		assertEquals(c.getCategory(), "basic");
@@ -33,13 +33,13 @@ public class CardUtilsTest {
 	}
 	
 	public void testCreateEnergyCard(){
-		EnergyCard energy = (EnergyCard) CardUtil.getCardFromString(energyString);
+		EnergyCard energy = (EnergyCard) CardParser.getCardFromString(energyString);
 		assertEquals(energy.getName(), "Water");
 		assertEquals(energy.getCategory(), EnergyTypes.WATER);
 	}
 	
 	public void testCreateTrainerCard(){
-		TrainerCard trainerCard = (TrainerCard) CardUtil.getCardFromString(trainerString);
+		TrainerCard trainerCard = (TrainerCard) CardParser.getCardFromString(trainerString);
 		assertEquals(trainerCard.getName(), "Clemont");	
 	}
 

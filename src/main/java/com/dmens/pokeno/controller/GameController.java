@@ -3,7 +3,6 @@ package com.dmens.pokeno.controller;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,17 +18,17 @@ import javax.swing.JOptionPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.dmens.pokeno.Deck.Deck;
-import com.dmens.pokeno.Deck.Hand;
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.EnergyTypes;
 import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.database.AbilitiesDatabase;
 import com.dmens.pokeno.database.CardsDatabase;
+import com.dmens.pokeno.deck.Deck;
+import com.dmens.pokeno.deck.Hand;
 import com.dmens.pokeno.player.AIPlayer;
 import com.dmens.pokeno.player.Player;
 import com.dmens.pokeno.utils.FileUtils;
-import com.dmens.pokeno.utils.Parser;
+import com.dmens.pokeno.utils.DeckCreator;
 import com.dmens.pokeno.view.GameBoard;
 
 public class GameController {
@@ -216,13 +215,11 @@ public class GameController {
         optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
     	
     	List<Deck> deckList = new ArrayList<Deck>();
-    	final File folder = new File(LOCATION_DECKS).getAbsoluteFile();
-//    	final File folder = new File( GameController.class.getClassLoader().getResource(LOCATION_DECKS).getPath());
     	ArrayList<Component> deckButtons = new ArrayList<Component>();
 		for (String fileEntry : FileUtils.getFilesFromFolder(LOCATION_DECKS, ".txt")) {
 			System.out.println(LOCATION_DECKS+"/"+fileEntry);
-			deckButtons.add(getButton(optionPane, fileEntry, FileUtils.getFileAsImageIcon("images/deckIcon.png", 65, 80), deckList.size()));
-			deckList.add(Parser.Instance().DeckCreation(LOCATION_DECKS+"/"+fileEntry));
+			deckButtons.add(getButton(optionPane, fileEntry, FileUtils.getFileAsImageIcon("images/deckIcon.png", 100, 125), deckList.size()));
+			deckList.add(DeckCreator.Instance().DeckCreation(LOCATION_DECKS+"/"+fileEntry));
 	    }
 		
 		optionPane.setOptions(deckButtons.toArray());

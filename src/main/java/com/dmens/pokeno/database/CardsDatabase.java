@@ -7,7 +7,7 @@ import java.util.List;
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.CardTypes;
 import com.dmens.pokeno.card.EnergyCard;
-import com.dmens.pokeno.utils.CardUtil;
+import com.dmens.pokeno.utils.CardParser;
 import com.dmens.pokeno.utils.FileUtils;
 
 public class CardsDatabase extends Database<Card>{
@@ -28,7 +28,7 @@ public class CardsDatabase extends Database<Card>{
 	public void initialize(String cardsFilePath){
 		List<String> list = FileUtils.getFileContentsAsList(cardsFilePath);
 		list.stream().filter(line -> !line.isEmpty()).forEach(line -> {
-			db.add(CardUtil.getCardFromString(line));
+			db.add(CardParser.getCardFromString(line));
 		});
 	}
 	

@@ -5,11 +5,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dmens.pokeno.Deck.CardContainer;
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.database.AbilitiesDatabase;
 import com.dmens.pokeno.database.CardsDatabase;
-import com.dmens.pokeno.utils.Parser;
+import com.dmens.pokeno.deck.CardContainer;
+import com.dmens.pokeno.utils.DeckCreator;
 
 public class CardContainerTest {
 	private static CardContainer ct;
@@ -22,7 +22,7 @@ public class CardContainerTest {
 	
 	@Before
 	public void setupCardContainer(){
-		ct = Parser.Instance().DeckCreation("decks/deck1.txt");
+		ct = DeckCreator.Instance().DeckCreation("decks/deck1.txt");
 	}
 	
 	@Test
