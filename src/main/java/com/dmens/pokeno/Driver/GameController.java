@@ -1,13 +1,24 @@
 package com.dmens.pokeno.Driver;
 
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import com.dmens.pokeno.Board.GameBoard;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.EnergyTypes;
 import com.dmens.pokeno.Card.Pokemon;
@@ -15,15 +26,17 @@ import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Deck.Hand;
 import com.dmens.pokeno.Player.AIPlayer;
 import com.dmens.pokeno.Player.Player;
-import com.dmens.pokeno.Utils.Parser;
-import java.util.Collections;
+import com.dmens.pokeno.View.GameBoard;
+import com.dmens.pokeno.utils.FileUtils;
+import com.dmens.pokeno.utils.Parser;
 
 public class GameController {
 
-	private static final String LOCATION_FIRST_DECK = "data/deck1.txt";
-	private static final String LOCATION_SECOND_DECK = "data/deck2.txt";
-	private static final String LOCATION_CARDS = "data/cards.txt";
-	private static final String LOCATION_ABILITIES = "data/abilities.txt";
+    private static final Logger LOG = LogManager.getLogger(GameController.class);
+
+	private static final String LOCATION_DECKS = "decks";
+	private static final String LOCATION_CARDS = "cards.txt";
+	private static final String LOCATION_ABILITIES = "abilities.txt";
 	
 	private static ArrayList<Player> mPlayers = null;
 	
@@ -33,6 +46,7 @@ public class GameController {
     public static GameBoard board;
         
 	public static void main(String[] args) {
+		
 		Deck mFirstDeck = null;
 		Deck mSecondDeck = null;
 		// Parse Cards
@@ -42,14 +56,19 @@ public class GameController {
 		result = Parser.Instance().LoadAbilities(LOCATION_ABILITIES);
 		assert result;
 		
+		board = new GameBoard();
+        board.setVisible(true);
+        
+		Deck[] chosenDecks = chooseDeck();
+		
 		// Deck creation and validation
 		System.out.println("Creating decks and validating them...");
-		mFirstDeck = Parser.Instance().DeckCreation(LOCATION_FIRST_DECK);
+		mFirstDeck = chosenDecks[0];
 		if(!mFirstDeck.checkValidity()) {
 			System.out.println("First Deck is invalid");
 			// TODO: how do we handle invalid deck?
 		}
-		mSecondDeck = Parser.Instance().DeckCreation(LOCATION_SECOND_DECK);
+		mSecondDeck = chosenDecks[1];
 		if(!mSecondDeck.checkValidity()) {
 			System.out.println("Second Deck is invalid");
 			// TODO: how do we handle invalid deck?
@@ -61,13 +80,13 @@ public class GameController {
 		Player adversaryPlayer = new AIPlayer(mSecondDeck);
 		homePlayer.setOpponent(adversaryPlayer);
 		adversaryPlayer.setOpponent(homePlayer);
+		homePlayer.getDeck().shuffle();
+		adversaryPlayer.getDeck().shuffle();
 		
 		mPlayers = new ArrayList<Player>();
 		mPlayers.add(homePlayer);
 		mPlayers.add(adversaryPlayer);
         
-        board = new GameBoard();
-        board.setVisible(true);
         AtomicReference<Boolean> readyToStart = new AtomicReference<>(true);
         do
         {
@@ -206,8 +225,57 @@ public class GameController {
     	});
         return energyList;
     }
+
+   
+    private static Deck[] chooseDeck()
+    {
+    	JFrame frame = new JFrame();
+        JOptionPane optionPane = new JOptionPane();
+        optionPane.setMessage("Choose you playing deck!");
+        optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+    	
+    	List<Deck> deckList = new ArrayList<Deck>();
+    	final File folder = new File(LOCATION_DECKS).getAbsoluteFile();
+//    	final File folder = new File( GameController.class.getClassLoader().getResource(LOCATION_DECKS).getPath());
+    	ArrayList<Component> deckButtons = new ArrayList<Component>();
+		for (String fileEntry : FileUtils.getFilesFromFolder(LOCATION_DECKS, ".txt")) {
+			System.out.println(LOCATION_DECKS+"/"+fileEntry);
+			deckButtons.add(getButton(optionPane, fileEntry, FileUtils.getFileAsImageIcon("images/deckIcon.png", 65, 80), deckList.size()));
+			deckList.add(Parser.Instance().DeckCreation(LOCATION_DECKS+"/"+fileEntry));
+	    }
+		
+		optionPane.setOptions(deckButtons.toArray());
+		JDialog dialog = optionPane.createDialog(frame, "Choose a deck.");
+		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialog.setVisible(true);
+        
+        
+        int choice = (int) optionPane.getValue();
+        Deck[] decks = new Deck[2];
+        decks[0] = deckList.get(choice);
+        deckList.remove(decks[0]);
+        decks[1] = chooseRandomDeck(deckList);
+        return decks;
+    }
     
-    public static int dispayCustomOptionPane(String[] buttons, String title, String prompt)
+    private static Deck chooseRandomDeck(List<Deck> decks){
+    	return decks.get((new Random()).nextInt(decks.size()));
+    }
+    
+    private static JButton getButton(final JOptionPane optionPane, String text, Icon icon, int orderPosition) {
+        final JButton button = new JButton(text, icon);
+        ActionListener actionListener = new ActionListener() {
+          public void actionPerformed(ActionEvent actionEvent) {
+            // Return position in deck list
+            optionPane.setValue(orderPosition);
+            System.out.println(button.getText());
+          }
+        };
+        button.addActionListener(actionListener);
+        return button;
+      }
+    
+    public static int dispayCustomOptionPane(Object[] buttons, String title, String prompt)
     {
         return JOptionPane.showOptionDialog(null, prompt, title,
         0, JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);

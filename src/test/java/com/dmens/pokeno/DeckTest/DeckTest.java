@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.CardTypes;
 import com.dmens.pokeno.Deck.Deck;
-import com.dmens.pokeno.Utils.Parser;
+import com.dmens.pokeno.utils.Parser;
 
 public class DeckTest {
 	private Deck validDeck;
@@ -16,14 +16,14 @@ public class DeckTest {
 	
 	@BeforeClass
 	public static void loadParser(){
-		Parser.Instance().LoadCards("data/cards.txt");
-		Parser.Instance().LoadAbilities("data/abilities.txt");
+		Parser.Instance().LoadCards("cards.txt");
+		Parser.Instance().LoadAbilities("abilities.txt");
 	}
 	
 	@Before
 	public void setup(){
-		validDeck = Parser.Instance().DeckCreation("data/deck1.txt");
-		invalidDeck = Parser.Instance().DeckCreation("data/deck1.txt");
+		validDeck = Parser.Instance().DeckCreation("decks/deck1.txt");
+		invalidDeck = Parser.Instance().DeckCreation("decks/deck1.txt");
 		invalidDeck.draw(10);
 	}
 

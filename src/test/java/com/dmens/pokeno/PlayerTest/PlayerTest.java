@@ -6,7 +6,7 @@ import org.junit.Test;
 import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Driver.GameController;
 import com.dmens.pokeno.Player.Player;
-import com.dmens.pokeno.Utils.Parser;
+import com.dmens.pokeno.utils.Parser;
 
 /**
  * Basic test class for the Player class. 
@@ -16,10 +16,10 @@ import com.dmens.pokeno.Utils.Parser;
 
 public class PlayerTest{
 	
-	private static final String LOCATION_FIRST_DECK = "data/deck1.txt";
-	private static final String LOCATION_SECOND_DECK = "data/deck2.txt";
-	private static final String LOCATION_CARDS = "data/cards.txt";
-	private static final String LOCATION_ABILITIES = "data/abilities.txt";
+	private static final String LOCATION_FIRST_DECK = "decks/deck1.txt";
+	private static final String LOCATION_SECOND_DECK = "decks/deck2.txt";
+	private static final String LOCATION_CARDS = "cards.txt";
+	private static final String LOCATION_ABILITIES = "abilities.txt";
 	private static Deck testDeck1 = new Deck();
 	private static Deck testDeck2 = new Deck();
 	

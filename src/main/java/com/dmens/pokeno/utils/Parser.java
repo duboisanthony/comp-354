@@ -1,7 +1,8 @@
-package com.dmens.pokeno.Utils;
+package com.dmens.pokeno.utils;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -40,8 +41,8 @@ public class Parser {
 	private static Parser instance = null;
 	private static final String ENCODING = "UTF-8";
 	
-	private ArrayList<String> mCardList = null;
-	private ArrayList<String> mAbilitiesList = null;
+	private List<String> mCardList = null;
+	private List<String> mAbilitiesList = null;
 	
 	private Parser() { }
 	
@@ -59,36 +60,12 @@ public class Parser {
 		return instance;
 	}
 	
-	public ArrayList<String> GetCardList() {
+	public List<String> GetCardList() {
 		return mCardList;
 	}
 	
-	public ArrayList<String> GetAbilitiesList() {
+	public List<String> GetAbilitiesList() {
 		return mAbilitiesList;
-	}
-	
-	/*
-	 * Get the contents as an ArrayList which will facilitate specific read lines to be accessed.
-	 */
-	private static ArrayList<String> GetFileContentsAsArrayList(String location) throws FileNotFoundException
-	{
-
-		InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
-		if(in == null)
-			throw new FileNotFoundException();
-		Scanner scanner = new Scanner(in, ENCODING);
-		
-		ArrayList<String> contents = new ArrayList<String>();
-
-		// Processing the file line by line
-		while(scanner.hasNext())
-		{
-		    String nextLine = scanner.nextLine();
-		    contents.add(nextLine);
-		}
-
-		scanner.close();
-		return contents;
 	}
 	
 	/*
@@ -96,16 +73,7 @@ public class Parser {
 	 */
 	public boolean LoadCards(String cardLocation)
 	{
-		try
-		{
-			this.mCardList = Parser.GetFileContentsAsArrayList(cardLocation);
-			
-		}
-		catch (FileNotFoundException e)
-		{
-			//e.printStackTrace();
-			return false;
-		}
+		this.mCardList = FileUtils.getFileContentsAsList(cardLocation);
 		
 		return true;
 	}
@@ -115,16 +83,7 @@ public class Parser {
 	 */
 	public boolean LoadAbilities(String abilitiesLocation)
 	{
-		try
-		{
-			this.mAbilitiesList = Parser.GetFileContentsAsArrayList(abilitiesLocation);
-		}
-		catch (FileNotFoundException e)
-		{
-			//e.printStackTrace();
-			return false;
-		}
-		
+		this.mAbilitiesList = FileUtils.getFileContentsAsList(abilitiesLocation);
 		return true;
 	}
 	
@@ -301,7 +260,8 @@ public class Parser {
 			}
 			
 			Ability ability = abilities.get(0);
-			
+
+            //TODO: Remove hard coded energy cost
 			AbilityCost abilityCost = new AbilityCost(ability);
 			abilityCost.addCost(EnergyTypes.COLORLESS, 1);
 
@@ -395,23 +355,10 @@ public class Parser {
 		assert mCardList != null;
 		
 		Deck deck = new Deck();
-		
-		try
-		{
-			ArrayList<String> deckNumbers = Parser.GetFileContentsAsArrayList(deckLocation);
-		
-			for (String line : deckNumbers)
-			{
-			    Card e = CreateCard(this.mCardList.get(Integer.parseInt(line) - 1));
-			    deck.addCard(e);
-			}
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-				
-		System.out.println("--------\nDsize: " + deck.size() + "\n--------");
+		FileUtils.getFileContentsAsList(deckLocation).forEach(line->{
+			Card e = CreateCard(this.mCardList.get(Integer.parseInt(line) - 1));
+		    deck.addCard(e);
+		});
 		
 		return deck;
 	}
