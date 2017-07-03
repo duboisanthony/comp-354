@@ -4,17 +4,20 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.EnergyTypes;
@@ -23,18 +26,17 @@ import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Deck.Hand;
 import com.dmens.pokeno.Player.AIPlayer;
 import com.dmens.pokeno.Player.Player;
-import com.dmens.pokeno.Utils.Parser;
 import com.dmens.pokeno.View.GameBoard;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.dmens.pokeno.utils.FileUtils;
+import com.dmens.pokeno.utils.Parser;
 
 public class GameController {
 
     private static final Logger LOG = LogManager.getLogger(GameController.class);
 
-	private static final String LOCATION_DECKS = "data/decks";
-	private static final String LOCATION_CARDS = "data/cards.txt";
-	private static final String LOCATION_ABILITIES = "data/abilities.txt";
+	private static final String LOCATION_DECKS = "decks";
+	private static final String LOCATION_CARDS = "cards.txt";
+	private static final String LOCATION_ABILITIES = "abilities.txt";
 	
 	private static ArrayList<Player> mPlayers = null;
 	
@@ -224,33 +226,7 @@ public class GameController {
         return energyList;
     }
 
-    private static List<File> getFilesFromFolder(String folder, String extension){
-        List<File> files = new ArrayList<File>();
-        List<String> filePaths = new ArrayList<String>();
-        try {
-
-            LOG.info("Getting current jar location {}", GameController.class.getProtectionDomain().getCodeSource().getLocation().toURI().toString());
-            if (GameController.class.getProtectionDomain().getCodeSource().getLocation().toURI().toString().endsWith(".jar")) {
-				JarFile unJar = new JarFile(GameController.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-				for (Enumeration<JarEntry> jnum = unJar.entries(); jnum.hasMoreElements(); ) {
-					JarEntry entry = jnum.nextElement();
-					if (entry.getName().startsWith(folder) && entry.getName().endsWith(extension))
-						filePaths.add(entry.getName());
-				}
-				filePaths.stream().forEach(name -> files.add(new File(name)));
-				files.stream().forEach(file -> LOG.info(file.getName()));
-			}
-			else{
-                File fileFolder = new File( GameController.class.getClassLoader().getResource(folder).getPath());
-            	return Arrays.asList(fileFolder.listFiles());
-			}
-        }
-        catch (Exception e){
-            LOG.error(e.getMessage());
-        }
-
-        return files;
-	}
+   
     private static Deck[] chooseDeck()
     {
     	JFrame frame = new JFrame();
@@ -262,12 +238,10 @@ public class GameController {
     	final File folder = new File(LOCATION_DECKS).getAbsoluteFile();
 //    	final File folder = new File( GameController.class.getClassLoader().getResource(LOCATION_DECKS).getPath());
     	ArrayList<Component> deckButtons = new ArrayList<Component>();
-    	
-    	Icon icon = new ImageIcon(GameController.class.getClassLoader().getResource("data/images/deckIcon.png"));
-		for (File fileEntry : getFilesFromFolder(LOCATION_DECKS, ".txt")) {
-			System.out.println(LOCATION_DECKS+"/"+fileEntry.getName());
-			deckButtons.add(getButton(optionPane, fileEntry.getName(), icon, deckList.size()));
-			deckList.add(Parser.Instance().DeckCreation(LOCATION_DECKS+"/"+fileEntry.getName()));
+		for (String fileEntry : FileUtils.getFilesFromFolder(LOCATION_DECKS, ".txt")) {
+			System.out.println(LOCATION_DECKS+"/"+fileEntry);
+			deckButtons.add(getButton(optionPane, fileEntry, FileUtils.getFileAsImageIcon("images/deckIcon.png", 65, 80), deckList.size()));
+			deckList.add(Parser.Instance().DeckCreation(LOCATION_DECKS+"/"+fileEntry));
 	    }
 		
 		optionPane.setOptions(deckButtons.toArray());

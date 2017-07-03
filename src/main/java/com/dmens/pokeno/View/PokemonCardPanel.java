@@ -13,14 +13,15 @@ import com.dmens.pokeno.Ability.AbilityCost;
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.EnergyCard;
 import com.dmens.pokeno.Card.Pokemon;
+import com.dmens.pokeno.utils.FileUtils;
 
 /**
  *
  * @author cclp94
  */
 public class PokemonCardPanel extends javax.swing.JPanel {
-    private String POKEMON_ICON_IMAGE = "data/images/pokemon.png";
-    private String ENERGY_ICON_IMAGE = "data/images/energy.png";
+    private String POKEMON_ICON_IMAGE = "images/pokemon.png";
+    private String ENERGY_ICON_IMAGE = "images/energy.png";
 
     /**
      * Creates new form PokemonCardPanel
@@ -77,16 +78,7 @@ public class PokemonCardPanel extends javax.swing.JPanel {
     
     private void setPokemon(Pokemon poke){
         cardName.setText(poke.getName());
-        ImageIcon imageIcon = null;
-        try{
-        imageIcon = new ImageIcon(getClass().getClassLoader().getResource(POKEMON_ICON_IMAGE));
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        Image image = imageIcon.getImage(); // transform it 
-        Image newimg = image.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-        imageIcon = new ImageIcon(newimg);
-        imageLabel.setIcon(imageIcon);
+        imageLabel.setIcon(FileUtils.getFileAsImageIcon(POKEMON_ICON_IMAGE, 120, 120));
         this.HP.setText(Integer.toString(poke.getHP()));
         // set ability 1
         AbilityCost ability = poke.getAbilitiesAndCost().get(0);
@@ -111,16 +103,7 @@ public class PokemonCardPanel extends javax.swing.JPanel {
     
     private void setEnergy(String cat){
         cardName.setText("Energy - "+ (Character.toUpperCase(cat.charAt(0)) + cat.substring(1)));
-        ImageIcon imageIcon = null;
-        try{
-        imageIcon = new ImageIcon(getClass().getClassLoader().getResource(ENERGY_ICON_IMAGE));
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        Image image = imageIcon.getImage(); // transform it 
-        Image newimg = image.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-        imageIcon = new ImageIcon(newimg);
-        imageLabel.setIcon(imageIcon);
+        imageLabel.setIcon(FileUtils.getFileAsImageIcon(ENERGY_ICON_IMAGE, 120, 120));
         this.HP.setText("");
         ability1.setText("");
         ability2.setText("");

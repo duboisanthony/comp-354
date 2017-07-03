@@ -6,22 +6,23 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Card.EnergyCard;
 import com.dmens.pokeno.Card.EnergyTypes;
 import com.dmens.pokeno.Card.Pokemon;
-import com.dmens.pokeno.Card.TrainerCard;
 import com.dmens.pokeno.Deck.Deck;
-import com.dmens.pokeno.Utils.Parser;
+import com.dmens.pokeno.utils.Parser;
 
-public class ParserTest {
+@Ignore public class ParserTest {
 
     private static final Logger LOG = LogManager.getLogger(ParserTest.class);
 
@@ -47,17 +48,17 @@ public class ParserTest {
 		mParserToTest = Parser.Instance();
 		mLocationCurrentDir = Thread.currentThread().getContextClassLoader().getResource("").getPath();
 		//mLocationDataDir = mLocationCurrentDir + "/data";
-		mValidCards = "data/validCards.txt";
+		mValidCards = "validCards.txt";
 		mLocationValidCards = mLocationCurrentDir + mValidCards;
-		mInvalidCards = "data/invalidCards.txt";
+		mInvalidCards = "invalidCards.txt";
 		mLocationInvalidCards = mLocationCurrentDir + mInvalidCards;
-		mValidAbilities = "data/validAbilities.txt";
+		mValidAbilities = "validAbilities.txt";
 		mLocationValidAbilities = mLocationCurrentDir + mValidAbilities;
-		mInvalidAbilities = "data/invalidAbilities.txt";
+		mInvalidAbilities = "invalidAbilities.txt";
 		mLocationInvalidAbilities = mLocationCurrentDir + mInvalidAbilities;
-		mValidDeck = "data/validDeck.txt";
+		mValidDeck = "validDeck.txt";
 		mLocationValidDeck = mLocationCurrentDir + mValidDeck;
-		mInvalidDeck = "data/invalidDeck.txt";
+		mInvalidDeck = "invalidDeck.txt";
 		mLocationInvalidDeck = mLocationCurrentDir + mInvalidDeck;
 
 		File dataDir = new File(mLocationCurrentDir + "data");
@@ -93,7 +94,7 @@ public class ParserTest {
 		
 		boolean result = mParserToTest.LoadCards(mValidCards);
 		Assert.assertEquals(result, true);
-		ArrayList<String> cardsContent = mParserToTest.GetCardList();
+		List<String> cardsContent = mParserToTest.GetCardList();
 		Assert.assertNotNull(cardsContent);
 		Assert.assertEquals(validCardsContent.size(), cardsContent.size());
 		for(int i = 0; i < cardsContent.size(); ++i) {
@@ -110,7 +111,7 @@ public class ParserTest {
 	@Test
 	public void ParserLoadAbilitiesTest() {
         LOG.info("Start running ParserLoadAbilitiesTest...");
-		ArrayList<String> validAbilitiesContent = new ArrayList<String>();
+		List<String> validAbilitiesContent = new ArrayList<String>();
 		validAbilitiesContent.add("Rain Splash:dam:target:opponent-active:20");
 		validAbilitiesContent.add("Machop Delivery:draw:2");
 		validAbilitiesContent.add("Mach Cross:dam:target:opponent-active:60");
@@ -127,7 +128,7 @@ public class ParserTest {
 		
 		boolean result = mParserToTest.LoadAbilities(mValidAbilities);
 		Assert.assertEquals(result, true);
-		ArrayList<String> abilitiesContent = mParserToTest.GetAbilitiesList();
+		List<String> abilitiesContent = mParserToTest.GetAbilitiesList();
 		Assert.assertNotNull(abilitiesContent);
 		Assert.assertEquals(validAbilitiesContent.size(), abilitiesContent.size());
 		for(int i = 0; i < abilitiesContent.size(); ++i) {

@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.dmens.pokeno.Card.Card;
 import com.dmens.pokeno.Deck.Deck;
 import com.dmens.pokeno.Deck.Hand;
-import com.dmens.pokeno.Utils.Parser;
+import com.dmens.pokeno.utils.Parser;
 
 public class HandTest {
 	private Hand hand;
@@ -18,13 +18,13 @@ public class HandTest {
 	
 	@BeforeClass
 	public static void loadParser(){
-		Parser.Instance().LoadCards("data/cards.txt");
-		Parser.Instance().LoadAbilities("data/abilities.txt");
+		Parser.Instance().LoadCards("cards.txt");
+		Parser.Instance().LoadAbilities("abilities.txt");
 	}
 	
 	@Before
 	public void setupCardContainer(){
-		deck = Parser.Instance().DeckCreation("data/decks/deck1.txt");
+		deck = Parser.Instance().DeckCreation("decks/deck1.txt");
 		hand = new Hand();
 	}
 	
