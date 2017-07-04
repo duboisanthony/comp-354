@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.dmens.pokeno.Ability.Ability;
-import com.dmens.pokeno.Ability.AbilityCost;
-import com.dmens.pokeno.Card.EnergyCard;
-import com.dmens.pokeno.Card.EnergyTypes;
-import com.dmens.pokeno.Card.Pokemon;
-import com.dmens.pokeno.Card.TrainerCard;
-import com.dmens.pokeno.Effect.Damage;
-import com.dmens.pokeno.Effect.Heal;
+import com.dmens.pokeno.ability.Ability;
+import com.dmens.pokeno.ability.AbilityCost;
+import com.dmens.pokeno.card.EnergyCard;
+import com.dmens.pokeno.card.EnergyTypes;
+import com.dmens.pokeno.card.Pokemon;
+import com.dmens.pokeno.card.TrainerCard;
+import com.dmens.pokeno.effect.Damage;
+import com.dmens.pokeno.effect.Heal;
 
 public class CardTest {
 	
@@ -28,7 +28,6 @@ public class CardTest {
 	
 	//Froakie:pokemon:cat:basic:cat:water:50:retreat:cat:colorless:1:attacks:cat:colorless:1:14
 	static String mPokemonFroakieName = "Froakie";
-	static ArrayList<String> mPokemonFroakieCategories = new ArrayList<String>();
 	static int mPokemonFroakieHP = 50;
 	static int mPokemonFroakieRetreatCost = 1;
 	static int mPokemonFroakieAttackCost = 1;
@@ -48,34 +47,30 @@ public class CardTest {
         Assert.assertEquals(energyCard.getCategory(), EnergyTypes.WATER);
         
         // Test TrainerCard
-        ArrayList<Ability> potionAbilities = new ArrayList<Ability>();
         Ability abilityPotion = new Ability(mAbilityPotionName);
         abilityPotion.addEffect(new Heal(mAbilityPotionTarget, mAbilityPotionValue));
-        potionAbilities.add(abilityPotion);
         		
-        TrainerCard trainerCard = new TrainerCard(mTrainerCardPotionName, mTrainerCardPotionCategory, potionAbilities);
+        TrainerCard trainerCard = new TrainerCard(mTrainerCardPotionName, mTrainerCardPotionCategory, abilityPotion);
         Assert.assertEquals(trainerCard.getName(), mTrainerCardPotionName);
         Assert.assertEquals(trainerCard.getCategory(), mTrainerCardPotionCategory);
-        Assert.assertEquals(trainerCard.getAbilities(), potionAbilities);
+        Assert.assertEquals(trainerCard.getAbility(), abilityPotion);
         
-        Assert.assertEquals(trainerCard.getAbilities().get(0).getName(), mAbilityPotionName);
-        Assert.assertEquals(trainerCard.getAbilities().get(0).getHealEffect().getTarget(), mAbilityPotionTarget);
-        Assert.assertEquals(trainerCard.getAbilities().get(0).getHealEffect().getValue(), mAbilityPotionValue);
+        Assert.assertEquals(trainerCard.getAbility().getName(), mAbilityPotionName);
+        Assert.assertEquals(trainerCard.getAbility().getHealEffect().getTarget(), mAbilityPotionTarget);
+        Assert.assertEquals(trainerCard.getAbility().getHealEffect().getValue(), mAbilityPotionValue);
         
         // Test Pokemon    
         Ability abilityPound = new Ability(mAbilityPoundName);
         abilityPound.addEffect(new Damage(mAbilityPoundTarget, mAbilityPoundValue));
-        mPokemonFroakieCategories.add("basic");
-        mPokemonFroakieCategories.add("water");
         
         AbilityCost abilityCost = new AbilityCost(abilityPound);
 		abilityCost.addCost(mPokemonFroakieAttackRequiredType, mPokemonFroakieAttackCost);
 
-        Pokemon froakie = new Pokemon(mPokemonFroakieName, mPokemonFroakieCategories, mPokemonFroakieHP, mPokemonFroakieRetreatCost);
+        Pokemon froakie = new Pokemon(mPokemonFroakieName, "basic", mPokemonFroakieHP, mPokemonFroakieRetreatCost);
         froakie.AddAbilityAndCost(abilityCost);
         
         Assert.assertEquals(froakie.getName(), mPokemonFroakieName);
-        Assert.assertEquals(froakie.getCategories(), mPokemonFroakieCategories);
+        Assert.assertEquals(froakie.getCategory(), "basic");
         Assert.assertEquals(froakie.getHP(), mPokemonFroakieHP);
         Assert.assertEquals(froakie.getRetreatCost(), mPokemonFroakieRetreatCost);
 

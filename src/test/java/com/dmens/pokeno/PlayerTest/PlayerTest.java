@@ -3,10 +3,11 @@ package com.dmens.pokeno.PlayerTest;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.dmens.pokeno.Deck.Deck;
-import com.dmens.pokeno.Driver.GameController;
-import com.dmens.pokeno.Player.Player;
-import com.dmens.pokeno.utils.Parser;
+import com.dmens.pokeno.database.AbilitiesDatabase;
+import com.dmens.pokeno.database.CardsDatabase;
+import com.dmens.pokeno.deck.Deck;
+import com.dmens.pokeno.player.Player;
+import com.dmens.pokeno.utils.DeckCreator;
 
 /**
  * Basic test class for the Player class. 
@@ -28,15 +29,12 @@ public class PlayerTest{
 	public void testSetupRewards()
 	{
 		
-		//! Load cards from text files. 
-		boolean result = Parser.Instance().LoadCards(LOCATION_CARDS);
-		assert result;
-		result = Parser.Instance().LoadAbilities(LOCATION_ABILITIES);
-		assert result;
+		AbilitiesDatabase.getInstance().initialize(LOCATION_ABILITIES);
+		CardsDatabase.getInstance().initialize(LOCATION_CARDS);
 		
 		//! Initialize test decks. 
-		testDeck1 = Parser.Instance().DeckCreation(LOCATION_FIRST_DECK);
-		testDeck2 = Parser.Instance().DeckCreation(LOCATION_SECOND_DECK);
+		testDeck1 = DeckCreator.Instance().DeckCreation(LOCATION_FIRST_DECK);
+		testDeck2 = DeckCreator.Instance().DeckCreation(LOCATION_SECOND_DECK);
 		
 		
 		//! Set up players with their respective decks. 

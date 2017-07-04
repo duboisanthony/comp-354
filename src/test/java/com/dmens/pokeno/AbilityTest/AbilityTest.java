@@ -5,8 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.dmens.pokeno.Ability.Ability;
-import com.dmens.pokeno.Effect.*;
+import com.dmens.pokeno.ability.Ability;
+import com.dmens.pokeno.effect.*;
 
 /**
 *

@@ -7,24 +7,26 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dmens.pokeno.Card.Card;
-import com.dmens.pokeno.Deck.Deck;
-import com.dmens.pokeno.Deck.Hand;
-import com.dmens.pokeno.utils.Parser;
+import com.dmens.pokeno.card.Card;
+import com.dmens.pokeno.utils.DeckCreator;
+import com.dmens.pokeno.database.AbilitiesDatabase;
+import com.dmens.pokeno.database.CardsDatabase;
+import com.dmens.pokeno.deck.Deck;
+import com.dmens.pokeno.deck.Hand;
 
 public class HandTest {
 	private Hand hand;
 	private Deck deck;
 	
 	@BeforeClass
-	public static void loadParser(){
-		Parser.Instance().LoadCards("cards.txt");
-		Parser.Instance().LoadAbilities("abilities.txt");
+	public static void loadParser(){		
+		AbilitiesDatabase.getInstance().initialize("abilities.txt");
+		CardsDatabase.getInstance().initialize("cards.txt");
 	}
 	
 	@Before
 	public void setupCardContainer(){
-		deck = Parser.Instance().DeckCreation("decks/deck1.txt");
+		deck = DeckCreator.Instance().DeckCreation("decks/deck1.txt");
 		hand = new Hand();
 	}
 	

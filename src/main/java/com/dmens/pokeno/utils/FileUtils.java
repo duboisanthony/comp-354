@@ -4,11 +4,13 @@ import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.nio.file.FileSystem;
+import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,6 +65,7 @@ public class FileUtils {
 	 }
 	 
 	 public static ImageIcon getFileAsImageIcon(String fileRelativeLocation, int width, int height){
+		 System.out.println(getResourcesLocation()+fileRelativeLocation);
 		ImageIcon imageIcon = new ImageIcon(FileUtils.class.getClassLoader().getResource(DATA_FOLDER+fileRelativeLocation));
 		Image image = imageIcon.getImage(); // transform it 
         Image newimg = image.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
@@ -79,6 +82,15 @@ public class FileUtils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	 }
+	 
+	 public static Path createFileAndWriteContents(String filename, String content){
+		 try {
+			return Files.write(Paths.get(URI.create(getResourcesLocation()+filename)), Arrays.asList(content.split("\n")), Charset.forName("UTF-8"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	 }
 
 }
