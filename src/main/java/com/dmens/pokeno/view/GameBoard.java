@@ -77,6 +77,16 @@ public class GameBoard extends javax.swing.JFrame {
     	});
     }
     
+    public void updateBench(List<Pokemon> bench, boolean player){
+    	if (player)
+            PlayerBenchPanel.removeAll();
+        else
+            OpponentBenchPanel.removeAll();
+    	bench.forEach(pokemon -> {
+    		addCardToBench(pokemon, player);
+    	});
+    }
+    
     public void addCardToHand(Card card, boolean player)
     {
         JTextField newCard = new JTextField();

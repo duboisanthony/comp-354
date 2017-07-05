@@ -3,6 +3,8 @@ package com.dmens.pokeno.database;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.CardTypes;
@@ -12,7 +14,7 @@ import com.dmens.pokeno.utils.FileUtils;
 
 public class CardsDatabase extends Database<Card>{
 	private static Database<Card> database;
-	private static String[] supportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Machop", "Zubat", "Shellder"};
+	private static String[] supportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Machop", "Zubat", "Shellder", "Frogadier"};
 	private static String[] supportedTrainer = {};
 	
 	public static Database<Card> getInstance(){
@@ -41,5 +43,12 @@ public class CardsDatabase extends Database<Card>{
 			return new EnergyCard("Colorless", "colorless");
 		}
 		return card.copy();
+	}
+	
+	public Card queryByName(String name){
+		System.out.println("Query: "+name);
+		
+		Optional<Card> hit = db.stream().filter(card->card.getName().equals(name)).findAny();
+		return hit.get();
 	}
 }

@@ -1,13 +1,19 @@
 package com.dmens.pokeno.player;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.dmens.pokeno.card.*;
+import com.dmens.pokeno.card.Card;
+import com.dmens.pokeno.card.EnergyCard;
+import com.dmens.pokeno.card.Pokemon;
+import com.dmens.pokeno.card.TrainerCard;
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.deck.CardContainer;
 import com.dmens.pokeno.deck.Deck;
@@ -280,8 +286,6 @@ public class Player {
     
     public boolean getIsReadyToStart(){return mIsReadyToStart;}
 
-    public void pickCard(){}
-
     //Should be able to use this method when the player decides which Pokemon they want when retreating/losing a Pokemon
     private int deprecatedCreatePokemonOptionPane(String title, String message)
     {
@@ -325,14 +329,54 @@ public class Player {
         return buttonNum;
     }
     
+    private Pokemon choosePokemonToEvolve(Pokemon evolution){
+    	List<Pokemon> choiceList = new ArrayList<Pokemon>();
+    	if(mActivePokemon.getName().equals(evolution.getBasePokemonName()))
+    			choiceList.add(mActivePokemon);
+    	choiceList.addAll(mBenchedPokemon.stream().filter(pokemon -> pokemon.getName().equals(evolution.getBasePokemonName())).collect(Collectors.toList()));
+    	StringBuilder sb = new StringBuilder();
+    	choiceList.forEach(choice -> sb.append(choice.getName()+"-"));
+    	sb.append("Cancel");
+    	String[] buttons = sb.toString().split("-");
+    	buttons[0] = "Active " + buttons[0];
+    	int cardNum = GameController.dispayCustomOptionPane(buttons, "Card Select", "Which Pokemon would you like to attach it to?");
+    	if(cardNum == buttons.length-1)
+    		return null;
+    	else
+    		return choiceList.get(cardNum);
+    }
+    
+    public void swapPokemonFromBench(Pokemon before, Pokemon after){
+    	int position = mBenchedPokemon.indexOf(before);
+    	mBenchedPokemon.remove(before);
+    	mBenchedPokemon.add(position, after);
+    }
+    
     public boolean useCard(Card card)
     {
         switch(card.getType()){
             case POKEMON:
-                if(mActivePokemon == null)
-                    setActivePokemon((Pokemon)card);
+            	Pokemon pokemon = (Pokemon) card;
+            	if(pokemon.isEvolvedCategory()){
+            		Pokemon toEvolve = choosePokemonToEvolve(pokemon);
+            		// If Active was chosen
+            		if(toEvolve == null)
+            			return false;
+            		if(toEvolve.equals(mActivePokemon)){
+            			LOG.info("Active Pokemon is evolving!");
+            			pokemon.evolvePokemon(mActivePokemon);
+                		setActivePokemon(pokemon);
+            		}
+            		// If benched Pokemon was chosen
+            		else{
+            			LOG.info("Benched Pokemon is evolving!");
+            			pokemon.evolvePokemon(toEvolve);
+            			swapPokemonFromBench(toEvolve, pokemon);
+            		}
+            	}else if(mActivePokemon == null)
+                    setActivePokemon(pokemon);
                 else
-                    benchPokemon((Pokemon)card);
+                    benchPokemon(pokemon);
                 break;
             case ENERGY: //Working here
                 if (mActivePokemon == null)
@@ -361,6 +405,7 @@ public class Player {
         }
         mHand.getCards().remove(card);
         GameController.updateHand(mHand, humanPlayer);
+        GameController.updateBenchedPokemon(mBenchedPokemon, isHumanPlayer());
         return true;
     }
     

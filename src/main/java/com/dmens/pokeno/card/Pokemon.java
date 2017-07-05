@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.dmens.pokeno.ability.Ability;
 import com.dmens.pokeno.ability.AbilityCost;
 import com.dmens.pokeno.controller.GameController;
+import com.dmens.pokeno.database.CardsDatabase;
 
 public class Pokemon extends Card {
 
@@ -22,11 +23,14 @@ public class Pokemon extends Card {
 	private String mPokemonType;
     private ArrayList<AbilityCost> mAbilitiesAndCost;
 	private int mRetreatCost;
-	private String mBasePokemonName;
     private boolean mPoisoned;
     private boolean mConfused;
     private boolean mParalyzed;
     private boolean mSleep;
+    
+    // Stage-one attributes
+    private Pokemon mBaseCardReference;
+    private String mBasePokemonName;
     
     public Pokemon(String name){
     	super(name);
@@ -201,6 +205,9 @@ public class Pokemon extends Card {
         return mAttachedEnergy;
     }
     public int getRetreatCost() {
+    	// Evolved Pokemon get retreat cost from base
+    	if(this.isEvolvedCategory())
+    		return ((Pokemon)((CardsDatabase)CardsDatabase.getInstance()).queryByName(this.mBasePokemonName)).getRetreatCost();
         return mRetreatCost;
     }
 
@@ -232,6 +239,14 @@ public class Pokemon extends Card {
 
     public void evolvePokemon(Pokemon basePokemon){
 	    this.mDamage = basePokemon.getDamage();
+	    // transfer energy
+	    transferEnergy(basePokemon);
+	    //  keep base reference for discard
+	    mBaseCardReference = basePokemon;
+    }
+    
+    private void transferEnergy(Pokemon base){
+    	this.mAttachedEnergy = base.getAttachedEnergy();
     }
     
     public ArrayList<AbilityCost> getAbilitiesAndCost(){

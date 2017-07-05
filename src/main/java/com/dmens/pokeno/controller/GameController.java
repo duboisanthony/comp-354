@@ -178,6 +178,10 @@ public class GameController {
         board.setEnergyPreview(getAttachedEnergyList(energies));
     }
     
+    public static void updateBenchedPokemon(List<Pokemon> bench, boolean player){
+    	board.updateBench(bench, player);
+    }
+    
     public static ArrayList<Integer> getAttachedEnergyList(Map<EnergyTypes, Integer> energies){
         ArrayList<Integer> energyList = new ArrayList<Integer>(5);
         energyList.add(0);energyList.add(0);energyList.add(0);energyList.add(0);energyList.add(0);
