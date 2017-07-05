@@ -71,6 +71,10 @@ public class Player {
         return mDiscards;
     }
     
+    public Player getOpponent() {
+    	return this.opponent;
+    }
+    
     public void shuffleDeck(){
        this.mDeck.shuffle();
     }

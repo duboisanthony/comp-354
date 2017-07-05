@@ -40,6 +40,10 @@ public class AbilityTest {
     	Assert.assertEquals(applyStatus.getTarget(), mEffectTarget);
     	Assert.assertEquals(applyStatus.getStatus(), mEffectStatus);
     	
+    	DrawCard drawCard = new DrawCard(mEffectValue, mEffectTarget);
+    	Assert.assertEquals(drawCard.getTarget(), mEffectTarget);
+    	Assert.assertEquals(drawCard.getValue(), mEffectValue);
+    	
     	// Add each Effect to the Ability
     	ability.addEffect(heal);
     	Assert.assertEquals(ability.getHealEffect(), heal);
@@ -56,6 +60,11 @@ public class AbilityTest {
     	Assert.assertEquals(ability.getApplyStatusEffect().getTarget(), mEffectTarget);
     	Assert.assertEquals(ability.getApplyStatusEffect().getStatus(), mEffectStatus);    
     	
+    	ability.addEffect(drawCard);
+    	Assert.assertEquals(ability.getDrawCardEffect(), drawCard);
+    	Assert.assertEquals(ability.getDrawCardEffect().getTarget(), mEffectTarget);
+    	Assert.assertEquals(ability.getDrawCardEffect().getValue(), mEffectValue);
+    	
     	// change effects... check that effects in abilities are unaffected
     	heal = new Heal(mEffectTarget, mEffectValueDifferent);
     	Assert.assertNotEquals(ability.getHealEffect(), heal);
@@ -65,6 +74,9 @@ public class AbilityTest {
     	
     	applyStatus = new ApplyStatus(mEffectTarget, mEffectStatusDifferent);
     	Assert.assertNotEquals(ability.getApplyStatusEffect(), applyStatus);
+    	
+    	drawCard = new DrawCard(mEffectValueDifferent, mEffectTarget);
+    	Assert.assertNotEquals(ability.getDrawCardEffect(), drawCard);
     }
 
 }
