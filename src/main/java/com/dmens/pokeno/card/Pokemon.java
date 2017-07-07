@@ -36,6 +36,7 @@ public class Pokemon extends Card {
     	super(name);
     	mAttachedEnergy = new ArrayList<EnergyCard>();
         mAbilitiesAndCost = new ArrayList<AbilityCost>();
+        mRetreatCost = -1;
     }
     
     public Pokemon(String name, String category, int initialHP, Integer retreatCost){
@@ -79,12 +80,7 @@ public class Pokemon extends Card {
 
 	public String toString()
 	{
-		StringBuilder abilitiesAsList = new StringBuilder();
-//		for (AbilityCost tuple: mAbilitiesAndCost)
-//		{
-//			abilitiesAsList.append(String.format("--T:%s C:%d\t",  tuple.y, tuple.z) + tuple.x.toString() + "\n");
-//		}
-		
+		StringBuilder abilitiesAsList = new StringBuilder();		
 		return String.format("%s:\t\tNAME: %s\n%s", Pokemon.class, this.getName(), abilitiesAsList.toString());
 	}
 	
@@ -205,8 +201,8 @@ public class Pokemon extends Card {
         return mAttachedEnergy;
     }
     public int getRetreatCost() {
-    	// Evolved Pokemon get retreat cost from base
-    	if(this.isEvolvedCategory())
+    	// Evolved Pokemon can get retreat cost from base or define it
+    	if(this.isEvolvedCategory() && this.mRetreatCost == -1)
     		return ((Pokemon)((CardsDatabase)CardsDatabase.getInstance()).queryByName(this.mBasePokemonName)).getRetreatCost();
         return mRetreatCost;
     }
@@ -236,13 +232,26 @@ public class Pokemon extends Card {
     		return true;
     	return false;
     }
-
-    public void evolvePokemon(Pokemon basePokemon){
-	    this.mDamage = basePokemon.getDamage();
-	    // transfer energy
-	    transferEnergy(basePokemon);
-	    //  keep base reference for discard
-	    mBaseCardReference = basePokemon;
+    /**
+     * 
+     * @param basePokemon base type pokemon to evolve from
+     * @return True if evolution was successful, false otherwise
+     */
+    public boolean evolvePokemon(Pokemon basePokemon){
+    	if(basePokemon.getName().equalsIgnoreCase(this.getBasePokemonName())){
+		    this.mDamage = basePokemon.getDamage();
+		    // transfer energy
+		    transferEnergy(basePokemon);
+		    //  keep base reference for discard
+		    mBaseCardReference = basePokemon;
+		    return true;
+    	}else{
+    		return false;
+    	}
+    }
+    
+    public Pokemon getBaseCardReference(){
+    	return mBaseCardReference;
     }
     
     private void transferEnergy(Pokemon base){

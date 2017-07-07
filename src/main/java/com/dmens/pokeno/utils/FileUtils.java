@@ -27,7 +27,7 @@ public class FileUtils {
 	private static final String DATA_FOLDER = "data/";
 	
 	 public static List<String> getFilesFromFolder(String folder, String extension){
-		 System.out.println(getResourcesLocation());
+		 LOG.debug("Getting file list from folder: " + getResourcesLocation());
 		 List <String> fileList = new ArrayList<String>();
         try {
         	

@@ -145,7 +145,7 @@ public class Player {
     public void setActivePokemon(Pokemon activePokemon){
     	mActivePokemon = activePokemon;
         //if (humanPlayer)
-        GameController.board.setActivePokemon(activePokemon, humanPlayer);
+        GameController.setActivePokemonOnBoard(activePokemon, humanPlayer);
         updateEnergyCounters(mActivePokemon, false);
     }
 
@@ -160,7 +160,7 @@ public class Player {
     	assert(mBenchedPokemon.size() < 5);
     	mBenchedPokemon.add(benchPokemon);
         //if (humanPlayer)
-        GameController.board.addCardToBench(benchPokemon, humanPlayer);
+    	GameController.updateBenchedPokemon(mBenchedPokemon, humanPlayer);
     }
     
     /**
@@ -208,8 +208,9 @@ public class Player {
         //if you have pokemon on the bench, swapping method?
         if (humanPlayer)
         {
-            System.out.println("Before popup");
+            LOG.trace("Popup PokemonSwap is opening");
             setActiveFromBench(createPokemonOptionPane("PokemonSwap", "Which Pokemon would you like to set as your new active?", false));
+            LOG.trace("Benched Pokemon set to Active: " + mActivePokemon.getName());
             
         }
     }
@@ -263,10 +264,10 @@ public class Player {
     }
     
     private void notifyMulligan(){
-    	 int reply = JOptionPane.showConfirmDialog(null, "Would you like to draw a card?", "Mulligan", JOptionPane.YES_NO_OPTION);
+    	 int reply = GameController.displayConfirmDialog("Would you like to draw a card?", "Mulligan");
          if (reply == JOptionPane.YES_OPTION){
           	this.drawCardsFromDeck(1);
-          	GameController.displayMessage("Player received an extra card.");
+          	GameController.displayMessage(((humanPlayer) ? "Human " : "AI ") + "Player received an extra card.");
          }
     }
 
@@ -313,11 +314,9 @@ public class Player {
         ArrayList<String> buttons = new ArrayList<String>(); 
         if (mActivePokemon != null)
             buttons.add("Active " + mActivePokemon.getName());
-        int i = 0;
         for (Pokemon p : mBenchedPokemon)
         {
-            buttons.add(mBenchedPokemon.get(i).getName());
-            i++;
+            buttons.add(p.getName());
         }
         if (cancelable)
             buttons.add("Cancel");
@@ -331,19 +330,28 @@ public class Player {
     
     private Pokemon choosePokemonToEvolve(Pokemon evolution){
     	List<Pokemon> choiceList = new ArrayList<Pokemon>();
+    	String message = "Which Pokemon would you like to attach it to?";
     	if(mActivePokemon.getName().equals(evolution.getBasePokemonName()))
     			choiceList.add(mActivePokemon);
     	choiceList.addAll(mBenchedPokemon.stream().filter(pokemon -> pokemon.getName().equals(evolution.getBasePokemonName())).collect(Collectors.toList()));
     	StringBuilder sb = new StringBuilder();
     	choiceList.forEach(choice -> sb.append(choice.getName()+"-"));
-    	sb.append("Cancel");
-    	String[] buttons = sb.toString().split("-");
-    	buttons[0] = "Active " + buttons[0];
-    	int cardNum = GameController.dispayCustomOptionPane(buttons, "Card Select", "Which Pokemon would you like to attach it to?");
-    	if(cardNum == buttons.length-1)
-    		return null;
-    	else
-    		return choiceList.get(cardNum);
+    	String[] buttons = null;
+    	if(choiceList.isEmpty()){
+    		String[] button = {"Back"};
+    		buttons = button;
+    		message = "Base type " + evolution.getBasePokemonName() + " not in play.";
+    	}else{
+	    	sb.append("Cancel");
+	    	buttons = sb.toString().split("-");
+	    	if(choiceList.get(0).equals(mActivePokemon))
+	    		buttons[0] = "Active " + buttons[0];
+    	}
+	    	int cardNum = GameController.dispayCustomOptionPane(buttons, "Card Select", message);
+	    	if(cardNum == buttons.length-1)
+	    		return null;
+	    	else
+	    		return choiceList.get(cardNum);
     }
     
     public void swapPokemonFromBench(Pokemon before, Pokemon after){
